@@ -1,7 +1,7 @@
 import Link from "next/link";
-import ThemeSwitch from "../ThemeSwitch/ThemeSwitch";
+import { ThemeSwitch } from "..";
 
-export default function Navigation() {
+export function Navigation() {
   return (
     <nav className="container flex items-center justify-between">
       <ul>

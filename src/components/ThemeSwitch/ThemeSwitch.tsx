@@ -5,7 +5,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@nextui-org/button";
 
-export default function ThemeSwitch() {
+export function ThemeSwitch() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
