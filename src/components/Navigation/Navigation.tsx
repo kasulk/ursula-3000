@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ThemeSwitch } from "..";
+import { ThemeSwitch } from "@/components";
 
 export function Navigation() {
   return (
