@@ -1,3 +1,9 @@
+import { StocksTable } from "@/components";
+
 export default function Home() {
-  return <section className="py-36"></section>;
+  return (
+    <section>
+      <StocksTable />
+    </section>
+  );
 }
