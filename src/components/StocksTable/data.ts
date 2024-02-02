@@ -1,50 +1,16 @@
-// const columns = [
-//   { name: "ID", uid: "id", sortable: true },
-//   { name: "NAME", uid: "name", sortable: true },
-//   { name: "AGE", uid: "age", sortable: true },
-//   { name: "ROLE", uid: "role", sortable: true },
-//   { name: "TEAM", uid: "team" },
-//   { name: "EMAIL", uid: "email" },
-//   { name: "STATUS", uid: "status", sortable: true },
-//   { name: "ACTIONS", uid: "actions" },
-// ];
-
-//icke
 const columns = [
-  { name: "TICKER", uid: "ticker", sortable: true },
+  // uid = columnKey
+  // order here determines order in table
+  //
+  // { name: "TICKER", uid: "ticker", sortable: true },
   { name: "NAME", uid: "name", sortable: true },
   { name: "COUNTRY", uid: "country", sortable: true },
   { name: "TARGET PRICE", uid: "analystTargetPrice", sortable: true },
+  { name: "DIVIDEND %", uid: "dividendYield", sortable: true },
   { name: "EPS", uid: "eps", sortable: true },
   { name: "EPS15x", uid: "eps15x", sortable: true },
-  { name: "LOGO", uid: "logoURL" },
+  // { name: "LOGO", uid: "logoURL" },
 ];
-// const columns = [
-//   {
-//     key: "ticker",
-//     label: "TICKER",
-//   },
-//   {
-//     key: "name",
-//     label: "NAME",
-//   },
-//   {
-//     key: "country",
-//     label: "COUNTRY",
-//   },
-//   {
-//     key: "analystTargetPrice",
-//     label: "TARGET PRICE",
-//   },
-//   {
-//     key: "eps",
-//     label: "EPS",
-//   },
-//   {
-//     key: "eps15x",
-//     label: "EPSx15",
-//   },
-// ];
 
 const statusOptions = [
   { name: "Active", uid: "active" },

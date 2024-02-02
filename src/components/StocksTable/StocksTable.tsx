@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-// import { data as rows } from "../../../db/demoStocks10";
 import { data as stocks } from "../../../db/demoStocks10";
 import { useMemo, useState, useCallback } from "react";
 import {
@@ -18,19 +16,18 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User as MaybeUsefulForStocks,
   Pagination,
   Selection,
   ChipProps,
   SortDescriptor,
+  Avatar,
+  User,
 } from "@nextui-org/react";
 import { PlusIcon } from "./PlusIcon";
 import { VerticalDotsIcon } from "./VerticalDotsIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { SearchIcon } from "./SearchIcon";
 // import { columns, users, statusOptions } from "./data";
-import { users } from "./data";
-// import { users, statusOptions } from "./data";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 
@@ -43,7 +40,6 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 // const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 // const INITIAL_VISIBLE_COLUMNS = ["logoURL", "name", "ticker", "eps", "actions"];
 
-// type User = (typeof users)[0];
 type Stock = (typeof stocks)[0];
 
 export function StocksTable() {
@@ -73,7 +69,6 @@ export function StocksTable() {
   }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
-    // let filteredUsers = [...users];
     let filteredStocks = [...stocks];
 
     if (hasSearchFilter) {
@@ -113,33 +108,33 @@ export function StocksTable() {
     });
   }, [sortDescriptor, items]);
 
+  //? customize cells with recherCell-function:
   const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
-    const cellValue = stock[columnKey as keyof Stock];
+    // Workaround for test-data exported from MongoDB
+    // MongoDB JSON-exports adds objects to some data types...
+    // const cellValue = stock[columnKey as keyof Stock];
+    const cellValue = stock[columnKey as keyof Stock] as string | number; // icke
 
     switch (columnKey) {
-      case "logoURL":
-        // return <Image src={stock.logoURL} alt={`${stock.ticker}-Logo`} />;
-        return (
-          <Image
-            className="rounded-full"
-            src="https://api.twelvedata.com/logo/apple.com"
-            alt={`${stock.ticker}-Logo`}
-            width={50}
-            height={50}
-          />
-        );
       case "name":
         return (
-          // <MaybeUsefulForStocks
-          //   avatarProps={{ radius: "lg", src: stock.avatar }}
-          //   description={stock.email}
-          //   name={cellValue}
-          // >
-          //   {stock.email}
-          // </MaybeUsefulForStocks>
-          //
-          // <div>{cellValue}</div>
-          <div>{stock.name}</div>
+          <>
+            <User
+              name={stock.ticker}
+              description={stock.name}
+              avatarProps={{
+                // radius: "full",
+                src: "https://api.twelvedata.com/logo/apple.com",
+              }}
+            />
+            {cellValue}
+          </>
+          // <Avatar
+          //   isBordered
+          //   color="success"
+          //   // src="https://i.pravatar.cc/150?u=a04258114e29026302d"
+          //   src="https://api.twelvedata.com/logo/apple.com"
+          // />
         );
       // case "role":
       //   return (
@@ -163,15 +158,17 @@ export function StocksTable() {
       //   );
       case "eps":
         return (
-          <Chip
-            // className="capitalize"
-            color={statusColorMap[stock.eps]}
-            size="sm"
-            variant="flat"
-          >
-            {/* {cellValue} */}
-            {stock.eps}
-          </Chip>
+          <>
+            <Chip
+              className="capitalize"
+              // color={statusColorMap[stock.eps]}
+              color="success"
+              size="sm"
+              variant="flat"
+            >
+              {cellValue}
+            </Chip>
+          </>
         );
       case "actions":
         return (
@@ -393,7 +390,6 @@ export function StocksTable() {
       </TableHeader>
       <TableBody emptyContent={"No stocks found"} items={sortedItems}>
         {(item) => (
-          // <TableRow key={item.id}>
           <TableRow key={item.ticker}>
             {(columnKey) => (
               <TableCell>{renderCell(item, columnKey)}</TableCell>
