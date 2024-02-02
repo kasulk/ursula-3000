@@ -121,13 +121,12 @@ export function StocksTable() {
           <>
             <User
               name={stock.ticker}
-              description={stock.name}
+              description={cellValue}
               avatarProps={{
-                // radius: "full",
+                radius: "full",
                 src: "https://api.twelvedata.com/logo/apple.com",
               }}
             />
-            {cellValue}
           </>
           // <Avatar
           //   isBordered
@@ -136,37 +135,35 @@ export function StocksTable() {
           //   src="https://api.twelvedata.com/logo/apple.com"
           // />
         );
-      // case "role":
-      //   return (
-      //     <div className="flex flex-col">
-      //       <p className="text-bold text-small capitalize">{cellValue}</p>
-      //       <p className="text-bold text-tiny capitalize text-default-400">
-      //         {stock.team}
-      //       </p>
-      //     </div>
-      //   );
-      // case "status":
-      //   return (
-      //     <Chip
-      //       className="capitalize"
-      //       color={statusColorMap[stock.status]}
-      //       size="sm"
-      //       variant="flat"
-      //     >
-      //       {cellValue}
-      //     </Chip>
-      //   );
       case "eps":
         return (
           <>
             <Chip
               className="capitalize"
-              // color={statusColorMap[stock.eps]}
-              color="success"
+              color="default"
               size="sm"
               variant="flat"
             >
               {cellValue}
+            </Chip>
+          </>
+        );
+      case "dividendYield":
+        let color:
+          | "default"
+          | "primary"
+          | "secondary"
+          | "success"
+          | "warning"
+          | "danger"
+          | undefined = "default";
+        if (Number(cellValue) * 100 > 3) color = "warning";
+        if (Number(cellValue) * 100 > 4) color = "success";
+
+        return (
+          <>
+            <Chip className="capitalize" color={color} size="sm" variant="flat">
+              {(Number(cellValue) * 100).toFixed(1)} %
             </Chip>
           </>
         );
