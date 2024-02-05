@@ -1,6 +1,9 @@
 "use client";
 
-import { data as stocks } from "../../../db/demoStocks10";
+console.log("render StocksTable");
+
+// import { data as stocks } from "../../../_data/demoStocks1000";
+import type { Stock } from "../../../types/types";
 import { useMemo, useState, useCallback } from "react";
 import {
   Table,
@@ -40,9 +43,12 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 // const INITIAL_VISIBLE_COLUMNS = ["name", "role", "status", "actions"];
 // const INITIAL_VISIBLE_COLUMNS = ["logoURL", "name", "ticker", "eps", "actions"];
 
-type Stock = (typeof stocks)[0];
+// type Stock = (typeof stocks)[0];
+interface StocksTable {
+  stocks: Stock[];
+}
 
-export function StocksTable() {
+export function StocksTable({ stocks }: StocksTable) {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
