@@ -48,6 +48,14 @@ interface StocksTable {
   stocks: Stock[];
 }
 
+type StatusColor =
+  | "default"
+  | "primary"
+  | "secondary"
+  | "success"
+  | "warning"
+  | "danger";
+
 export function StocksTable({ stocks }: StocksTable) {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
@@ -155,14 +163,8 @@ export function StocksTable({ stocks }: StocksTable) {
           </>
         );
       case "dividendYield":
-        let color:
-          | "default"
-          | "primary"
-          | "secondary"
-          | "success"
-          | "warning"
-          | "danger"
-          | undefined = "default";
+        let color: StatusColor = "default";
+
         if (Number(cellValue) * 100 > 3) color = "warning";
         if (Number(cellValue) * 100 > 4) color = "success";
 
@@ -183,9 +185,10 @@ export function StocksTable({ stocks }: StocksTable) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                {/* <DropdownItem>View</DropdownItem> */}
+                {/* <DropdownItem>Edit</DropdownItem> */}
+                {/* <DropdownItem>Delete</DropdownItem> */}
+                <DropdownItem>Favorite</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -243,7 +246,8 @@ export function StocksTable({ stocks }: StocksTable) {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
+            {/* {//?  status filter dropdown */}
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -266,7 +270,7 @@ export function StocksTable({ stocks }: StocksTable) {
                   </DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -291,9 +295,6 @@ export function StocksTable({ stocks }: StocksTable) {
                 ))}
               </DropdownMenu>
             </Dropdown>
-            <Button color="primary" endContent={<PlusIcon />}>
-              Add New
-            </Button>
           </div>
         </div>
         <div className="flex items-center justify-between">
@@ -308,7 +309,8 @@ export function StocksTable({ stocks }: StocksTable) {
             >
               <option value="5">5</option>
               <option value="10">10</option>
-              <option value="15">15</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
             </select>
           </label>
         </div>
