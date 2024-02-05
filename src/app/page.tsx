@@ -5,7 +5,8 @@ console.log("render Home");
 
 // async function getStocks(): Promise<Stock[]> {
 async function getStocks(): Promise<any[]> {
-  const data = await fetch("http://localhost:4000/stocks", {
+  // const data = await fetch("http://localhost:4000/stocks", {
+  const data = await fetch("https://ursula-2000.vercel.app/api/stocks", {
     next: { revalidate: 3600 },
   });
   return data.json();
