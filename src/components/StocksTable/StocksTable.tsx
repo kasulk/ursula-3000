@@ -105,22 +105,20 @@ export function StocksTable({ stocks }: StocksTable) {
 
   const pages = Math.ceil(filteredItems.length / rowsPerPage);
 
-  const items = useMemo(() => {
+  const sortedItems = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
 
-    return filteredItems.slice(start, end);
-  }, [page, filteredItems, rowsPerPage]);
+    return [...filteredItems]
+      .sort((a: Stock, b: Stock) => {
+        const first = a[sortDescriptor.column as keyof Stock] as number;
+        const second = b[sortDescriptor.column as keyof Stock] as number;
+        const cmp = first < second ? -1 : first > second ? 1 : 0;
 
-  const sortedItems = useMemo(() => {
-    return [...items].sort((a: Stock, b: Stock) => {
-      const first = a[sortDescriptor.column as keyof Stock] as number;
-      const second = b[sortDescriptor.column as keyof Stock] as number;
-      const cmp = first < second ? -1 : first > second ? 1 : 0;
-
-      return sortDescriptor.direction === "descending" ? -cmp : cmp;
-    });
-  }, [sortDescriptor, items]);
+        return sortDescriptor.direction === "descending" ? -cmp : cmp;
+      })
+      .slice(start, end);
+  }, [sortDescriptor, page, filteredItems, rowsPerPage]);
 
   //? customize cells with recherCell-function:
   const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
@@ -363,7 +361,7 @@ export function StocksTable({ stocks }: StocksTable) {
         </div>
       </div>
     );
-  }, [selectedKeys, items.length, page, pages, hasSearchFilter]);
+  }, [selectedKeys, page, pages, hasSearchFilter]);
 
   return (
     <Table
