@@ -1,54 +1,33 @@
+import { cache } from "react";
 import Overview from "../../db/models/Overview";
 import dbConnect from "../../db/connect";
 import { Stock } from "../../types/types";
 
-//*********************
-//* FETCH DATA WITH API
-//*********************
-// async function getStocks(): Promise<Stock[]> {
-export async function getStocks(): Promise<any[]> {
-  const res = await fetch("http://localhost:4000/stocks", {
-    // const data = await fetch("https://ursula-2000.vercel.app/api/stocks", {
+// FETCH DATA WITH API
+export async function fetchStockOverviews() {
+  console.log("Overviews are being fetched...");
+  const res = await fetch("http://localhost:3000/api/stocks", {
     next: {
-      // revalidate: 3600, // production mode
-      revalidate: 30, // dev mode
+      revalidate: 60,
     },
   });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data from API!");
-  }
+  console.log("Overviews have been fetched.");
 
   return res.json();
 }
-//* clean demo data export from MongoDB
-export function cleanStocks(stocks: any[]): Stock[] {
-  return stocks.map((stock) => {
-    return {
-      ...stock,
-      _id: stock._id.$oid,
-      dividendDate: stock.dividendDate.$date,
-      ebitda: stock.ebitda?.$numberLong,
-      exDividendDate: stock.exDividendDate.$date,
-      grossProfitTTM: stock.grossProfitTTM.$numberLong,
-      latestQuarter: stock.latestQuarter.$date,
-      marketCapitalization: stock.marketCapitalization.$numberLong,
-      revenueTTM: stock.revenueTTM.$numberLong,
-      sharesOutstanding: stock.sharesOutstanding.$numberLong,
-      updatedAt: stock.updatedAt.$date,
-    };
-  });
-}
 
-//************************
-//* FETCH DATA WITHOUT API
-//************************
+// FETCH DATA WITHOUT API
 export async function getStockOverviews(): Promise<Stock[]> {
   try {
     dbConnect();
-    // const stockOverviews = await Overview.find({}, dataFilter)
-    const stockOverviews = await Overview.find();
-    return mongoDocsToPlainObjs(stockOverviews) as Stock[];
+    const cachedStockOverviews = cache(async () => {
+      console.log("Overviews are being fetched...");
+      const stockOverviews = await Overview.find().sort({ ticker: 1 });
+      console.log("Overviews have been fetched.");
+      return mongoDocsToPlainObjs(stockOverviews) as Stock[];
+    });
+
+    return await cachedStockOverviews();
     //
   } catch (err: any) {
     console.log(err);
