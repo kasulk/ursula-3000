@@ -1,6 +1,6 @@
 import { StocksTable } from "@/components";
 import { Stock } from "../../types/types";
-import { getStockOverviews, getStocks, cleanStocks } from "@/lib/data";
+import { getStockOverviews } from "@/lib/data";
 
 console.log("render Home");
 

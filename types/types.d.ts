@@ -1,5 +1,5 @@
 export interface Stock {
-  _id: string; // TS: if not set to optional, TS complains when passing the props to Card-Component...
+  _id: string;
   ticker: string;
   name: string;
   description: string;
@@ -15,9 +15,9 @@ export interface Stock {
   fiftyTwoWeekLow: number;
   analystTargetPrice: number;
   price: number;
-  bruchwert52Week: number;
-  Favorites?: string[];
-  logoURL: string;
+  // bruchwert52Week: number;
+  // Favorites?: string[];
+  // logoURL: string;
   updatedAt: string;
   quotesData?: {
     _id: string;

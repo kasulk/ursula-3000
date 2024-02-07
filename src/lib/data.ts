@@ -1,5 +1,6 @@
 import Overview from "../../db/models/Overview";
 import dbConnect from "../../db/connect";
+import { Stock } from "../../types/types";
 
 //*********************
 //* FETCH DATA WITH API
@@ -21,7 +22,7 @@ export async function getStocks(): Promise<any[]> {
   return res.json();
 }
 //* clean demo data export from MongoDB
-export function cleanStocks(stocks: any[]) {
+export function cleanStocks(stocks: any[]): Stock[] {
   return stocks.map((stock) => {
     return {
       ...stock,
@@ -42,11 +43,12 @@ export function cleanStocks(stocks: any[]) {
 //************************
 //* FETCH DATA WITHOUT API
 //************************
-export async function getStockOverviews() {
+export async function getStockOverviews(): Promise<Stock[]> {
   try {
     dbConnect();
+    // const stockOverviews = await Overview.find({}, dataFilter)
     const stockOverviews = await Overview.find();
-    return stockOverviews;
+    return mongoDocsToPlainObjs(stockOverviews) as Stock[];
     //
   } catch (err: any) {
     console.log(err);
@@ -56,6 +58,39 @@ export async function getStockOverviews() {
     );
   }
 }
+
+// Only plain objects can be passed from Server Components
+// to Client Components
+export function mongoDocsToPlainObjs(documents: any[]): Object[] {
+  const plainObjects = documents.map((doc) => {
+    const { _id, ...rest } = doc.toObject();
+    return { _id: _id.toString(), ...rest };
+  });
+
+  return plainObjects;
+}
+
+const dataFilter = {
+  // data set to 0 or omitted won't be fetched from db
+  _id: 1,
+  ticker: 1,
+  name: 1,
+  description: 1,
+  exchange: 1,
+  sector: 1,
+  industry: 1,
+  dividendPerShare: 1,
+  dividendYield: 1,
+  eps: 1,
+  eps15x: 1,
+  bookValue: 1,
+  fiftyTwoWeekLow: 1,
+  analystTargetPrice: 1,
+  price: 1,
+  // bruchwert52Week: 1,
+  // logoURL: 1,
+  updatedAt: 1,
+};
 
 // export async function getUser(id) {
 //   try {
