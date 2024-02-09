@@ -1,6 +1,6 @@
 import { StocksTable } from "@/components";
 import { OriginalTable } from "@/components";
-// import { getStockOverviewsFromAPI } from "@/lib/data"; //:: FETCH DATA WITH API
+import { getStockOverviewsFromAPI } from "@/lib/data"; //:: FETCH DATA WITH API
 import { getStockOverviewsFromDB } from "@/lib/data"; //:: FETCH DATA WITHOUT API
 
 console.log("render Home");
@@ -12,7 +12,7 @@ export default async function Home() {
   const stocks = await getStockOverviewsFromDB();
 
   //:: FETCH DATA WITH API
-  // const stocks: Stock[] = await getStockOverviewsFromAPI();
+  // const stocks = await getStockOverviewsFromAPI();
 
   return (
     <section>

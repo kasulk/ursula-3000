@@ -1,6 +1,6 @@
 "use client";
 
-console.log("render OriginalTable");
+// console.log("render OriginalTable");
 
 import React from "react";
 import {

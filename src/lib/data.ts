@@ -4,11 +4,9 @@ import { Overview, Quote, Logourl } from "@/../db/models";
 import { Stock } from "@/../types/types";
 
 //:: FETCH DATA WITH API ::
-export async function getStockOverviewsFromAPI() {
+export async function getStockOverviewsFromAPI(): Promise<Stock[]> {
   const res = await fetch("http://localhost:3000/api/stocks", {
-    next: {
-      revalidate: 3600,
-    },
+    next: { revalidate: 3600 },
   });
   console.log("Overviews have been fetched from API.");
 
