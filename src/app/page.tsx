@@ -1,18 +1,17 @@
 import { StocksTable } from "@/components";
-import { Stock } from "../../types/types";
-import { fetchStockOverviews, getStockOverviews } from "@/lib/data";
+// import { getStockOverviewsFromAPI } from "@/lib/data"; //:: FETCH DATA WITH API
+import { getStockOverviewsFromDB } from "@/lib/data"; //:: FETCH DATA WITHOUT API
 
 console.log("render Home");
 
-// FETCH DATA WITHOUT API
-// export const revalidate = 3600; // set revalidation time for cached stocks
+export const revalidate = 3600; //:: set revalidation time for cached stocks
 
 export default async function Home() {
-  // FETCH DATA WITHOUT API
-  // const stocks: Stock[] = await getStockOverviews();
+  //:: FETCH DATA WITHOUT API
+  const stocks = await getStockOverviewsFromDB();
 
-  // FETCH DATA WITH API
-  const stocks: Stock[] = await fetchStockOverviews();
+  //:: FETCH DATA WITH API
+  // const stocks: Stock[] = await getStockOverviewsFromAPI();
 
   return (
     <section>

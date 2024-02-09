@@ -1,45 +1,44 @@
 import { cache } from "react";
-import Overview from "../../db/models/Overview";
-import dbConnect from "../../db/connect";
-import { Stock } from "../../types/types";
+import dbConnect from "@/../db/connect";
+import { Overview, Quote, Logourl } from "@/../db/models";
+import { Stock } from "@/../types/types";
 
-// FETCH DATA WITH API
-export async function fetchStockOverviews() {
-  console.log("Overviews are being fetched...");
+//:: FETCH DATA WITH API ::
+export async function getStockOverviewsFromAPI() {
   const res = await fetch("http://localhost:3000/api/stocks", {
     next: {
-      revalidate: 60,
+      revalidate: 3600,
     },
   });
-  console.log("Overviews have been fetched.");
+  console.log("Overviews have been fetched from API.");
 
   return res.json();
 }
 
-// FETCH DATA WITHOUT API
-export async function getStockOverviews(): Promise<Stock[]> {
-  try {
-    dbConnect();
-    const cachedStockOverviews = cache(async () => {
-      console.log("Overviews are being fetched...");
-      const stockOverviews = await Overview.find().sort({ ticker: 1 });
-      console.log("Overviews have been fetched.");
-      return mongoDocsToPlainObjs(stockOverviews) as Stock[];
-    });
+//:: FETCH DATA WITHOUT API ::
+export const revalidate = 3600; //:: set revalidation time for cached stocks
+// export const getStockOverviewsFromDB: () => Promise<Stock[]> = cache(async () => {
+export const getStockOverviewsFromDB = cache(async () => {
+  dbConnect();
+  const stockOverviews = await Overview.find(); //.sort({ ticker: 1 });
+  console.log("Overviews have been fetched from DB.");
+  return mongoDocsToPlainObjs(stockOverviews) as Stock[];
+});
 
-    return await cachedStockOverviews();
-    //
-  } catch (err: any) {
-    console.log(err);
-    throw new Error(
-      "Uh-oh... Failed to fetch stocks overviews from database!",
-      err,
-    );
-  }
-}
+// export async function getStockLogoURLsFromDB(): Promise<Stock[]> {
+//   dbConnect();
+//   const stockLogoURLs = await Logourl.find();
+//   return mongoDocsToPlainObjs(stockLogoURLs) as Stock[];
+// }
 
-// Only plain objects can be passed from Server Components
-// to Client Components
+// export async function getStockQuotesFromDB(): Promise<Stock[]> {
+//   dbConnect();
+//   const stockQuotes = await Quote.find();
+//   return mongoDocsToPlainObjs(stockQuotes) as Stock[];
+// }
+
+//:: Only plain objects can be passed from Server Components
+//:: to Client Components
 export function mongoDocsToPlainObjs(documents: any[]): Object[] {
   const plainObjects = documents.map((doc) => {
     const { _id, ...rest } = doc.toObject();
@@ -66,8 +65,6 @@ const dataFilter = {
   fiftyTwoWeekLow: 1,
   analystTargetPrice: 1,
   price: 1,
-  // bruchwert52Week: 1,
-  // logoURL: 1,
   updatedAt: 1,
 };
 
