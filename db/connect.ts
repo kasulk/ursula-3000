@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Overview from "./models/Overview"; // chatti
+// import { Overview } from "./models";
 
 interface Mongoose {
   conn: typeof mongoose | null;
@@ -28,10 +28,11 @@ export default async function dbConnect() {
   if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    const options = { bufferCommands: false };
+    // const options = { bufferCommands: false };
 
-    cached.promise = mongoose.connect(MONGODB_URI, options).then((mongoose) => {
-      Overview; // chatti
+    // cached.promise = mongoose.connect(MONGODB_URI, options).then((mongoose) => {
+    cached.promise = mongoose.connect(MONGODB_URI).then((mongoose) => {
+      // Overview; //:: chatti
       return mongoose;
     });
   }
