@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { NumberOrNull } from "./_customSchemaTypes";
-// import Quote from "./Quote"; //note:
-// import Logourl from "./Logourl"; //note:
+// import Quote from "./Quote";
+// import Logourl from "./Logourl";
 
 const overviewSchema = new mongoose.Schema(
   {
@@ -91,7 +91,5 @@ const overviewSchema = new mongoose.Schema(
 
 // check whether the model with this name has already been
 // compiled and if yes, take the already compiled model
-const Overview =
+export const Overview =
   mongoose.models.Overview || mongoose.model("Overview", overviewSchema);
-
-export default Overview;
