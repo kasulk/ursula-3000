@@ -19,6 +19,12 @@ const nextConfig = {
       },
     ],
   },
+  //:: LOG CACHE-INFO TO CONSOLE
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
 };
 
 export default nextConfig;
