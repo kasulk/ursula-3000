@@ -1,4 +1,5 @@
 import { StocksTable } from "@/components";
+import { OriginalTable } from "@/components";
 // import { getStockOverviewsFromAPI } from "@/lib/data"; //:: FETCH DATA WITH API
 import { getStockOverviewsFromDB } from "@/lib/data"; //:: FETCH DATA WITHOUT API
 
@@ -16,6 +17,7 @@ export default async function Home() {
   return (
     <section>
       <StocksTable stocks={stocks} />
+      {/* <OriginalTable /> */}
     </section>
   );
 }
