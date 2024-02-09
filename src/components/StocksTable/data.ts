@@ -1,14 +1,15 @@
 const columns = [
-  // uid = columnKey
-  // order here determines order in table
+  //:: uid = columnKey
+  //:: order here determines order in table
   //
   // { name: "TICKER", uid: "ticker", sortable: true },
   { name: "NAME", uid: "name", sortable: true },
   { name: "COUNTRY", uid: "country", sortable: true },
   { name: "TARGET PRICE", uid: "analystTargetPrice", sortable: true },
-  { name: "DIVIDEND %", uid: "dividendYield", sortable: true },
+  { name: "DIV %", uid: "dividendYield", sortable: true },
   { name: "EPS", uid: "eps", sortable: true },
   { name: "EPS15x", uid: "eps15x", sortable: true },
+  { name: "ACTIONS", uid: "actions" },
   // { name: "LOGO", uid: "logoURL" },
 ];
 

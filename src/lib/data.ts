@@ -4,11 +4,9 @@ import { Overview, Quote, Logourl } from "@/../db/models";
 import { Stock } from "@/../types/types";
 
 //:: FETCH DATA WITH API ::
-export async function getStockOverviewsFromAPI() {
+export async function getStockOverviewsFromAPI(): Promise<Stock[]> {
   const res = await fetch("http://localhost:3000/api/stocks", {
-    next: {
-      revalidate: 3600,
-    },
+    next: { revalidate: 3600 },
   });
   console.log("Overviews have been fetched from API.");
 
@@ -18,12 +16,14 @@ export async function getStockOverviewsFromAPI() {
 //:: FETCH DATA WITHOUT API ::
 export const revalidate = 3600; //:: set revalidation time for cached stocks
 // export const getStockOverviewsFromDB: () => Promise<Stock[]> = cache(async () => {
-export const getStockOverviewsFromDB = cache(async () => {
+// export const getStockOverviewsFromDB = cache(async () => {
+export async function getStockOverviewsFromDB() {
   dbConnect();
-  const stockOverviews = await Overview.find(); //.sort({ ticker: 1 });
+  const stockOverviews = await Overview.find().sort({ name: 1 });
   console.log("Overviews have been fetched from DB.");
   return mongoDocsToPlainObjs(stockOverviews) as Stock[];
-});
+  // });
+}
 
 // export async function getStockLogoURLsFromDB(): Promise<Stock[]> {
 //   dbConnect();

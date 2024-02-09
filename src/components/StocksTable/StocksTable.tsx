@@ -2,7 +2,6 @@
 
 console.log("render StocksTable");
 
-// import { data as stocks } from "../../../_data/demoStocks1000";
 import type { Stock } from "../../../types/types";
 import { useMemo, useState, useCallback } from "react";
 import {
@@ -26,11 +25,10 @@ import {
   Avatar,
   User,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
+// import { PlusIcon } from "./PlusIcon";
 import { VerticalDotsIcon } from "./VerticalDotsIcon";
 import { ChevronDownIcon } from "./ChevronDownIcon";
 import { SearchIcon } from "./SearchIcon";
-// import { columns, users, statusOptions } from "./data";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 
@@ -66,7 +64,7 @@ export function StocksTable({ stocks }: StocksTable) {
   const [statusFilter, setStatusFilter] = useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "age",
+    column: "name",
     direction: "ascending",
   });
 
@@ -90,7 +88,7 @@ export function StocksTable({ stocks }: StocksTable) {
         stock.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    //? statusFilter
+    //:: STATUSFILTER
     // if (
     //   statusFilter !== "all" &&
     //   Array.from(statusFilter).length !== statusOptions.length
@@ -120,12 +118,12 @@ export function StocksTable({ stocks }: StocksTable) {
       .slice(start, end);
   }, [sortDescriptor, page, filteredItems, rowsPerPage]);
 
-  //? customize cells with recherCell-function:
+  //:: CUSTOMIZE CELLS WITH RECHERcELL-FUNCTION:
   const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
-    // Workaround for test-data exported from MongoDB
-    // MongoDB JSON-exports adds objects to some data types...
+    //? Workaround for test-data exported from MongoDB
+    //? MongoDB JSON-exports adds objects to some data types...
     // const cellValue = stock[columnKey as keyof Stock];
-    const cellValue = stock[columnKey as keyof Stock] as string | number; // icke
+    const cellValue = stock[columnKey as keyof Stock] as string | number; //:: icke
 
     switch (columnKey) {
       case "name":
@@ -150,26 +148,27 @@ export function StocksTable({ stocks }: StocksTable) {
       case "eps":
         return (
           <>
-            <Chip
-              className="capitalize"
-              color="default"
-              size="sm"
-              variant="flat"
-            >
+            <Chip color="default" size="sm" variant="flat">
               {cellValue}
             </Chip>
           </>
         );
       case "dividendYield":
+        const divYield = Number(cellValue) * 100;
         let color: StatusColor = "default";
 
-        if (Number(cellValue) * 100 > 3) color = "warning";
-        if (Number(cellValue) * 100 > 4) color = "success";
+        if (divYield > 3) color = "warning";
+        if (divYield > 4) color = "success";
 
         return (
           <>
-            <Chip className="capitalize" color={color} size="sm" variant="flat">
-              {(Number(cellValue) * 100).toFixed(1)} %
+            <Chip
+              className={`${divYield > 3 && `animate-pulse`}`}
+              color={color}
+              size="sm"
+              variant="flat"
+            >
+              {divYield.toFixed(1)} %
             </Chip>
           </>
         );
@@ -183,7 +182,7 @@ export function StocksTable({ stocks }: StocksTable) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                {/* <DropdownItem>View</DropdownItem> */}
+                <DropdownItem>View</DropdownItem>
                 {/* <DropdownItem>Edit</DropdownItem> */}
                 {/* <DropdownItem>Delete</DropdownItem> */}
                 <DropdownItem>Favorite</DropdownItem>
@@ -244,7 +243,7 @@ export function StocksTable({ stocks }: StocksTable) {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* {//?  status filter dropdown */}
+            {/* //:: STATUS FILTER DROPDOWN */}
             {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -269,6 +268,7 @@ export function StocksTable({ stocks }: StocksTable) {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
+            {/* //:: ^^^^^  */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
