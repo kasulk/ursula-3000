@@ -25,10 +25,11 @@ import {
   Avatar,
   User,
 } from "@nextui-org/react";
-// import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
-import { SearchIcon } from "./SearchIcon";
+import {
+  VerticalDots as VerticalDotsIcon,
+  ChevronDown as ChevronDownIcon,
+  Search as SearchIcon,
+} from "@/components/Icons";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 

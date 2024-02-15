@@ -23,10 +23,12 @@ import {
   ChipProps,
   SortDescriptor,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
-import { SearchIcon } from "./SearchIcon";
+import {
+  ChevronDown as ChevronDownIcon,
+  Plus as PlusIcon,
+  Search as SearchIcon,
+  VerticalDots as VerticalDotsIcon,
+} from "@/components/Icons";
 import { columns, users, statusOptions } from "./data";
 import { capitalize } from "./utils";
 
