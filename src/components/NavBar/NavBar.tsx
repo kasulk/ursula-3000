@@ -14,6 +14,7 @@ import {
 } from "@nextui-org/react";
 
 import { Logo, ThemeSwitch } from "@/components";
+import UserMenu from "../UserMenu/UserMenu";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,11 +38,6 @@ export function NavBar() {
     },
     {
       title: "Help & Feedback",
-      description: "",
-      url: "",
-    },
-    {
-      title: "Log Out",
       description: "",
       url: "",
     },
@@ -76,11 +72,18 @@ export function NavBar() {
 
       <NavbarContent justify="end">
         <NavbarItem className="hidden lg:flex">
-          <Link href="#">Login</Link>
+          <Link href="/api/auth/signin" className="text-sm">
+            Sign Up
+          </Link>
         </NavbarItem>
         <NavbarItem>
-          <Button as={Link} color="primary" href="#" variant="flat">
-            Sign Up
+          <Button
+            as={Link}
+            color="primary"
+            href="/api/auth/signin"
+            variant="flat"
+          >
+            Login
           </Button>
         </NavbarItem>
       </NavbarContent>
@@ -107,6 +110,7 @@ export function NavBar() {
       </NavbarMenu>
 
       <ThemeSwitch />
+      <UserMenu />
     </Navbar>
   );
 }
