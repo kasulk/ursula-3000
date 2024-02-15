@@ -18,6 +18,7 @@ import { Logo, ThemeSwitch } from "@/components";
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // todo: const menuItems = getNavItemsFromAppFolder()
   const menuItems = [
     {
       title: "Dashboard",
