@@ -26,22 +26,22 @@ export function NavBar() {
     {
       title: "Dashboard",
       description: "",
-      url: "",
+      url: "#",
     },
     {
       title: "All Stocks",
       description: "",
-      url: "",
+      url: "/AllStocks",
     },
     {
       title: "Features",
       description: "",
-      url: "",
+      url: "#",
     },
     {
       title: "Help & Feedback",
       description: "",
-      url: "",
+      url: "#",
     },
   ];
 
@@ -69,7 +69,7 @@ export function NavBar() {
             key={`${item}-${index}`}
             // Todo: isActive
           >
-            <Link color="foreground" href="#">
+            <Link color="foreground" href={item.url}>
               {item.title}
             </Link>
           </NavbarItem>
@@ -114,7 +114,7 @@ export function NavBar() {
                     : "foreground"
               }
               className="w-full"
-              href="#"
+              href={item.url}
               size="lg"
             >
               {item.title}
