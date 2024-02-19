@@ -43,35 +43,40 @@ export function ThemeSwitch() {
   if (!mounted) return null;
 
   return (
-    <Dropdown backdrop="blur">
-      <DropdownTrigger>
-        <Button variant="bordered" endContent={icons.chevron}>
-          Theme
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        className="text-right text-default"
-        variant="faded"
-        aria-label="Theme switch"
-        items={items}
+    <>
+      <Button
+        variant="bordered"
+        className="min-w-0 rounded-full px-2.5 lg:hidden"
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       >
-        {(items) => (
-          <DropdownItem
-            key={items.key}
-            className={items.key === theme ? "text-danger" : ""}
-            color={items.key === theme ? "danger" : "default"}
-            onClick={() => setTheme(items.key)}
-            classNames={
-              {
-                // base: "w-1/2",
-                // wrapper: "w-1/2",
-              }
-            }
+        {theme === "light" ? "🌙" : "🌞"}
+      </Button>
+      <div className="hidden lg:flex">
+        <Dropdown backdrop="blur">
+          <DropdownTrigger>
+            <Button variant="bordered" endContent={icons.chevron}>
+              Theme
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu
+            className="text-right text-default"
+            variant="faded"
+            aria-label="Theme switch"
+            items={items}
           >
-            {items.label}
-          </DropdownItem>
-        )}
-      </DropdownMenu>
-    </Dropdown>
+            {(items) => (
+              <DropdownItem
+                key={items.key}
+                className={items.key === theme ? "text-danger" : ""}
+                color={items.key === theme ? "danger" : "default"}
+                onClick={() => setTheme(items.key)}
+              >
+                {items.label}
+              </DropdownItem>
+            )}
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+    </>
   );
 }

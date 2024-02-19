@@ -46,18 +46,61 @@ export function NavBar() {
   ];
 
   return (
-    <Navbar
-      isBordered
-      onMenuOpenChange={setIsMenuOpen}
-      classNames={{
-        brand: "grow-0 justify-start",
-      }}
-    >
-      {/* BurgerMenu */}
-      <NavbarMenuToggle
-        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-        className="md:hidden"
-      />
+    <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
+      <NavbarContent>
+        {/* BurgerMenuToggle */}
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          className="md:hidden"
+        />
+        {/* Brand */}
+        <NavbarBrand>
+          <Link href="/" className="sm: text-xl md:text-2xl xl:text-3xl">
+            <Logo className="text-danger" />
+            <span className="font-bold text-inherit">Ursula 3000</span>
+          </Link>
+        </NavbarBrand>
+      </NavbarContent>
+
+      {/* NavLinks */}
+      <NavbarContent className="hidden gap-4 md:flex" justify="center">
+        {menuItems.map((item, index) => (
+          <NavbarItem
+            key={`${item}-${index}`}
+            // Todo: isActive
+          >
+            <Link color="foreground" href="#">
+              {item.title}
+            </Link>
+          </NavbarItem>
+        ))}
+      </NavbarContent>
+
+      {/* Login/SignUp-Buttons, UserMenu & ThemeSwitch */}
+      <NavbarContent justify="end">
+        {!session && (
+          <>
+            <NavbarItem>
+              <Button color="primary" variant="flat" onClick={() => signIn()}>
+                Login
+              </Button>
+            </NavbarItem>
+            <NavbarItem className="hidden lg:flex">
+              <Button
+                as={Link}
+                color="primary"
+                variant="bordered"
+                href="/api/auth/signin"
+              >
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        )}
+        <ThemeSwitch />
+        {session && <UserMenu />}
+      </NavbarContent>
+
       {/* BurgerMenuLinks */}
       <NavbarMenu>
         {menuItems.map((item, index) => (
@@ -79,52 +122,6 @@ export function NavBar() {
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
-
-      {/* Brand */}
-      <NavbarBrand>
-        <Link href="/" className="text-2xl">
-          <Logo className="text-danger" />
-          <span className="font-bold">Ursula 3000</span>
-        </Link>
-      </NavbarBrand>
-
-      {/* NavLinks */}
-      <NavbarContent className="hidden gap-4 md:flex" justify="center">
-        {menuItems.map((item, index) => (
-          <NavbarItem
-            key={`${item}-${index}`}
-            // Todo: isActive
-          >
-            <Link color="foreground" href="#">
-              {item.title}
-            </Link>
-          </NavbarItem>
-        ))}
-      </NavbarContent>
-
-      {/* Login/SignUp-Buttons */}
-      {!session && (
-        <NavbarContent justify="end">
-          <NavbarItem className="hidden lg:flex">
-            <Button
-              as={Link}
-              color="primary"
-              variant="light"
-              href="/api/auth/signin"
-            >
-              Sign Up
-            </Button>
-          </NavbarItem>
-          <NavbarItem>
-            <Button color="primary" variant="flat" onClick={() => signIn()}>
-              Login
-            </Button>
-          </NavbarItem>
-        </NavbarContent>
-      )}
-
-      <ThemeSwitch />
-      {session && <UserMenu />}
     </Navbar>
   );
 }
