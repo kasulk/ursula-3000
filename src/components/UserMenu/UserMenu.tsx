@@ -1,3 +1,4 @@
+import { signOut, useSession } from "next-auth/react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -5,6 +6,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import { LayoutGroupContext } from "framer-motion";
 
 const user = {
   name: "Jason Hughes",
@@ -13,6 +15,8 @@ const user = {
 };
 
 export default function UserMenu() {
+  const { data: session } = useSession();
+
   return (
     <Dropdown placement="bottom-end" backdrop="blur">
       <DropdownTrigger>
@@ -37,7 +41,12 @@ export default function UserMenu() {
         <DropdownItem key="system">System</DropdownItem>
         <DropdownItem key="configurations">Configurations</DropdownItem>
         <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-        <DropdownItem key="logout" className="text-danger" color="danger">
+        <DropdownItem
+          key="logout"
+          className="text-danger"
+          color="danger"
+          onClick={() => signOut()}
+        >
           Log Out
         </DropdownItem>
       </DropdownMenu>
