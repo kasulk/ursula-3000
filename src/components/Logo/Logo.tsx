@@ -1,3 +1,3 @@
-export function Logo() {
-  return <div>U3K</div>;
+export function Logo({ className }: { className: string }) {
+  return <div className={className}>U3K</div>;
 }

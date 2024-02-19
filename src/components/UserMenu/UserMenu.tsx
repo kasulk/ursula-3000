@@ -1,3 +1,4 @@
+import { signOut, useSession } from "next-auth/react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -5,6 +6,8 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@nextui-org/react";
+import { LayoutGroupContext } from "framer-motion";
+import { ThemeSwitch } from "..";
 
 const user = {
   name: "Jason Hughes",
@@ -13,6 +16,8 @@ const user = {
 };
 
 export default function UserMenu() {
+  const { data: session } = useSession();
+
   return (
     <Dropdown placement="bottom-end" backdrop="blur">
       <DropdownTrigger>
@@ -29,15 +34,20 @@ export default function UserMenu() {
       <DropdownMenu aria-label="Profile Actions" variant="flat">
         <DropdownItem key="profile" className="h-14 gap-2">
           <p className="font-semibold">Signed in as</p>
-          <p className="font-semibold">{user.email}</p>
+          <p className="font-semibold">{user.name || user.email}</p>
         </DropdownItem>
-        <DropdownItem key="settings">My Settings</DropdownItem>
-        <DropdownItem key="team_settings">Team Settings</DropdownItem>
-        <DropdownItem key="analytics">Analytics</DropdownItem>
-        <DropdownItem key="system">System</DropdownItem>
-        <DropdownItem key="configurations">Configurations</DropdownItem>
-        <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
-        <DropdownItem key="logout" className="text-danger" color="danger">
+        {/* <DropdownItem key="settings">My Settings</DropdownItem> */}
+        {/* <DropdownItem key="team_settings">Team Settings</DropdownItem> */}
+        {/* <DropdownItem key="analytics">Analytics</DropdownItem> */}
+        {/* <DropdownItem key="system">System</DropdownItem> */}
+        {/* <DropdownItem key="configurations">Configurations</DropdownItem> */}
+        {/* <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem> */}
+        <DropdownItem
+          key="logout"
+          className="text-danger"
+          color="danger"
+          onClick={() => signOut()}
+        >
           Log Out
         </DropdownItem>
       </DropdownMenu>

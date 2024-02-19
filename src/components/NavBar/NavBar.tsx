@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import {
   Navbar,
   NavbarBrand,
@@ -18,76 +19,89 @@ import UserMenu from "../UserMenu/UserMenu";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   // todo: const menuItems = getNavItemsFromAppFolder()
   const menuItems = [
     {
       title: "Dashboard",
       description: "",
-      url: "",
+      url: "#",
     },
     {
       title: "All Stocks",
       description: "",
-      url: "",
+      url: "/AllStocks",
     },
     {
       title: "Features",
       description: "",
-      url: "",
+      url: "#",
     },
     {
       title: "Help & Feedback",
       description: "",
-      url: "",
+      url: "#",
     },
   ];
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen}>
+    <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
       <NavbarContent>
+        {/* BurgerMenuToggle */}
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
+          className="md:hidden"
         />
+        {/* Brand */}
         <NavbarBrand>
-          <Link href="/">
-            <Logo />
+          <Link href="/" className="sm: text-xl md:text-2xl xl:text-3xl">
+            <Logo className="text-danger" />
             <span className="font-bold text-inherit">Ursula 3000</span>
           </Link>
         </NavbarBrand>
       </NavbarContent>
-      <NavbarContent className="hidden gap-4 sm:flex" justify="center">
+
+      {/* NavLinks */}
+      <NavbarContent className="hidden gap-4 md:flex" justify="center">
         {menuItems.map((item, index) => (
           <NavbarItem
             key={`${item}-${index}`}
             // Todo: isActive
           >
-            <Link color="foreground" href="#">
+            <Link color="foreground" href={item.url}>
               {item.title}
             </Link>
           </NavbarItem>
         ))}
       </NavbarContent>
 
+      {/* Login/SignUp-Buttons, UserMenu & ThemeSwitch */}
       <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/api/auth/signin" className="text-sm">
-            Sign Up
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button
-            as={Link}
-            color="primary"
-            href="/api/auth/signin"
-            variant="flat"
-          >
-            Login
-          </Button>
-        </NavbarItem>
+        {!session && (
+          <>
+            <NavbarItem>
+              <Button color="primary" variant="flat" onClick={() => signIn()}>
+                Login
+              </Button>
+            </NavbarItem>
+            <NavbarItem className="hidden lg:flex">
+              <Button
+                as={Link}
+                color="primary"
+                variant="bordered"
+                href="/api/auth/signin"
+              >
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </>
+        )}
+        <ThemeSwitch />
+        {session && <UserMenu />}
       </NavbarContent>
 
+      {/* BurgerMenuLinks */}
       <NavbarMenu>
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
@@ -100,7 +114,7 @@ export function NavBar() {
                     : "foreground"
               }
               className="w-full"
-              href="#"
+              href={item.url}
               size="lg"
             >
               {item.title}
@@ -108,9 +122,6 @@ export function NavBar() {
           </NavbarMenuItem>
         ))}
       </NavbarMenu>
-
-      <ThemeSwitch />
-      <UserMenu />
     </Navbar>
   );
 }
