@@ -13,11 +13,13 @@ import {
   NavbarMenuToggle,
 } from "@nextui-org/react";
 
+import { signIn, signOut, useSession } from "next-auth/react";
 import { Logo, ThemeSwitch } from "@/components";
 import UserMenu from "../UserMenu/UserMenu";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session } = useSession();
 
   // todo: const menuItems = getNavItemsFromAppFolder()
   const menuItems = [
@@ -69,24 +71,38 @@ export function NavBar() {
           </NavbarItem>
         ))}
       </NavbarContent>
-
-      <NavbarContent justify="end">
-        <NavbarItem className="hidden lg:flex">
-          <Link href="/api/auth/signin" className="text-sm">
-            Sign Up
-          </Link>
-        </NavbarItem>
-        <NavbarItem>
-          <Button
-            as={Link}
-            color="primary"
-            href="/api/auth/signin"
-            variant="flat"
-          >
-            Login
-          </Button>
-        </NavbarItem>
-      </NavbarContent>
+      {session ? (
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Button
+              color="danger"
+              // href="/api/auth/signin"
+              variant="flat"
+              onClick={() => signOut()}
+            >
+              Logout
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      ) : (
+        <NavbarContent justify="end">
+          <NavbarItem className="hidden lg:flex">
+            <Link href="/api/auth/signin" className="text-sm">
+              Sign Up
+            </Link>
+          </NavbarItem>
+          <NavbarItem>
+            <Button
+              as={Link}
+              color="primary"
+              href="/api/auth/signin"
+              variant="flat"
+            >
+              Login
+            </Button>
+          </NavbarItem>
+        </NavbarContent>
+      )}
 
       <NavbarMenu>
         {menuItems.map((item, index) => (
@@ -110,7 +126,7 @@ export function NavBar() {
       </NavbarMenu>
 
       <ThemeSwitch />
-      <UserMenu />
+      {session && <UserMenu />}
     </Navbar>
   );
 }
