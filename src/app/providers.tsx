@@ -1,5 +1,7 @@
 "use client";
 
+import type { Session } from "next-auth";
+import { SessionProvider } from "next-auth/react";
 import { NextUIProvider } from "@nextui-org/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -16,18 +18,25 @@ const NextThemeProvider = dynamic(
 );
 //:: ^^^^^
 
-export function Providers({ children }: { children: React.ReactNode }) {
+interface ProvidersProps {
+  children: React.ReactNode;
+  session: Session | null;
+}
+
+export function Providers({ session, children }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <NextUIProvider navigate={router.push}>
-      <NextThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        themes={["light", "dark", "modern"]}
-      >
-        {children}
-      </NextThemeProvider>
-    </NextUIProvider>
+    <SessionProvider session={session}>
+      <NextUIProvider navigate={router.push}>
+        <NextThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          themes={["light", "dark", "modern"]}
+        >
+          {children}
+        </NextThemeProvider>
+      </NextUIProvider>
+    </SessionProvider>
   );
 }

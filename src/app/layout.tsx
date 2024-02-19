@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import { Inter } from "next/font/google";
 import { Providers } from "./providers";
+import { getServerSession } from "next-auth";
 import { NavBar } from "@/components";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -12,15 +13,17 @@ export const metadata: Metadata = {
     "Ursula renders and processes fundamental data of ~3000 stocks of the largest publicly held companies in the US Russell 3000 Index.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
+
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Providers>
+        <Providers session={session}>
           <header className="py-6">
             <NavBar />
           </header>
