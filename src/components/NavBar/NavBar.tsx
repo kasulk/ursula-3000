@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import {
   Navbar,
   NavbarBrand,
@@ -14,8 +14,7 @@ import {
   NavbarMenuToggle,
 } from "@nextui-org/react";
 
-import { Logo, ThemeSwitch } from "@/components";
-import UserMenu from "../UserMenu/UserMenu";
+import { Logo, UserMenu, ThemeSwitch } from "@/components";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
