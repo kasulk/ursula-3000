@@ -63,7 +63,7 @@ export function NavBar() {
       </NavbarContent>
 
       {/* NavLinks */}
-      <NavbarContent className="hidden gap-4 md:flex" justify="center">
+      <NavbarContent className="hidden grow gap-4 md:flex" justify="center">
         {menuItems.map((item, index) => (
           <NavbarItem
             key={`${item}-${index}`}
