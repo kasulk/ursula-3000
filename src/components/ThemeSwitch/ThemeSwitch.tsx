@@ -9,9 +9,10 @@ import {
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
+  Switch,
 } from "@nextui-org/react";
 
-import { ChevronDown } from "@/components/Icons";
+import { ChevronDown, MoonIcon, SunIcon } from "@/components/Icons";
 
 const icons = {
   chevron: <ChevronDown fill="currentColor" size={16} />,
@@ -44,14 +45,22 @@ export function ThemeSwitch() {
 
   return (
     <>
-      <Button
-        variant="bordered"
-        className="h-10 w-10 min-w-0 rounded-full text-xl saturate-50 lg:hidden"
-        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      >
-        {theme === "light" ? "🌙" : "🌞"}
-      </Button>
-      <div className="hidden lg:flex">
+      <Switch
+        defaultSelected
+        size="md"
+        color="primary"
+        aria-label="Toggle dark mode"
+        onChange={(event) => setTheme(event.target.checked ? "light" : "dark")}
+        thumbIcon={({ isSelected, className }) =>
+          isSelected ? (
+            <SunIcon className={className} />
+          ) : (
+            <MoonIcon className={className} />
+          )
+        }
+      />
+
+      {/* <div className="hidden lg:flex">
         <Dropdown backdrop="blur">
           <DropdownTrigger>
             <Button variant="bordered" endContent={icons.chevron}>
@@ -76,7 +85,7 @@ export function ThemeSwitch() {
             )}
           </DropdownMenu>
         </Dropdown>
-      </div>
+      </div> */}
     </>
   );
 }
