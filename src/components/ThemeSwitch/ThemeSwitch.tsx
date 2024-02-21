@@ -46,7 +46,7 @@ export function ThemeSwitch() {
     <>
       <Button
         variant="bordered"
-        className="min-w-0 rounded-full px-2.5 lg:hidden"
+        className="h-10 w-10 min-w-0 rounded-full text-xl saturate-50 lg:hidden"
         onClick={() => setTheme(theme === "light" ? "dark" : "light")}
       >
         {theme === "light" ? "🌙" : "🌞"}
