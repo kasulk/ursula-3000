@@ -20,6 +20,7 @@
     "paths": {
       "@/*": ["./src/*"],
     },
+    // "typeRoots": ["./types"], /// for augmentation of Profile-type from NextAut
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules", "_trash"],
