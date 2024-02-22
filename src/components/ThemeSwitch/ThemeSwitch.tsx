@@ -2,40 +2,15 @@
 
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-
-import { Button } from "@nextui-org/button";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-} from "@nextui-org/react";
-
-import { ChevronDown } from "@/components/Icons";
-
-const icons = {
-  chevron: <ChevronDown fill="currentColor" size={16} />,
-};
-
-const items = [
-  {
-    key: "light",
-    label: "Light",
-  },
-  {
-    key: "dark",
-    label: "Dark",
-  },
-  {
-    key: "modern",
-    label: "Modern",
-  },
-];
+import { Switch } from "@nextui-org/react";
+import { MoonIcon, SunIcon } from "@/components/Icons";
 
 export function ThemeSwitch() {
   const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
 
+  /// Prevent hydration mismatch error,
+  /// because the theme is unknown on the server
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -43,40 +18,19 @@ export function ThemeSwitch() {
   if (!mounted) return null;
 
   return (
-    <>
-      <Button
-        variant="bordered"
-        className="h-10 w-10 min-w-0 rounded-full text-xl saturate-50 lg:hidden"
-        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      >
-        {theme === "light" ? "🌙" : "🌞"}
-      </Button>
-      <div className="hidden lg:flex">
-        <Dropdown backdrop="blur">
-          <DropdownTrigger>
-            <Button variant="bordered" endContent={icons.chevron}>
-              Theme
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            className="text-right text-default"
-            variant="faded"
-            aria-label="Theme switch"
-            items={items}
-          >
-            {(items) => (
-              <DropdownItem
-                key={items.key}
-                className={items.key === theme ? "text-danger" : ""}
-                color={items.key === theme ? "danger" : "default"}
-                onClick={() => setTheme(items.key)}
-              >
-                {items.label}
-              </DropdownItem>
-            )}
-          </DropdownMenu>
-        </Dropdown>
-      </div>
-    </>
+    <Switch
+      size="md"
+      color="primary"
+      aria-label="Toggle dark mode"
+      defaultSelected={theme === "light"}
+      onChange={(event) => setTheme(event.target.checked ? "light" : "dark")}
+      thumbIcon={({ isSelected, className }) =>
+        isSelected ? (
+          <SunIcon className={className} />
+        ) : (
+          <MoonIcon className={className} />
+        )
+      }
+    />
   );
 }
