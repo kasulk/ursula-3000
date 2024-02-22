@@ -1,5 +1,5 @@
-import dbConnect from "../../../../db/connect";
-import { Overview } from "../../../../db/models";
+import dbConnect from "@/db/connect";
+import { Overview } from "@/db/models";
 import { NextResponse } from "next/server";
 
 export async function GET() {

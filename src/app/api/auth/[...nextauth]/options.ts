@@ -1,8 +1,8 @@
 import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
-import dbConnect from "@/../db/connect";
-import { User } from "@/../db/models";
+import dbConnect from "@/db/connect";
+import { User } from "@/db/models";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -43,9 +43,9 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user: providerUser, account, profile }) {
-      console.log("user:", providerUser);
-      console.log("account:", account);
-      console.log("profile:", profile);
+      // console.log("user:", providerUser);
+      // console.log("account:", account);
+      // console.log("profile:", profile);
 
       if (account?.provider === "github" && profile) {
         dbConnect();
