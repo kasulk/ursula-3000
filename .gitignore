@@ -37,4 +37,5 @@ next-env.d.ts
 
 # icke
 _trash
+.env*
 *.local*

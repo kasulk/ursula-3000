@@ -4,11 +4,22 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/db/connect";
 import { User } from "@/db/models";
 
+/// Set environment variables based on current environment;
+/// so authentication works in production AND development
+const isDeployed = !process.env.IS_DEV;
+let GitHubID = process.env.GITHUB_ID_DEV;
+let GitHubSecret = process.env.GITHUB_SECRET_DEV;
+
+if (isDeployed) {
+  GitHubID = process.env.GITHUB_ID;
+  GitHubSecret = process.env.GITHUB_SECRET;
+}
+
 export const options: NextAuthOptions = {
   providers: [
     GithubProvider({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
+      clientId: GitHubID as string,
+      clientSecret: GitHubSecret as string,
     }),
     CredentialsProvider({
       name: "Credentials",
