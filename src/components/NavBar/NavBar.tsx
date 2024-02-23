@@ -13,39 +13,61 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 import { Logo, UserMenu, ThemeSwitch } from "@/components";
 
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
+  const pathname = usePathname();
 
   // todo: const menuItems = getNavItemsFromAppFolder()
   const menuItems = [
     {
       title: "Dashboard",
       description: "",
-      url: "#",
+      url: "/dashboard",
     },
     {
       title: "All Stocks",
       description: "",
-      url: "/AllStocks",
+      url: "/allstocks",
     },
     {
       title: "Features",
       description: "",
-      url: "#",
+      url: "/features",
     },
     {
       title: "Help & Feedback",
       description: "",
-      url: "#",
+      url: "/contact",
     },
   ];
 
   return (
-    <Navbar isBordered onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      isBordered
+      onMenuOpenChange={setIsMenuOpen}
+      classNames={{
+        item: [
+          "flex",
+          "relative",
+          "h-full",
+          "items-center",
+          "data-[active=true]:after:content-['']",
+          "data-[active=true]:after:absolute",
+          "data-[active=true]:after:bottom-0",
+          "data-[active=true]:after:left-0",
+          "data-[active=true]:after:right-0",
+          "data-[active=true]:after:h-[2px]",
+          "data-[active=true]:after:rounded-[2px]",
+          "data-[active=true]:after:bg-gradient-to-r from-danger to-warning",
+          "data-[active=true]:after:opacity-85",
+        ],
+      }}
+    >
       <NavbarContent>
         {/* BurgerMenuToggle */}
         <NavbarMenuToggle
@@ -64,10 +86,7 @@ export function NavBar() {
       {/* NavLinks */}
       <NavbarContent className="hidden grow gap-4 md:flex" justify="center">
         {menuItems.map((item, index) => (
-          <NavbarItem
-            key={`${item}-${index}`}
-            // Todo: isActive
-          >
+          <NavbarItem key={`${item}-${index}`} isActive={item.url === pathname}>
             <Link color="foreground" href={item.url}>
               {item.title}
             </Link>
@@ -80,7 +99,22 @@ export function NavBar() {
         {!session && (
           <>
             <NavbarItem>
-              <Button color="primary" variant="flat" onClick={() => signIn()}>
+              <Button
+                size="sm"
+                className="md:hidden"
+                color="primary"
+                variant="flat"
+                onClick={() => signIn()}
+              >
+                Login
+              </Button>
+              <Button
+                size="md"
+                className="hidden md:flex"
+                color="primary"
+                variant="flat"
+                onClick={() => signIn()}
+              >
                 Login
               </Button>
             </NavbarItem>
@@ -101,17 +135,11 @@ export function NavBar() {
       </NavbarContent>
 
       {/* BurgerMenuLinks */}
-      <NavbarMenu>
+      <NavbarMenu className="pt-12">
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-              }
+              color={item.url === pathname ? "danger" : "foreground"}
               className="w-full"
               href={item.url}
               size="lg"

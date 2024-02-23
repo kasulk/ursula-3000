@@ -16,10 +16,10 @@ export default function Home() {
           <GlowText variant="secondary primary">cheap stocks</GlowText> fast and
           easy.
         </h3>
-        <Link href="/AllStocks">
+        <Link href="/allstocks">
           <Button
             radius="md"
-            className="bg-gradient-to-tr from-pink-500 to-orange-500 text-white shadow-lg"
+            className="bg-gradient-to-tr from-pink-500 to-orange-500 font-bold uppercase text-white shadow-lg"
           >
             Unbelieveable!
           </Button>
