@@ -80,7 +80,22 @@ export function NavBar() {
         {!session && (
           <>
             <NavbarItem>
-              <Button color="primary" variant="flat" onClick={() => signIn()}>
+              <Button
+                size="sm"
+                className="md:hidden"
+                color="primary"
+                variant="flat"
+                onClick={() => signIn()}
+              >
+                Login
+              </Button>
+              <Button
+                size="md"
+                className="hidden md:flex"
+                color="primary"
+                variant="flat"
+                onClick={() => signIn()}
+              >
                 Login
               </Button>
             </NavbarItem>
