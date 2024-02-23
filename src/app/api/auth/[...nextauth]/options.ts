@@ -6,11 +6,21 @@ import { User } from "@/db/models";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
-const { IS_DEV, GITHUB_ID, GITHUB_ID_DEV, GITHUB_SECRET, GITHUB_SECRET_DEV } =
-  process.env;
-const isDeployed = !IS_DEV;
-const GitHubID = isDeployed ? GITHUB_ID : GITHUB_ID_DEV;
-const GitHubSecret = isDeployed ? GITHUB_SECRET : GITHUB_SECRET_DEV;
+const {
+  // IS_PRODUCTION,
+  NODE_ENV,
+  GITHUB_ID,
+  GITHUB_ID_DEV,
+  GITHUB_SECRET,
+  GITHUB_SECRET_DEV,
+} = process.env;
+// const GitHubID = IS_PRODUCTION ? GITHUB_ID : GITHUB_ID_DEV;
+// const GitHubSecret = IS_PRODUCTION ? GITHUB_SECRET : GITHUB_SECRET_DEV;
+const GitHubID = NODE_ENV === "production" ? GITHUB_ID : GITHUB_ID_DEV;
+const GitHubSecret =
+  NODE_ENV === "production" ? GITHUB_SECRET : GITHUB_SECRET_DEV;
+
+console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
 
 export const options: NextAuthOptions = {
   providers: [
