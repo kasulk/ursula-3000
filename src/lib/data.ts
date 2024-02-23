@@ -1,6 +1,6 @@
 import { cache } from "react";
-import dbConnect from "@/../db/connect";
-import { Overview, Quote, Logourl } from "@/../db/models";
+import dbConnect from "@/db/connect";
+import { Overview, Quote, Logourl } from "@/db/models";
 import { Stock } from "@/../types/types";
 
 //:: FETCH DATA WITH API ::
