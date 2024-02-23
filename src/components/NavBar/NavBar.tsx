@@ -30,7 +30,7 @@ export function NavBar() {
     {
       title: "All Stocks",
       description: "",
-      url: "/AllStocks",
+      url: "/allstocks",
     },
     {
       title: "Features",
