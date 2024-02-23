@@ -54,20 +54,22 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user: providerUser, account, profile }) {
-      // console.log("user:", providerUser);
-      // console.log("account:", account);
-      // console.log("profile:", profile);
+      console.log("user:", providerUser);
+      console.log("account:", account);
+      console.log("profile:", profile);
 
       if (account?.provider === "github" && profile) {
         dbConnect();
         try {
-          const user = await User.findOne({ email: profile.email });
+          const user = await User.findOne({
+            email: profile.email || providerUser.email,
+          });
 
           if (!user) {
             const newUser = new User({
-              username: profile.login,
-              email: profile.email,
-              avatar: profile.avatar_url,
+              username: profile.login || providerUser.name,
+              email: profile.email || providerUser.email,
+              avatar: profile.avatar_url || providerUser.image,
             });
 
             await newUser.save();
