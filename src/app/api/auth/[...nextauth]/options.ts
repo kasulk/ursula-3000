@@ -6,14 +6,11 @@ import { User } from "@/db/models";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
-const isDeployed = !process.env.IS_DEV;
-let GitHubID = process.env.GITHUB_ID_DEV;
-let GitHubSecret = process.env.GITHUB_SECRET_DEV;
-
-if (isDeployed) {
-  GitHubID = process.env.GITHUB_ID;
-  GitHubSecret = process.env.GITHUB_SECRET;
-}
+const { IS_DEV, GITHUB_ID, GITHUB_ID_DEV, GITHUB_SECRET, GITHUB_SECRET_DEV } =
+  process.env;
+const isDeployed = !IS_DEV;
+const GitHubID = isDeployed ? GITHUB_ID : GITHUB_ID_DEV;
+const GitHubSecret = isDeployed ? GITHUB_SECRET : GITHUB_SECRET_DEV;
 
 export const options: NextAuthOptions = {
   providers: [
@@ -54,10 +51,6 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user: providerUser, account, profile }) {
-      console.log("user:", providerUser);
-      console.log("account:", account);
-      console.log("profile:", profile);
-
       if (account?.provider === "github" && profile) {
         dbConnect();
         try {
