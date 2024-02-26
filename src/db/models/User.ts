@@ -25,9 +25,9 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    role: {
+      type: String,
+      enum: ["admin", "credentials", "google", "github"],
     },
     favoriteStocks: {
       type: [String],
