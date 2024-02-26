@@ -20,14 +20,15 @@ export function UserMenu() {
           className="transition-transform"
           color="primary"
           size="sm"
-          name={user?.name || "not logged in"}
+          name={user?.name || ""}
           src={user?.image || ""}
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
-        <DropdownItem key="profile" className="h-14 gap-2">
-          <p className="font-semibold">Signed in as</p>
-          <p className="font-semibold">{user?.name || user?.email}</p>
+        <DropdownItem key="profile" className="py-2">
+          <p className="mb-2 font-semibold">Signed in as</p>
+          {user?.name && <p>{user?.name}</p>}
+          {user?.email && <p>{user?.email}</p>}
         </DropdownItem>
         {/* <DropdownItem key="settings">My Settings</DropdownItem> */}
         {/* <DropdownItem key="team_settings">Team Settings</DropdownItem> */}

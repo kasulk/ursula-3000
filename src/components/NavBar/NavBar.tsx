@@ -17,9 +17,6 @@ import { usePathname } from "next/navigation";
 
 import { Logo, UserMenu, ThemeSwitch } from "@/components";
 
-/// test:
-console.log("process.env.NODE_ENV:", process.env.NODE_ENV);
-
 export function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
