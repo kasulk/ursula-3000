@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/db/connect";
 import { User } from "@/db/models";
@@ -7,15 +8,15 @@ import { User } from "@/db/models";
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
 const {
-  // IS_PRODUCTION,
   NODE_ENV,
   GITHUB_ID,
   GITHUB_ID_DEV,
   GITHUB_SECRET,
   GITHUB_SECRET_DEV,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
 } = process.env;
-// const GitHubID = IS_PRODUCTION ? GITHUB_ID : GITHUB_ID_DEV;
-// const GitHubSecret = IS_PRODUCTION ? GITHUB_SECRET : GITHUB_SECRET_DEV;
+
 const GitHubID = NODE_ENV === "production" ? GITHUB_ID : GITHUB_ID_DEV;
 const GitHubSecret =
   NODE_ENV === "production" ? GITHUB_SECRET : GITHUB_SECRET_DEV;
@@ -28,6 +29,11 @@ export const options: NextAuthOptions = {
       clientId: GitHubID as string,
       clientSecret: GitHubSecret as string,
     }),
+    GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID as string,
+      clientSecret: GOOGLE_CLIENT_SECRET as string,
+    }),
+
     CredentialsProvider({
       name: "Credentials",
       credentials: {
