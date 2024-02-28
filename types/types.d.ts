@@ -38,3 +38,18 @@ export interface Stock {
     updatedAt: string;
   };
 }
+
+interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  role: string;
+  favoriteStocks: string[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface IUserWithPassword extends IUser {
+  password: string;
+}
