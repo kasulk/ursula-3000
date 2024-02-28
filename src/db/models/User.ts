@@ -30,7 +30,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "credentials", "google", "github"],
+      enum: ["admin", "user", "googleUser", "githubUser"],
     },
     favoriteStocks: {
       type: [String],

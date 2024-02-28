@@ -79,7 +79,7 @@ export const options: NextAuthOptions = {
               name: user.name,
               email: user.email,
               avatar: user.image,
-              role: "google",
+              role: "googleUser",
             });
             await newUser.save();
             return newUser;
@@ -108,7 +108,7 @@ export const options: NextAuthOptions = {
               name: profile.login,
               email: user.email,
               avatar: user.image,
-              role: "github",
+              role: "githubUser",
             });
             await newUser.save();
           } else {
