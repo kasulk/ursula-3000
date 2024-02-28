@@ -25,7 +25,7 @@ const GitHubSecret =
 
 console.log("NODE_ENV:", NODE_ENV);
 
-export const options: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
