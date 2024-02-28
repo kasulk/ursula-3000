@@ -1,7 +1,7 @@
 import { cache } from "react";
 import dbConnect from "@/db/connect";
-import { Overview, Quote, Logourl } from "@/db/models";
-import { Stock } from "@/../types/types";
+import { Overview, Quote, Logourl, User } from "@/db/models";
+import { IUser, IUserWithPassword, Stock } from "@/../types/types";
 
 //:: FETCH DATA WITH API ::
 export async function getStockOverviewsFromAPI(): Promise<Stock[]> {
@@ -39,12 +39,14 @@ export async function getStockOverviewsFromDB() {
 
 //:: Only plain objects can be passed from Server Components
 //:: to Client Components
-export function mongoDocsToPlainObjs(documents: any[]): Object[] {
-  const plainObjects = documents.map((doc) => {
-    const { _id, ...rest } = doc.toObject();
-    return { _id: _id.toString(), ...rest };
-  });
+export function mongoDocToPlainObj(document: any): Object {
+  const { _id, __v, ...rest } = document.toObject();
+  const plainObject = { id: _id.toString(), ...rest };
+  return plainObject;
+}
 
+export function mongoDocsToPlainObjs(documents: any[]): Object[] {
+  const plainObjects = documents.map((doc) => mongoDocToPlainObj(doc));
   return plainObjects;
 }
 
@@ -68,14 +70,32 @@ const dataFilter = {
   updatedAt: 1,
 };
 
-// export async function getUser(id) {
-//   try {
-//     dbConnect();
-//     const user = await User.findById(id);
-//     return user;
-//     //
-//   } catch (err: any) {
-//     console.log(err);
-//     throw new Error("Uh-oh... Failed to fetch user!", err);
-//   }
-// }
+export async function getDBUserByID(id: string): Promise<IUserWithPassword> {
+  try {
+    dbConnect();
+    const dbUser = await User.findOne({ _id: id });
+    return mongoDocToPlainObj(dbUser) as IUserWithPassword;
+  } catch (err: any) {
+    console.log("error:", err);
+    throw new Error("Uh-oh... Failed to fetch user!", err);
+  }
+}
+
+export async function getDBUserByEmailWithoutPassword(
+  email: string,
+): Promise<IUser> {
+  try {
+    dbConnect();
+    const dbUser = await User.findOne({ email });
+    const user = mongoDocToPlainObj(dbUser) as IUserWithPassword;
+    return removePasswordFromUser(user);
+  } catch (err: any) {
+    console.log("error:", err);
+    throw new Error("Uh-oh... Failed to fetch user!", err);
+  }
+}
+
+export function removePasswordFromUser(user: IUserWithPassword): IUser {
+  const { password, ...userWithoutPassword } = user;
+  return userWithoutPassword;
+}
