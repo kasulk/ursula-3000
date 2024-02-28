@@ -25,7 +25,7 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenu aria-label="Profile Actions" variant="flat">
         <DropdownItem key="profile" className="py-2">
           <p className="mb-2 font-semibold">Signed in as</p>
-          {user?.name && <p>{user?.name}</p>}h
+          {user?.name && <p>{user?.name}</p>}
           {user?.email && <p>{user?.email}</p>}
         </DropdownItem>
         {/* <DropdownItem key="settings">My Settings</DropdownItem> */}

@@ -27,14 +27,6 @@ console.log("NODE_ENV:", NODE_ENV);
 
 export const options: NextAuthOptions = {
   providers: [
-    GoogleProvider({
-      clientId: GOOGLE_CLIENT_ID as string,
-      clientSecret: GOOGLE_CLIENT_SECRET as string,
-    }),
-    GithubProvider({
-      clientId: GitHubID as string,
-      clientSecret: GitHubSecret as string,
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -62,6 +54,14 @@ export const options: NextAuthOptions = {
 
         return null;
       },
+    }),
+    GoogleProvider({
+      clientId: GOOGLE_CLIENT_ID as string,
+      clientSecret: GOOGLE_CLIENT_SECRET as string,
+    }),
+    GithubProvider({
+      clientId: GitHubID as string,
+      clientSecret: GitHubSecret as string,
     }),
   ],
   callbacks: {
@@ -122,6 +122,7 @@ export const options: NextAuthOptions = {
           return false;
         }
       }
+
       return true;
     },
   },
