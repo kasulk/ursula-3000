@@ -1,5 +1,6 @@
 "use client";
 
+import type { NavBarProps } from "../propTypes";
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import {
@@ -17,7 +18,7 @@ import { usePathname } from "next/navigation";
 
 import { Logo, UserMenu, ThemeSwitch } from "@/components";
 
-export function NavBar() {
+export function NavBar({ user }: NavBarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -131,7 +132,7 @@ export function NavBar() {
           </>
         )}
         <ThemeSwitch />
-        {session && <UserMenu />}
+        {session && <UserMenu user={user} />}
       </NavbarContent>
 
       {/* BurgerMenuLinks */}

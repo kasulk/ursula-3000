@@ -1,4 +1,5 @@
-import { signOut, useSession } from "next-auth/react";
+import type { UserMenuProps } from "../propTypes";
+import { signOut } from "next-auth/react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -7,10 +8,7 @@ import {
   DropdownItem,
 } from "@nextui-org/react";
 
-export function UserMenu() {
-  const { data: session } = useSession();
-  const user = session?.user;
-
+export function UserMenu({ user }: UserMenuProps) {
   return (
     <Dropdown placement="bottom-end" backdrop="blur">
       <DropdownTrigger>
@@ -21,13 +19,13 @@ export function UserMenu() {
           color="primary"
           size="sm"
           name={user?.name || ""}
-          src={user?.image || ""}
+          src={user?.avatar || ""}
         />
       </DropdownTrigger>
       <DropdownMenu aria-label="Profile Actions" variant="flat">
         <DropdownItem key="profile" className="py-2">
           <p className="mb-2 font-semibold">Signed in as</p>
-          {user?.name && <p>{user?.name}</p>}
+          {user?.name && <p>{user?.name}</p>}h
           {user?.email && <p>{user?.email}</p>}
         </DropdownItem>
         {/* <DropdownItem key="settings">My Settings</DropdownItem> */}
