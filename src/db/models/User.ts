@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const userSchema = new Schema(
   {
-    username: {
+    name: {
       type: String,
       unique: true,
       min: 3,
@@ -13,7 +13,10 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
-    name: {
+    firstName: {
+      type: String,
+    },
+    lastName: {
       type: String,
     },
     email: {
@@ -27,7 +30,7 @@ const userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "credentials", "google", "github"],
+      enum: ["admin", "user", "googleUser", "githubUser"],
     },
     favoriteStocks: {
       type: [String],
