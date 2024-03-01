@@ -8,7 +8,7 @@ const userSchema = new Schema(
       type: String,
       unique: true,
       min: 3,
-      max: 20,
+      max: 30,
     },
     password: {
       type: String,
@@ -23,14 +23,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      max: 50,
+      max: 60,
     },
     avatar: {
       type: String,
     },
     role: {
       type: String,
-      enum: ["admin", "user", "googleUser", "githubUser"],
+      // enum: ["admin", "user", "googleUser", "githubUser"],
     },
     favoriteStocks: {
       type: [String],
