@@ -5,7 +5,11 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/db/connect";
 import { User } from "@/db/models";
-import { mongoDocToPlainObj, removePasswordFromUser } from "@/lib/data";
+import {
+  createUsername,
+  mongoDocToPlainObj,
+  removePasswordFromUser,
+} from "@/lib/data";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
@@ -76,6 +80,7 @@ export const authOptions: NextAuthOptions = {
 
           if (!dbUser) {
             const newUser = new User({
+              name: createUsername(),
               email: user.email,
               avatar: user.image,
               role: "googleUser",
@@ -103,6 +108,7 @@ export const authOptions: NextAuthOptions = {
 
           if (!dbUser) {
             const newUser = new User({
+              name: createUsername(),
               email: user.email || profile.email,
               avatar: user.image,
               role: "githubUser",

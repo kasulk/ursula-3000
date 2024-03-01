@@ -99,3 +99,18 @@ export function removePasswordFromUser(user: IUserWithPassword): IUser {
   const { password, ...userWithoutPassword } = user;
   return userWithoutPassword;
 }
+
+export function createUsername(): string {
+  const randomNumStr = Math.floor(Math.random() * 100000).toString();
+  return "ursula" + randomNumStr;
+}
+
+export function createUsernameFromEmail(email?: string | null): string {
+  const randomNumStr = Math.floor(Math.random() * 10000).toString();
+  if (!email) return "ursula" + randomNumStr;
+  if (email.length > 30) {
+    const [local] = email.split("@");
+    return local.slice(0, 26) + randomNumStr;
+  }
+  return email;
+}
