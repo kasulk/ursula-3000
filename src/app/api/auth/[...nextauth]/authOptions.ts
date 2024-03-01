@@ -76,7 +76,6 @@ export const authOptions: NextAuthOptions = {
 
           if (!dbUser) {
             const newUser = new User({
-              name: user.name,
               email: user.email,
               avatar: user.image,
               role: "googleUser",
@@ -85,7 +84,6 @@ export const authOptions: NextAuthOptions = {
             return newUser;
           } else {
             /// update user data
-            dbUser.name = user.name;
             dbUser.avatar = user.image;
             await dbUser.save();
             return dbUser;
@@ -100,20 +98,18 @@ export const authOptions: NextAuthOptions = {
         dbConnect();
         try {
           const dbUser = await User.findOne({
-            email: profile.email || user.email,
+            email: user.email || profile.email,
           });
 
           if (!dbUser) {
             const newUser = new User({
-              name: profile.login,
-              email: user.email,
+              email: user.email || profile.email,
               avatar: user.image,
               role: "githubUser",
             });
             await newUser.save();
           } else {
             /// update user data
-            dbUser.name = profile.login;
             dbUser.avatar = user.image;
             await dbUser.save();
           }
