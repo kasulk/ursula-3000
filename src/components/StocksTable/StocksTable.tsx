@@ -56,6 +56,8 @@ type StatusColor =
   | "danger";
 
 export function StocksTable({ stocks }: StocksTable) {
+  console.log("stocks[3]:", stocks[3]);
+
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -135,7 +137,7 @@ export function StocksTable({ stocks }: StocksTable) {
               description={cellValue}
               avatarProps={{
                 radius: "full",
-                src: "https://api.twelvedata.com/logo/apple.com",
+                src: stock.logoURL,
               }}
             />
           </>

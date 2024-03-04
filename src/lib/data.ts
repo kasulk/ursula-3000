@@ -13,29 +13,73 @@ export async function getStockOverviewsFromAPI(): Promise<Stock[]> {
   return res.json();
 }
 
+interface ILogoData {
+  id: string;
+  ticker: string;
+  symbol: string;
+  name: string;
+  logoURL: string;
+  updatedAt: string;
+}
+interface IQuoteData {
+  id?: string;
+  ticker: string;
+  change: string;
+  changePercent: string;
+  latestTradingDay: string;
+  previousClose: number;
+  price: number;
+  volume: number;
+  updatedAt: string;
+}
+
+function getLogTime() {
+  console.log(
+    "::::::::::::::::::::\n",
+    new Date().toLocaleString("de-DE"),
+    "\n::::::::::::::::::::",
+  );
+}
+
 //:: FETCH DATA WITHOUT API ::
 export const revalidate = 3600; //:: set revalidation time for cached stocks
 // export const getStockOverviewsFromDB: () => Promise<Stock[]> = cache(async () => {
 // export const getStockOverviewsFromDB = cache(async () => {
 export async function getStockOverviewsFromDB() {
   dbConnect();
-  const stockOverviews = await Overview.find().sort({ name: 1 });
-  console.log("Overviews have been fetched from DB.");
-  return mongoDocsToPlainObjs(stockOverviews) as Stock[];
-  // });
+  getLogTime(); /// for debuggin'
+  const stocksData = [
+    await Overview.find().sort({ name: 1 }),
+    await Quote.find(),
+    await Logourl.find(),
+  ].map((dataset) => mongoDocsToPlainObjs(dataset));
+
+  const [overviews, quotesData, logosData] = stocksData as [
+    Stock[],
+    IQuoteData[],
+    ILogoData[],
+  ];
+
+  const mergedData = overviews.map((overview) => {
+    const quotes =
+      quotesData.find((data) => data.ticker === overview.ticker) || null;
+
+    delete quotes?.id;
+
+    const logoURL =
+      logosData.find((data) => data.ticker === overview.ticker)?.logoURL ||
+      null;
+
+    return {
+      ...overview,
+      quotes,
+      logoURL,
+    };
+  });
+  console.log("mergedData[3]:", mergedData[3]);
+
+  return mergedData; //as Stock[];
 }
-
-// export async function getStockLogoURLsFromDB(): Promise<Stock[]> {
-//   dbConnect();
-//   const stockLogoURLs = await Logourl.find();
-//   return mongoDocsToPlainObjs(stockLogoURLs) as Stock[];
-// }
-
-// export async function getStockQuotesFromDB(): Promise<Stock[]> {
-//   dbConnect();
-//   const stockQuotes = await Quote.find();
-//   return mongoDocsToPlainObjs(stockQuotes) as Stock[];
-// }
 
 //:: Only plain objects can be passed from Server Components
 //:: to Client Components

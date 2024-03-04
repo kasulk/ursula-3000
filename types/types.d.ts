@@ -19,8 +19,8 @@ export interface Stock {
   // Favorites?: string[];
   // logoURL: string;
   updatedAt: string;
-  quotesData?: {
-    _id: string;
+  quotes?: {
+    _id?: string;
     ticker: string;
     change: string;
     changePercent: string;
@@ -30,13 +30,7 @@ export interface Stock {
     volume: number;
     updatedAt: string;
   };
-  logoData?: {
-    _id: string;
-    ticker: string;
-    logoURL: string;
-    name: string;
-    updatedAt: string;
-  };
+  logoURL: string;
 }
 
 interface IUser {
