@@ -31,7 +31,7 @@ const dataFilterOverviews = [
   "updatedAt",
 ];
 
-//:: FETCH DATA WITH API ::
+/// FETCH DATA WITH API
 export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
   const res = await fetch("http://localhost:3000/api/stocks", {
     next: { revalidate: 3600 },
@@ -41,12 +41,11 @@ export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
   return res.json();
 }
 
-//:: FETCH DATA WITHOUT API ::
-export const revalidate = 3600; //:: set revalidation time for cached stocks
+/// FETCH DATA WITHOUT API
+export const revalidate = 3600; /// set revalidation time for cached stocks
 
 export async function getStocksFromDB() {
   dbConnect();
-  getLogTime(); /// for debuggin'
   const stocksData = [
     await Overview.find().sort({ name: 1 }).select(dataFilterOverviews),
     await Quote.find(),
@@ -80,8 +79,8 @@ export async function getStocksFromDB() {
   return mergedData as IStock[];
 }
 
-//:: Only plain objects can be passed from Server Components
-//:: to Client Components
+/// Only plain objects can be passed from Server Components
+/// to Client Components
 export function mongoDocToPlainObj(document: any): Object {
   const { _id, __v, ...rest } = document.toObject();
   const plainObject = { id: _id.toString(), ...rest };
