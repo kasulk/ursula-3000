@@ -2,7 +2,7 @@
 
 console.log("render StocksTable");
 
-import type { Stock } from "../../../types/types";
+import type { IStock } from "@/../types/types";
 import { useMemo, useState, useCallback } from "react";
 import {
   Table,
@@ -44,7 +44,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 
 // type Stock = (typeof stocks)[0];
 interface StocksTable {
-  stocks: Stock[];
+  stocks: IStock[];
 }
 
 type StatusColor =
@@ -111,9 +111,9 @@ export function StocksTable({ stocks }: StocksTable) {
     const end = start + rowsPerPage;
 
     return [...filteredItems]
-      .sort((a: Stock, b: Stock) => {
-        const first = a[sortDescriptor.column as keyof Stock] as number;
-        const second = b[sortDescriptor.column as keyof Stock] as number;
+      .sort((a: IStock, b: IStock) => {
+        const first = a[sortDescriptor.column as keyof IStock] as number;
+        const second = b[sortDescriptor.column as keyof IStock] as number;
         const cmp = first < second ? -1 : first > second ? 1 : 0;
 
         return sortDescriptor.direction === "descending" ? -cmp : cmp;
@@ -122,11 +122,11 @@ export function StocksTable({ stocks }: StocksTable) {
   }, [sortDescriptor, page, filteredItems, rowsPerPage]);
 
   //:: CUSTOMIZE CELLS WITH RECHERcELL-FUNCTION:
-  const renderCell = useCallback((stock: Stock, columnKey: React.Key) => {
+  const renderCell = useCallback((stock: IStock, columnKey: React.Key) => {
     //? Workaround for test-data exported from MongoDB
     //? MongoDB JSON-exports adds objects to some data types...
     // const cellValue = stock[columnKey as keyof Stock];
-    const cellValue = stock[columnKey as keyof Stock] as string | number; //:: icke
+    const cellValue = stock[columnKey as keyof IStock] as string | number; //:: icke
 
     switch (columnKey) {
       case "name":

@@ -1,36 +1,23 @@
 import { cache } from "react";
 import dbConnect from "@/db/connect";
 import { Overview, Quote, Logourl, User } from "@/db/models";
-import { IUser, IUserWithPassword, Stock } from "@/../types/types";
+import {
+  IOverviewData,
+  IUser,
+  IUserWithPassword,
+  IStock,
+  IQuoteData,
+  ILogoData,
+} from "@/../types/types";
 
 //:: FETCH DATA WITH API ::
-export async function getStockOverviewsFromAPI(): Promise<Stock[]> {
+export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
   const res = await fetch("http://localhost:3000/api/stocks", {
     next: { revalidate: 3600 },
   });
   console.log("Overviews have been fetched from API.");
 
   return res.json();
-}
-
-interface ILogoData {
-  id: string;
-  ticker: string;
-  symbol: string;
-  name: string;
-  logoURL: string;
-  updatedAt: string;
-}
-interface IQuoteData {
-  id?: string;
-  ticker: string;
-  change: string;
-  changePercent: string;
-  latestTradingDay: string;
-  previousClose: number;
-  price: number;
-  volume: number;
-  updatedAt: string;
 }
 
 function getLogTime() {
@@ -45,7 +32,7 @@ function getLogTime() {
 export const revalidate = 3600; //:: set revalidation time for cached stocks
 // export const getStockOverviewsFromDB: () => Promise<Stock[]> = cache(async () => {
 // export const getStockOverviewsFromDB = cache(async () => {
-export async function getStockOverviewsFromDB() {
+export async function getStocksFromDB() {
   dbConnect();
   getLogTime(); /// for debuggin'
   const stocksData = [
@@ -55,7 +42,7 @@ export async function getStockOverviewsFromDB() {
   ].map((dataset) => mongoDocsToPlainObjs(dataset));
 
   const [overviews, quotesData, logosData] = stocksData as [
-    Stock[],
+    IOverviewData[],
     IQuoteData[],
     ILogoData[],
   ];
@@ -78,7 +65,7 @@ export async function getStockOverviewsFromDB() {
   });
   console.log("mergedData[3]:", mergedData[3]);
 
-  return mergedData; //as Stock[];
+  return mergedData as IStock[];
 }
 
 //:: Only plain objects can be passed from Server Components

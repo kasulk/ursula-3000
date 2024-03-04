@@ -1,16 +1,17 @@
 import { StocksTable } from "@/components";
 import { OriginalTable } from "@/components";
 import { getStockOverviewsFromAPI } from "@/lib/data"; //:: FETCH DATA WITH API
-import { getStockOverviewsFromDB } from "@/lib/data"; //:: FETCH DATA WITHOUT API
+import { getStocksFromDB } from "@/lib/data"; //:: FETCH DATA WITHOUT API
 import { unstable_cache as nextCache } from "next/cache";
 
 console.log("render AllStocks");
 
 const getCachedStockOverviews = nextCache(
-  async () => getStockOverviewsFromDB(),
+  async () => getStocksFromDB(),
   ["all-stock-overviews"],
   {
-    revalidate: 3600,
+    // revalidate: 3600,
+    revalidate: 3600, /// for debuggin'
   },
 );
 
