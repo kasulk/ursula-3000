@@ -3,53 +3,58 @@ import { NumberSchemaDefinition } from "mongoose";
 interface IOverviewData {
   id: string;
   ticker: string;
-  address: string;
-  analystTargetPrice: number;
-  assetType: string;
-  beta: number;
-  bookValue: number;
-  cik: string;
-  country: string;
-  currency: string;
+  name: string;
   description: string;
-  dilutedEPSTTM: number;
-  dividendDate: string;
+  exchange: string;
+  sector: string;
+  industry: string;
+  marketCapitalization: number;
+
   dividendPerShare: number;
   dividendYield: number;
-  ebitda: number;
+
+  analystTargetPrice: number;
   eps: number;
   eps15x: number;
-  evToEBITDA: number;
-  evToRevenue: number;
-  exDividendDate: string;
-  exchange: string;
+  bookValue: number;
+  priceToBookRatio: number;
   fiftyTwoWeekHigh: number;
   fiftyTwoWeekLow: number;
-  fiscalYearEnd: string;
-  forwardPE: number;
-  grossProfitTTM: number;
-  industry: string;
-  latestQuarter: string;
-  marketCapitalization: number;
-  movingAverage200day: number;
-  movingAverage50day: number;
-  name: string;
-  operatingMarginTTM: number;
-  peRatio: number;
-  pegRatio: number;
-  priceToBookRatio: number;
-  priceToSalesRatioTTM: number;
-  profitMargin: number;
-  quarterlyEarningsGrowthYOY: number;
-  quarterlyRevenueGrowthYOY: number;
-  returnOnAssetsTTM: number;
-  returnOnEquityTTM: number;
-  revenuePerShareTTM: number;
-  revenueTTM: number;
-  sector: string;
-  sharesOutstanding: number;
-  trailingPE: number;
+
   updatedAt: string;
+
+  /// optional data
+  address?: string;
+  assetType?: string;
+  beta?: number;
+  cik?: string;
+  country?: string;
+  currency?: string;
+  dilutedEPSTTM?: number;
+  dividendDate?: string;
+  ebitda?: number;
+  evToEBITDA?: number;
+  evToRevenue?: number;
+  exDividendDate?: string;
+  fiscalYearEnd?: string;
+  forwardPE?: number;
+  grossProfitTTM?: number;
+  latestQuarter?: string;
+  movingAverage200day?: number;
+  movingAverage50day?: number;
+  operatingMarginTTM?: number;
+  pegRatio?: number;
+  peRatio?: number;
+  priceToSalesRatioTTM?: number;
+  profitMargin?: number;
+  quarterlyEarningsGrowthYOY?: number;
+  quarterlyRevenueGrowthYOY?: number;
+  returnOnAssetsTTM?: number;
+  returnOnEquityTTM?: number;
+  revenuePerShareTTM?: number;
+  revenueTTM?: number;
+  sharesOutstanding?: number;
+  trailingPE?: number;
 }
 
 interface IQuoteData {

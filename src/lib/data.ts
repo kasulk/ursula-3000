@@ -10,6 +10,27 @@ import {
   ILogoData,
 } from "@/../types/types";
 
+const dataFilterOverviews = [
+  "id",
+  "ticker",
+  "name",
+  "description",
+  "exchange",
+  "sector",
+  "industry",
+  "marketCapitalization",
+  "dividendPerShare",
+  "dividendYield",
+  "analystTargetPrice",
+  "eps",
+  "eps15x",
+  "bookValue",
+  "priceToBookRatio",
+  "fiftyTwoWeekHigh",
+  "fiftyTwoWeekLow",
+  "updatedAt",
+];
+
 //:: FETCH DATA WITH API ::
 export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
   const res = await fetch("http://localhost:3000/api/stocks", {
@@ -20,23 +41,14 @@ export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
   return res.json();
 }
 
-function getLogTime() {
-  console.log(
-    "::::::::::::::::::::\n",
-    new Date().toLocaleString("de-DE"),
-    "\n::::::::::::::::::::",
-  );
-}
-
 //:: FETCH DATA WITHOUT API ::
 export const revalidate = 3600; //:: set revalidation time for cached stocks
-// export const getStockOverviewsFromDB: () => Promise<Stock[]> = cache(async () => {
-// export const getStockOverviewsFromDB = cache(async () => {
+
 export async function getStocksFromDB() {
   dbConnect();
   getLogTime(); /// for debuggin'
   const stocksData = [
-    await Overview.find().sort({ name: 1 }),
+    await Overview.find().sort({ name: 1 }).select(dataFilterOverviews),
     await Quote.find(),
     await Logourl.find(),
   ].map((dataset) => mongoDocsToPlainObjs(dataset));
@@ -81,26 +93,6 @@ export function mongoDocsToPlainObjs(documents: any[]): Object[] {
   return plainObjects;
 }
 
-const dataFilter = {
-  // data set to 0 or omitted won't be fetched from db
-  _id: 1,
-  ticker: 1,
-  name: 1,
-  description: 1,
-  exchange: 1,
-  sector: 1,
-  industry: 1,
-  dividendPerShare: 1,
-  dividendYield: 1,
-  eps: 1,
-  eps15x: 1,
-  bookValue: 1,
-  fiftyTwoWeekLow: 1,
-  analystTargetPrice: 1,
-  price: 1,
-  updatedAt: 1,
-};
-
 export async function getDBUserByID(id: string): Promise<IUserWithPassword> {
   try {
     dbConnect();
@@ -144,4 +136,12 @@ export function createUsernameFromEmail(email?: string | null): string {
     return local.slice(0, 26) + randomNumStr;
   }
   return email;
+}
+
+function getLogTime() {
+  console.log(
+    "::::::::::::::::::::\n",
+    new Date().toLocaleString("de-DE"),
+    "\n::::::::::::::::::::",
+  );
 }
