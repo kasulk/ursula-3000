@@ -56,8 +56,6 @@ type StatusColor =
   | "danger";
 
 export function StocksTable({ stocks }: StocksTable) {
-  console.log("stocks[3]:", stocks[3]);
-
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -87,8 +85,10 @@ export function StocksTable({ stocks }: StocksTable) {
     let filteredStocks = [...stocks];
 
     if (hasSearchFilter) {
-      filteredStocks = filteredStocks.filter((stock) =>
-        stock.name.toLowerCase().includes(filterValue.toLowerCase()),
+      filteredStocks = filteredStocks.filter(
+        (stock) =>
+          stock.ticker.toLowerCase().includes(filterValue.toLowerCase()) || /// icke
+          stock.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     //:: STATUSFILTER
