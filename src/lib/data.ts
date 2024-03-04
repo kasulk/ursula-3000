@@ -47,7 +47,7 @@ export const revalidate = 3600; /// set revalidation time for cached stocks
 export async function getStocksFromDB() {
   dbConnect();
   const stocksData = [
-    await Overview.find().sort({ name: 1 }).select(dataFilterOverviews),
+    await Overview.find().select(dataFilterOverviews).sort({ ticker: 1 }),
     await Quote.find(),
     await Logourl.find(),
   ].map((dataset) => mongoDocsToPlainObjs(dataset));

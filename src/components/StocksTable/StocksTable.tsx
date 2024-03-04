@@ -65,8 +65,8 @@ export function StocksTable({ stocks }: StocksTable) {
   const [statusFilter, setStatusFilter] = useState<Selection>("all");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    column: "name",
-    direction: "ascending",
+    // column: "name",
+    // direction: "ascending",
   });
 
   const [page, setPage] = useState(1);
