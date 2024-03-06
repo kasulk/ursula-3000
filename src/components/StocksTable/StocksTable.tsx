@@ -32,6 +32,7 @@ import {
 } from "@/components/Icons";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
+import { SelectRowsPerPage } from "..";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -63,11 +64,8 @@ export function StocksTable({ stocks }: StocksTable) {
     "all",
   );
   const [statusFilter, setStatusFilter] = useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    // column: "name",
-    // direction: "ascending",
-  });
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({});
 
   const [page, setPage] = useState(1);
 
@@ -91,7 +89,7 @@ export function StocksTable({ stocks }: StocksTable) {
           stock.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    //:: STATUSFILTER
+    ///###  STATUSFILTER  ###
     // if (
     //   statusFilter !== "all" &&
     //   Array.from(statusFilter).length !== statusOptions.length
@@ -121,12 +119,15 @@ export function StocksTable({ stocks }: StocksTable) {
       .slice(start, end);
   }, [sortDescriptor, page, filteredItems, rowsPerPage]);
 
-  //:: CUSTOMIZE CELLS WITH RECHERcELL-FUNCTION:
+  ///###  CUSTOMIZE CELLS WITH RENDERCELL-FUNCTION  ###
   const renderCell = useCallback((stock: IStock, columnKey: React.Key) => {
     //? Workaround for test-data exported from MongoDB
     //? MongoDB JSON-exports adds objects to some data types...
     // const cellValue = stock[columnKey as keyof Stock];
     const cellValue = stock[columnKey as keyof IStock] as string | number; //:: icke
+
+    // if (stock.ticker === "AAC")
+    // console.log("stock.logo:", <img src={stock.logoURL} />);
 
     switch (columnKey) {
       case "name":
@@ -213,6 +214,8 @@ export function StocksTable({ stocks }: StocksTable) {
   const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
+      // (numRows: number) => {
+      // setRowsPerPage(numRows);
       setPage(1);
     },
     [],
@@ -239,14 +242,14 @@ export function StocksTable({ stocks }: StocksTable) {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
+            placeholder="Search by name or ticker..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* //:: STATUS FILTER DROPDOWN */}
+            {/* ///###  STATUS FILTER DROPDOWN  ### */}
             {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -271,7 +274,7 @@ export function StocksTable({ stocks }: StocksTable) {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
-            {/* //:: ^^^^^  */}
+            {/* ///  ^^^^^  */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -298,22 +301,15 @@ export function StocksTable({ stocks }: StocksTable) {
             </Dropdown>
           </div>
         </div>
+
         <div className="flex items-center justify-between">
           <span className="text-small text-default-400">
             Total {stocks.length} stocks
           </span>
-          <label className="flex items-center text-small text-default-400">
-            Rows per page:
-            <select
-              className="bg-transparent text-small text-default-400 outline-none"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5">5</option>
-              <option value="10">10</option>
-              <option value="50">50</option>
-              <option value="100">100</option>
-            </select>
-          </label>
+          <SelectRowsPerPage
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={onRowsPerPageChange}
+          />
         </div>
       </div>
     );
@@ -368,8 +364,9 @@ export function StocksTable({ stocks }: StocksTable) {
 
   return (
     <Table
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
       isHeaderSticky
+      removeWrapper
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
@@ -394,7 +391,7 @@ export function StocksTable({ stocks }: StocksTable) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No stocks found"} items={sortedItems}>
+      <TableBody emptyContent={"No stocks found..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.ticker}>
             {(columnKey) => (

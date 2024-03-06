@@ -37,7 +37,6 @@ export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
     next: { revalidate: 3600 },
   });
   console.log("Overviews have been fetched from API.");
-
   return res.json();
 }
 
@@ -74,7 +73,6 @@ export async function getStocksFromDB() {
       logoURL,
     };
   });
-  console.log("mergedData[3]:", mergedData[3]);
 
   return mergedData as IStock[];
 }
