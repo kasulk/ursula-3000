@@ -32,6 +32,7 @@ import {
 } from "@/components/Icons";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
+import { SelectRowsPerPage } from "..";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -216,6 +217,8 @@ export function StocksTable({ stocks }: StocksTable) {
   const onRowsPerPageChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setRowsPerPage(Number(e.target.value));
+      // (numRows: number) => {
+      // setRowsPerPage(numRows);
       setPage(1);
     },
     [],
@@ -301,24 +304,37 @@ export function StocksTable({ stocks }: StocksTable) {
             </Dropdown>
           </div>
         </div>
+
         <div className="flex items-center justify-between">
           <span className="text-small text-default-400">
             Total {stocks.length} stocks
           </span>
-          <label className="flex items-center text-small text-default-400">
-            Rows per page:
+          {/*/// START RowsPerPage-Select*/}
+          {/* <label className="flex items-center text-small text-default-400">
+           Rows per page: 
             <select
               className="bg-transparent text-right text-small text-default-400 outline-none"
               onChange={onRowsPerPageChange}
             >
-              <option value="5">5</option>
-              <option value="10" selected>
+              <option value="5" selected={rowsPerPage === 5}>
+                5
+              </option>
+              <option value="10" selected={rowsPerPage === 10}>
                 10
               </option>
-              <option value="50">50</option>
-              <option value="100">100</option>
+              <option value="50" selected={rowsPerPage === 50}>
+                50
+              </option>
+              <option value="100" selected={rowsPerPage === 100}>
+                100
+              </option>
             </select>
-          </label>
+          </label> */}
+          <SelectRowsPerPage
+            rowsPerPage={rowsPerPage}
+            onRowsPerPageChange={onRowsPerPageChange}
+          />
+          {/*/// END RowsPerPage-Select*/}
         </div>
       </div>
     );
