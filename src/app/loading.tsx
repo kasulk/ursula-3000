@@ -1,0 +1,14 @@
+import { Spinner } from "@nextui-org/spinner";
+
+export default function Loading() {
+  return (
+    <Spinner
+      size="lg"
+      color="danger"
+      label="Loading..."
+      classNames={{
+        base: "flex h-screen items-center justify-center",
+      }}
+    />
+  );
+}
