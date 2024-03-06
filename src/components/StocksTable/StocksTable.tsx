@@ -64,11 +64,8 @@ export function StocksTable({ stocks }: StocksTable) {
     "all",
   );
   const [statusFilter, setStatusFilter] = useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
-    // column: "name",
-    // direction: "ascending",
-  });
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({});
 
   const [page, setPage] = useState(1);
 
@@ -92,7 +89,7 @@ export function StocksTable({ stocks }: StocksTable) {
           stock.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
-    //:: STATUSFILTER
+    ///###  STATUSFILTER  ###
     // if (
     //   statusFilter !== "all" &&
     //   Array.from(statusFilter).length !== statusOptions.length
@@ -122,7 +119,7 @@ export function StocksTable({ stocks }: StocksTable) {
       .slice(start, end);
   }, [sortDescriptor, page, filteredItems, rowsPerPage]);
 
-  //:: CUSTOMIZE CELLS WITH RECHERcELL-FUNCTION:
+  ///###  CUSTOMIZE CELLS WITH RENDERCELL-FUNCTION  ###
   const renderCell = useCallback((stock: IStock, columnKey: React.Key) => {
     //? Workaround for test-data exported from MongoDB
     //? MongoDB JSON-exports adds objects to some data types...
@@ -245,14 +242,14 @@ export function StocksTable({ stocks }: StocksTable) {
           <Input
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by name..."
+            placeholder="Search by name or ticker..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* //:: STATUS FILTER DROPDOWN */}
+            {/* ///###  STATUS FILTER DROPDOWN  ### */}
             {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -277,7 +274,7 @@ export function StocksTable({ stocks }: StocksTable) {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
-            {/* //:: ^^^^^  */}
+            {/* ///  ^^^^^  */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -309,32 +306,10 @@ export function StocksTable({ stocks }: StocksTable) {
           <span className="text-small text-default-400">
             Total {stocks.length} stocks
           </span>
-          {/*/// START RowsPerPage-Select*/}
-          {/* <label className="flex items-center text-small text-default-400">
-           Rows per page: 
-            <select
-              className="bg-transparent text-right text-small text-default-400 outline-none"
-              onChange={onRowsPerPageChange}
-            >
-              <option value="5" selected={rowsPerPage === 5}>
-                5
-              </option>
-              <option value="10" selected={rowsPerPage === 10}>
-                10
-              </option>
-              <option value="50" selected={rowsPerPage === 50}>
-                50
-              </option>
-              <option value="100" selected={rowsPerPage === 100}>
-                100
-              </option>
-            </select>
-          </label> */}
           <SelectRowsPerPage
             rowsPerPage={rowsPerPage}
             onRowsPerPageChange={onRowsPerPageChange}
           />
-          {/*/// END RowsPerPage-Select*/}
         </div>
       </div>
     );
