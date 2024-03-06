@@ -63,7 +63,7 @@ export function StocksTable({ stocks }: StocksTable) {
     "all",
   );
   const [statusFilter, setStatusFilter] = useState<Selection>("all");
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
     // column: "name",
     // direction: "ascending",
@@ -127,6 +127,9 @@ export function StocksTable({ stocks }: StocksTable) {
     //? MongoDB JSON-exports adds objects to some data types...
     // const cellValue = stock[columnKey as keyof Stock];
     const cellValue = stock[columnKey as keyof IStock] as string | number; //:: icke
+
+    // if (stock.ticker === "AAC")
+    // console.log("stock.logo:", <img src={stock.logoURL} />);
 
     switch (columnKey) {
       case "name":
@@ -305,11 +308,13 @@ export function StocksTable({ stocks }: StocksTable) {
           <label className="flex items-center text-small text-default-400">
             Rows per page:
             <select
-              className="bg-transparent text-small text-default-400 outline-none"
+              className="bg-transparent text-right text-small text-default-400 outline-none"
               onChange={onRowsPerPageChange}
             >
               <option value="5">5</option>
-              <option value="10">10</option>
+              <option value="10" selected>
+                10
+              </option>
               <option value="50">50</option>
               <option value="100">100</option>
             </select>
@@ -368,8 +373,9 @@ export function StocksTable({ stocks }: StocksTable) {
 
   return (
     <Table
-      aria-label="Example table with custom cells, pagination and sorting"
+      aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
       isHeaderSticky
+      removeWrapper
       bottomContent={bottomContent}
       bottomContentPlacement="outside"
       classNames={{
@@ -394,7 +400,7 @@ export function StocksTable({ stocks }: StocksTable) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody emptyContent={"No stocks found"} items={sortedItems}>
+      <TableBody emptyContent={"No stocks found..."} items={sortedItems}>
         {(item) => (
           <TableRow key={item.ticker}>
             {(columnKey) => (
