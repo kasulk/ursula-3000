@@ -230,7 +230,7 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  TABLE NAV  ###
   const topContent = useMemo(() => {
     return (
-      <div className="fixed left-0 top-0 z-20 flex h-72 w-full flex-col justify-end gap-4 bg-background px-20">
+      <div className="fixed left-0 top-0 z-20 flex h-72 w-full flex-col justify-end gap-4 bg-background px-[20%]">
         <div className="flex items-end justify-between gap-3 bg-slate-700">
           <Input
             size="sm"
@@ -270,7 +270,7 @@ export function StocksTable({ stocks }: StocksTable) {
             </Dropdown> */}
             {/* ///  ^^^^^  */}
             <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
+              <DropdownTrigger className="hidden w-32 sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
                   variant="flat"
@@ -280,7 +280,7 @@ export function StocksTable({ stocks }: StocksTable) {
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
-                aria-label="Table Columns"
+                aria-label="Choose which table columns to display"
                 closeOnSelect={false}
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
@@ -295,7 +295,6 @@ export function StocksTable({ stocks }: StocksTable) {
             </Dropdown>
           </div>
         </div>
-
         <div className="flex items-center justify-between bg-slate-600">
           <span className="text-small text-default-400">
             Total {stocks.length} stocks
@@ -370,13 +369,13 @@ export function StocksTable({ stocks }: StocksTable) {
         classNames={{
           base: "w-2/3 border-blue-500 border-3",
           table:
-            "flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap border-3 border-green-900",
+            "mt-24 flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap border-3 border-green-900",
         }}
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}
         topContent={topContent}
-        topContentPlacement="outside"
+        // topContentPlacement="outside"
         onSelectionChange={setSelectedKeys}
         onSortChange={setSortDescriptor}
       >
