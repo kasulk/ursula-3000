@@ -121,13 +121,7 @@ export function StocksTable({ stocks }: StocksTable) {
 
   ///###  CUSTOMIZE CELLS WITH RENDERCELL-FUNCTION  ###
   const renderCell = useCallback((stock: IStock, columnKey: React.Key) => {
-    //? Workaround for test-data exported from MongoDB
-    //? MongoDB JSON-exports adds objects to some data types...
-    // const cellValue = stock[columnKey as keyof Stock];
-    const cellValue = stock[columnKey as keyof IStock] as string | number; //:: icke
-
-    // if (stock.ticker === "AAC")
-    // console.log("stock.logo:", <img src={stock.logoURL} />);
+    const cellValue = stock[columnKey as keyof IStock]; //-- as string | number; //:: icke
 
     switch (columnKey) {
       case "name":
@@ -186,9 +180,7 @@ export function StocksTable({ stocks }: StocksTable) {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                {/* <DropdownItem>Edit</DropdownItem> */}
-                {/* <DropdownItem>Delete</DropdownItem> */}
+                <DropdownItem>Details</DropdownItem>
                 <DropdownItem>Favorite</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -235,14 +227,16 @@ export function StocksTable({ stocks }: StocksTable) {
     setPage(1);
   }, []);
 
+  ///###  TABLE NAV  ###
   const topContent = useMemo(() => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex items-end justify-between gap-3">
+      <div className="fixed left-0 top-0 z-20 flex h-72 w-full flex-col justify-end gap-4 bg-background px-20">
+        <div className="flex items-end justify-between gap-3 bg-slate-700">
           <Input
+            size="sm"
             isClearable
             className="w-full sm:max-w-[44%]"
-            placeholder="Search by name or ticker..."
+            placeholder="Filter by name or ticker..."
             startContent={<SearchIcon />}
             value={filterValue}
             onClear={() => onClear()}
@@ -302,7 +296,7 @@ export function StocksTable({ stocks }: StocksTable) {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between bg-slate-600">
           <span className="text-small text-default-400">
             Total {stocks.length} stocks
           </span>
@@ -322,7 +316,9 @@ export function StocksTable({ stocks }: StocksTable) {
     stocks.length,
     hasSearchFilter,
   ]);
+  ///###  END TABLE NAV  ###
 
+  ///###  TABLE FOOTER  ###
   const bottomContent = useMemo(() => {
     return (
       <div className="flex items-center justify-between px-2 py-2">
@@ -361,45 +357,50 @@ export function StocksTable({ stocks }: StocksTable) {
       </div>
     );
   }, [selectedKeys, page, pages, hasSearchFilter]);
+  ///###  END TABLE FOOTER  ###
 
   return (
-    <Table
-      aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
-      isHeaderSticky
-      removeWrapper
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No stocks found..."} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.ticker}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <div className="flex items-center justify-center">
+      <Table
+        aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
+        // isHeaderSticky
+        // removeWrapper
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          base: "w-2/3 border-blue-500 border-3",
+          table:
+            "flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap border-3 border-green-900",
+        }}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No stocks found..."} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.ticker}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

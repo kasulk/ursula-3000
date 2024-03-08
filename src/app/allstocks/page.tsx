@@ -22,9 +22,9 @@ export default async function AllStocks() {
   // const stocks = await getStockOverviewsFromAPI();
 
   return (
-    <section>
-      <StocksTable stocks={stocks} />
-      {/* <OriginalTable /> */}
-    </section>
+    // <section>
+    <StocksTable stocks={stocks} />
+    // <OriginalTable />
+    // </section>
   );
 }
