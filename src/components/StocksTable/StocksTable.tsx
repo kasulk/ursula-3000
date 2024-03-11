@@ -24,6 +24,7 @@ import {
   SortDescriptor,
   Avatar,
   User,
+  Link,
 } from "@nextui-org/react";
 import {
   VerticalDots as VerticalDotsIcon,
@@ -187,30 +188,64 @@ export function StocksTable({ stocks }: StocksTable) {
             </Chip>
           )
         );
+      // case "industry":
+      //   return (
+      //     <div title={cellValue}>
+      //       {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
+      //     </div>
+      //   );
       case "industry":
         return (
-          <div title={cellValue}>
-            {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
-          </div>
+          <a
+            href={`https://finviz.com/quote.ashx?t=${stock.ticker}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Show details on Finviz.com"
+          >
+            test
+          </a>
         );
       case "marketCapitalization":
         const marketCapInBillions = Number(cellValue) / 1000000000;
         return <div>{marketCapInBillions.toFixed(1) + " B"}</div>;
       case "actions":
         return (
-          <div className="relative flex items-center justify-end gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu disabledKeys={["details", "favorite"]}>
-                <DropdownItem key="details">Details</DropdownItem>
-                <DropdownItem key="favorite">Favorite</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+          <Dropdown backdrop="opaque">
+            <DropdownTrigger>
+              <Button isIconOnly size="sm" variant="light">
+                <VerticalDotsIcon className="text-default-300" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Open actions dropdown menu"
+              disabledKeys={["favorite"]}
+              variant="bordered"
+            >
+              <DropdownItem
+                key="details"
+                textValue="Show details on Finviz.com"
+                // description="Show more on Finviz.com" // if set one has to click the exact text
+              >
+                <Link
+                  isExternal
+                  showAnchorIcon
+                  color="foreground"
+                  href={`https://finviz.com/quote.ashx?t=${stock.ticker}`}
+                  aria-label="Show details on Finviz.com"
+                  className="w-full"
+                >
+                  Details for {stock.ticker} (finviz.com)
+                </Link>
+              </DropdownItem>
+              <DropdownItem
+                key="favorite"
+                textValue="Mark this stock as favorite"
+                description="Mark this stock as favorite"
+              >
+                Favorite
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         );
       case "updatedAt":
         return <div>{new Date(cellValue).toLocaleDateString()}</div>;
@@ -395,12 +430,14 @@ export function StocksTable({ stocks }: StocksTable) {
         aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
         // isHeaderSticky
         // removeWrapper
+        // isStriped
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         classNames={{
           wrapper: "mt-24",
           table: "overflow-x-auto whitespace-nowrap",
         }}
+        color="primary"
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}
