@@ -29,6 +29,8 @@ const dataFilterOverviews = [
   "fiftyTwoWeekHigh",
   "fiftyTwoWeekLow",
   "updatedAt",
+
+  "country",
 ];
 
 /// FETCH DATA WITH API
@@ -41,7 +43,8 @@ export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
 }
 
 /// FETCH DATA WITHOUT API
-export const revalidate = 3600; /// set revalidation time for cached stocks
+// export const revalidate = 3600; /// set revalidation time for cached stocks
+export const revalidate = 1; /// set revalidation time for cached stocks
 
 export async function getStocksFromDB() {
   dbConnect();

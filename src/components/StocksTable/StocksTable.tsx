@@ -24,6 +24,7 @@ import {
   SortDescriptor,
   Avatar,
   User,
+  Link,
 } from "@nextui-org/react";
 import {
   VerticalDots as VerticalDotsIcon,
@@ -121,79 +122,128 @@ export function StocksTable({ stocks }: StocksTable) {
 
   ///###  CUSTOMIZE CELLS WITH RENDERCELL-FUNCTION  ###
   const renderCell = useCallback((stock: IStock, columnKey: React.Key) => {
-    //? Workaround for test-data exported from MongoDB
-    //? MongoDB JSON-exports adds objects to some data types...
-    // const cellValue = stock[columnKey as keyof Stock];
-    const cellValue = stock[columnKey as keyof IStock] as string | number; //:: icke
-
-    // if (stock.ticker === "AAC")
-    // console.log("stock.logo:", <img src={stock.logoURL} />);
+    const cellValue = stock[columnKey as keyof IStock]; //-- as string | number; //:: icke
+    let color: StatusColor = "default";
 
     switch (columnKey) {
+      case "logoURL":
+        return (
+          <Avatar
+            isBordered
+            name={stock.ticker}
+            color="default"
+            src={cellValue}
+            showFallback
+          />
+        );
+      case "ticker":
+        return <div>{cellValue}</div>;
       case "name":
-        return (
-          <>
-            <User
-              name={stock.ticker}
-              description={cellValue}
-              avatarProps={{
-                radius: "full",
-                src: stock.logoURL,
-              }}
-            />
-          </>
-          // <Avatar
-          //   isBordered
-          //   color="success"
-          //   // src="https://i.pravatar.cc/150?u=a04258114e29026302d"
-          //   src="https://api.twelvedata.com/logo/apple.com"
-          // />
-        );
-      case "eps":
-        return (
-          <>
-            <Chip color="default" size="sm" variant="flat">
-              {cellValue}
-            </Chip>
-          </>
-        );
+        return <div className="text-sm">{cellValue}</div>;
       case "dividendYield":
         const divYield = Number(cellValue) * 100;
-        let color: StatusColor = "default";
 
         if (divYield > 3) color = "warning";
         if (divYield > 4) color = "success";
 
         return (
-          <>
+          <Chip
+            className={`${divYield > 3 && `animate-pulse`}`}
+            color={color}
+            size="sm"
+            variant="flat"
+          >
+            {divYield.toFixed(1)} %
+          </Chip>
+        );
+      case "eps":
+        return (
+          cellValue && (
+            <Chip color="default" size="sm" variant="flat">
+              {cellValue}
+            </Chip>
+          )
+        );
+      case "priceToBookRatio":
+        const pb = Number(cellValue);
+
+        if (pb <= 1) color = "success";
+        if (pb > 1 && pb < 1.5) color = "warning";
+        if (pb >= 5) color = "danger";
+
+        return (
+          cellValue && (
             <Chip
-              className={`${divYield > 3 && `animate-pulse`}`}
+              className={`${pb <= 1 && `animate-pulse`}`}
               color={color}
               size="sm"
               variant="flat"
             >
-              {divYield.toFixed(1)} %
+              {pb.toFixed(2)}
             </Chip>
-          </>
+          )
         );
+      // case "industry":
+      //   return (
+      //     <div title={cellValue}>
+      //       {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
+      //     </div>
+      //   );
+      case "industry":
+        return (
+          <a
+            href={`https://finviz.com/quote.ashx?t=${stock.ticker}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Show details on Finviz.com"
+          >
+            test
+          </a>
+        );
+      case "marketCapitalization":
+        const marketCapInBillions = Number(cellValue) / 1000000000;
+        return <div>{marketCapInBillions.toFixed(1) + " B"}</div>;
       case "actions":
         return (
-          <div className="relative flex items-center justify-end gap-2">
-            <Dropdown>
-              <DropdownTrigger>
-                <Button isIconOnly size="sm" variant="light">
-                  <VerticalDotsIcon className="text-default-300" />
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
-                {/* <DropdownItem>Edit</DropdownItem> */}
-                {/* <DropdownItem>Delete</DropdownItem> */}
-                <DropdownItem>Favorite</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
-          </div>
+          <Dropdown backdrop="opaque">
+            <DropdownTrigger>
+              <Button isIconOnly size="sm" variant="light">
+                <VerticalDotsIcon className="text-default-300" />
+              </Button>
+            </DropdownTrigger>
+            <DropdownMenu
+              aria-label="Open actions dropdown menu"
+              disabledKeys={["favorite"]}
+              variant="bordered"
+            >
+              <DropdownItem
+                key="details"
+                textValue="Show details on Finviz.com"
+                // description="Show more on Finviz.com" // if set, one has to click the exact text for the link to work...
+              >
+                <Link
+                  isExternal
+                  showAnchorIcon
+                  color="foreground"
+                  href={`https://finviz.com/quote.ashx?t=${stock.ticker}`}
+                  aria-label="Show details on Finviz.com"
+                  className="w-full"
+                >
+                  Details for {stock.ticker} (finviz.com)
+                </Link>
+              </DropdownItem>
+              <DropdownItem
+                key="favorite"
+                textValue="Mark this stock as favorite"
+                description="Mark this stock as favorite"
+              >
+                Favorite
+              </DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
         );
+      case "updatedAt":
+        return <div>{new Date(cellValue).toLocaleDateString()}</div>;
       default:
         return cellValue;
     }
@@ -235,22 +285,25 @@ export function StocksTable({ stocks }: StocksTable) {
     setPage(1);
   }, []);
 
+  ///###  TABLE NAV  ###
   const topContent = useMemo(() => {
     return (
-      <div className="flex flex-col gap-4">
-        <div className="flex items-end justify-between gap-3">
-          <Input
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Search by name or ticker..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
-            {/* ///###  STATUS FILTER DROPDOWN  ### */}
-            {/* <Dropdown>
+      <div className="fixed left-0 top-0 z-20 flex h-72 w-full items-center justify-center bg-background pb-6">
+        <div className="flex h-full w-8/12 flex-col justify-end gap-4">
+          <div className="flex items-center justify-between sm:gap-3">
+            <Input
+              size="sm"
+              isClearable
+              className="w-full sm:max-w-[65%] md:max-w-[44%]"
+              placeholder="Filter by name or ticker..."
+              startContent={<SearchIcon />}
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            <div className="flex gap-3">
+              {/* ///###  STATUS FILTER DROPDOWN  ### */}
+              {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -274,42 +327,43 @@ export function StocksTable({ stocks }: StocksTable) {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
-            {/* ///  ^^^^^  */}
-            <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
+              {/* ///  ^^^^^  */}
+              <Dropdown>
+                <DropdownTrigger className="hidden w-32 sm:flex">
+                  <Button
+                    endContent={<ChevronDownIcon className="text-small" />}
+                    variant="flat"
+                  >
+                    Columns
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Choose which table columns to display"
+                  closeOnSelect={false}
+                  selectedKeys={visibleColumns}
+                  selectionMode="multiple"
+                  onSelectionChange={setVisibleColumns}
                 >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+                  {columns.map((column) => (
+                    <DropdownItem key={column.uid} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-small text-default-400">
-            Total {stocks.length} stocks
-          </span>
-          <SelectRowsPerPage
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={onRowsPerPageChange}
-          />
+          <div className="flex items-center justify-between">
+            <span className="text-small text-default-400">
+              Total {stocks.length} stocks
+            </span>
+            <SelectRowsPerPage
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={onRowsPerPageChange}
+            />
+          </div>
         </div>
       </div>
     );
@@ -322,7 +376,9 @@ export function StocksTable({ stocks }: StocksTable) {
     stocks.length,
     hasSearchFilter,
   ]);
+  ///###  END TABLE NAV  ###
 
+  ///###  TABLE FOOTER  ###
   const bottomContent = useMemo(() => {
     return (
       <div className="flex items-center justify-between px-2 py-2">
@@ -361,45 +417,57 @@ export function StocksTable({ stocks }: StocksTable) {
       </div>
     );
   }, [selectedKeys, page, pages, hasSearchFilter]);
+  ///###  END TABLE FOOTER  ###
 
   return (
-    <Table
-      aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
-      isHeaderSticky
-      removeWrapper
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      classNames={{
-        wrapper: "max-h-[382px]",
-      }}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No stocks found..."} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.ticker}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <div className="flex w-11/12 items-center justify-center">
+      <Table
+        aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
+        // isHeaderSticky
+        // removeWrapper
+        // isStriped
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        classNames={{
+          wrapper: "mt-24",
+          table: "overflow-x-auto whitespace-nowrap",
+        }}
+        color="primary"
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "name" ? "start" : "center"}
+              allowsSorting={column.sortable}
+              // width={column.uid === "name" ? 1000 : null}
+              // className="w-[300px]"
+              // width={1000}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No stocks found..."} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.ticker}>
+              {(columnKey) => (
+                <TableCell
+                  className={columnKey === "name" ? "text-left" : "text-center"}
+                >
+                  {renderCell(item, columnKey)}
+                </TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

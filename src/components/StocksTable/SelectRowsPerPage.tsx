@@ -14,23 +14,24 @@ export function SelectRowsPerPage({
   onRowsPerPageChange,
 }: SelectRowsPerPageProps) {
   return (
-    <div className="w-1/4">
-      <Select
-        aria-label="Select how many stocks i.e. rows should be shown"
-        size="sm"
-        label="Rows per page:"
-        className="max-w-xs"
-        selectionMode="single"
-        defaultSelectedKeys={[String(rowsPerPage)]}
-        disallowEmptySelection
-        onChange={onRowsPerPageChange}
-      >
-        {options.map((option) => (
-          <SelectItem key={option} value={option}>
-            {option}
-          </SelectItem>
-        ))}
-      </Select>
-    </div>
+    <Select
+      aria-label="Select how many stocks i.e. rows should be shown"
+      size="sm"
+      label="Rows per page:"
+      className="w-20 sm:w-32"
+      selectionMode="single"
+      defaultSelectedKeys={[String(rowsPerPage)]}
+      disallowEmptySelection
+      onChange={onRowsPerPageChange}
+      classNames={{
+        label: "hidden sm:block",
+      }}
+    >
+      {options.map((option) => (
+        <SelectItem key={option} value={option}>
+          {option}
+        </SelectItem>
+      ))}
+    </Select>
   );
 }
