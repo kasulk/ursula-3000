@@ -18,11 +18,14 @@ export function SelectRowsPerPage({
       aria-label="Select how many stocks i.e. rows should be shown"
       size="sm"
       label="Rows per page:"
-      className="w-32"
+      className="w-20 sm:w-32"
       selectionMode="single"
       defaultSelectedKeys={[String(rowsPerPage)]}
       disallowEmptySelection
       onChange={onRowsPerPageChange}
+      classNames={{
+        label: "hidden sm:block",
+      }}
     >
       {options.map((option) => (
         <SelectItem key={option} value={option}>

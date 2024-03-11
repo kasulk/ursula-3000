@@ -2,7 +2,7 @@ const columns = [
   //:: uid = columnKey
   //:: order here determines order in table
   //
-  { name: "LOGO", uid: "" },
+  // { name: "LOGO", uid: "" },
   { name: "NAME", uid: "name", sortable: true },
   { name: "TICKER", uid: "ticker", sortable: true },
   { name: "COUNTRY", uid: "country", sortable: true },

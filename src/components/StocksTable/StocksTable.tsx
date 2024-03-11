@@ -143,6 +143,8 @@ export function StocksTable({ stocks }: StocksTable) {
           //   src="https://api.twelvedata.com/logo/apple.com"
           // />
         );
+      case "ticker":
+        return <div>{cellValue}</div>;
       case "eps":
         return (
           <>
@@ -230,21 +232,22 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  TABLE NAV  ###
   const topContent = useMemo(() => {
     return (
-      <div className="fixed left-0 top-0 z-20 flex h-72 w-full flex-col justify-end gap-4 bg-background px-[20%] pb-4">
-        <div className="flex items-end justify-between gap-3">
-          <Input
-            size="sm"
-            isClearable
-            className="w-full sm:max-w-[44%]"
-            placeholder="Filter by name or ticker..."
-            startContent={<SearchIcon />}
-            value={filterValue}
-            onClear={() => onClear()}
-            onValueChange={onSearchChange}
-          />
-          <div className="flex gap-3">
-            {/* ///###  STATUS FILTER DROPDOWN  ### */}
-            {/* <Dropdown>
+      <div className="fixed left-0 top-0 z-20 flex h-72 w-full items-center justify-center bg-background pb-6">
+        <div className="flex h-full w-3/4 flex-col justify-end gap-4">
+          <div className="flex items-center justify-between sm:gap-3">
+            <Input
+              size="sm"
+              isClearable
+              className="w-full sm:max-w-[65%] md:max-w-[44%]"
+              placeholder="Filter by name or ticker..."
+              startContent={<SearchIcon />}
+              value={filterValue}
+              onClear={() => onClear()}
+              onValueChange={onSearchChange}
+            />
+            <div className="flex gap-3">
+              {/* ///###  STATUS FILTER DROPDOWN  ### */}
+              {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -268,41 +271,43 @@ export function StocksTable({ stocks }: StocksTable) {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
-            {/* ///  ^^^^^  */}
-            <Dropdown>
-              <DropdownTrigger className="hidden w-32 sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  variant="flat"
+              {/* ///  ^^^^^  */}
+              <Dropdown>
+                <DropdownTrigger className="hidden w-32 sm:flex">
+                  <Button
+                    endContent={<ChevronDownIcon className="text-small" />}
+                    variant="flat"
+                  >
+                    Columns
+                  </Button>
+                </DropdownTrigger>
+                <DropdownMenu
+                  disallowEmptySelection
+                  aria-label="Choose which table columns to display"
+                  closeOnSelect={false}
+                  selectedKeys={visibleColumns}
+                  selectionMode="multiple"
+                  onSelectionChange={setVisibleColumns}
                 >
-                  Columns
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Choose which table columns to display"
-                closeOnSelect={false}
-                selectedKeys={visibleColumns}
-                selectionMode="multiple"
-                onSelectionChange={setVisibleColumns}
-              >
-                {columns.map((column) => (
-                  <DropdownItem key={column.uid} className="capitalize">
-                    {capitalize(column.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown>
+                  {columns.map((column) => (
+                    <DropdownItem key={column.uid} className="capitalize">
+                      {capitalize(column.name)}
+                    </DropdownItem>
+                  ))}
+                </DropdownMenu>
+              </Dropdown>
+            </div>
           </div>
-        </div>
-        <div className="flex items-center justify-between">
-          <span className="text-small text-default-400">
-            Total {stocks.length} stocks
-          </span>
-          <SelectRowsPerPage
-            rowsPerPage={rowsPerPage}
-            onRowsPerPageChange={onRowsPerPageChange}
-          />
+
+          <div className="flex items-center justify-between">
+            <span className="text-small text-default-400">
+              Total {stocks.length} stocks
+            </span>
+            <SelectRowsPerPage
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={onRowsPerPageChange}
+            />
+          </div>
         </div>
       </div>
     );
@@ -367,9 +372,10 @@ export function StocksTable({ stocks }: StocksTable) {
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         classNames={{
-          base: "relative w-2/3",
+          base: "w-2/3",
           table:
-            "mt-24 flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap",
+            "flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap",
+          wrapper: "mt-24",
         }}
         selectedKeys={selectedKeys}
         selectionMode="multiple"
