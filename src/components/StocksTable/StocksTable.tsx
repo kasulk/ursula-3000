@@ -145,12 +145,16 @@ export function StocksTable({ stocks }: StocksTable) {
         );
       case "ticker":
         return <div>{cellValue}</div>;
+      case "updatedAt":
+        return <div>{new Date(cellValue).toLocaleDateString()}</div>;
       case "eps":
         return (
           <>
-            <Chip color="default" size="sm" variant="flat">
-              {cellValue}
-            </Chip>
+            {cellValue && (
+              <Chip color="default" size="sm" variant="flat">
+                {cellValue}
+              </Chip>
+            )}
           </>
         );
       case "dividendYield":
@@ -181,9 +185,9 @@ export function StocksTable({ stocks }: StocksTable) {
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem>Details</DropdownItem>
-                <DropdownItem>Favorite</DropdownItem>
+              <DropdownMenu disabledKeys={["details", "favorite"]}>
+                <DropdownItem key="details">Details</DropdownItem>
+                <DropdownItem key="favorite">Favorite</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -233,7 +237,7 @@ export function StocksTable({ stocks }: StocksTable) {
   const topContent = useMemo(() => {
     return (
       <div className="fixed left-0 top-0 z-20 flex h-72 w-full items-center justify-center bg-background pb-6">
-        <div className="flex h-full w-3/4 flex-col justify-end gap-4">
+        <div className="flex h-full w-8/12 flex-col justify-end gap-4">
           <div className="flex items-center justify-between sm:gap-3">
             <Input
               size="sm"
@@ -364,7 +368,7 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  END TABLE FOOTER  ###
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex w-11/12 items-center justify-center">
       <Table
         aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
         // isHeaderSticky
@@ -372,10 +376,8 @@ export function StocksTable({ stocks }: StocksTable) {
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         classNames={{
-          base: "w-2/3",
-          table:
-            "flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap",
           wrapper: "mt-24",
+          table: "overflow-x-auto whitespace-nowrap",
         }}
         selectedKeys={selectedKeys}
         selectionMode="multiple"

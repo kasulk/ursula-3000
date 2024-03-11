@@ -12,6 +12,7 @@ const columns = [
   { name: "EPS15x", uid: "eps15x", sortable: true },
   { name: "ACTIONS", uid: "actions" },
 
+  // { name: "LOGO", uid: "logoURL" },
   { name: "SECTOR", uid: "SECTOR", sortable: true },
   { name: "INDUSTRY", uid: "INDUSTRY", sortable: true },
   {
