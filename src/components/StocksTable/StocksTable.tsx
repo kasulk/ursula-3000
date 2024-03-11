@@ -122,20 +122,19 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  CUSTOMIZE CELLS WITH RENDERCELL-FUNCTION  ###
   const renderCell = useCallback((stock: IStock, columnKey: React.Key) => {
     const cellValue = stock[columnKey as keyof IStock]; //-- as string | number; //:: icke
+    let color: StatusColor = "default";
 
     switch (columnKey) {
       case "name":
         return (
-          <>
-            <User
-              name={stock.ticker}
-              description={cellValue}
-              avatarProps={{
-                radius: "full",
-                src: stock.logoURL,
-              }}
-            />
-          </>
+          <User
+            name={stock.ticker}
+            description={cellValue}
+            avatarProps={{
+              radius: "full",
+              src: stock.logoURL,
+            }}
+          />
           // <Avatar
           //   isBordered
           //   color="success"
@@ -145,37 +144,58 @@ export function StocksTable({ stocks }: StocksTable) {
         );
       case "ticker":
         return <div>{cellValue}</div>;
-      case "updatedAt":
-        return <div>{new Date(cellValue).toLocaleDateString()}</div>;
       case "eps":
         return (
-          <>
-            {cellValue && (
-              <Chip color="default" size="sm" variant="flat">
-                {cellValue}
-              </Chip>
-            )}
-          </>
+          cellValue && (
+            <Chip color="default" size="sm" variant="flat">
+              {cellValue}
+            </Chip>
+          )
         );
       case "dividendYield":
         const divYield = Number(cellValue) * 100;
-        let color: StatusColor = "default";
 
         if (divYield > 3) color = "warning";
         if (divYield > 4) color = "success";
 
         return (
-          <>
+          <Chip
+            className={`${divYield > 3 && `animate-pulse`}`}
+            color={color}
+            size="sm"
+            variant="flat"
+          >
+            {divYield.toFixed(1)} %
+          </Chip>
+        );
+      case "priceToBookRatio":
+        const pb = Number(cellValue);
+
+        if (pb <= 1) color = "success";
+        if (pb > 1 && pb < 1.5) color = "warning";
+        if (pb >= 5) color = "danger";
+
+        return (
+          cellValue && (
             <Chip
-              className={`${divYield > 3 && `animate-pulse`}`}
+              className={`${pb <= 1 && `animate-pulse`}`}
               color={color}
               size="sm"
               variant="flat"
             >
-              {divYield.toFixed(1)} %
+              {pb.toFixed(2)}
             </Chip>
-          </>
+          )
         );
+      case "industry":
+        return (
+          <div title={cellValue}>
+            {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
+          </div>
+        );
+      case "marketCapitalization":
+        const marketCapInBillions = Number(cellValue) / 1000000000;
+        return <div>{marketCapInBillions.toFixed(1) + " B"}</div>;
       case "actions":
         return (
           <div className="relative flex items-center justify-end gap-2">
@@ -192,6 +212,8 @@ export function StocksTable({ stocks }: StocksTable) {
             </Dropdown>
           </div>
         );
+      case "updatedAt":
+        return <div>{new Date(cellValue).toLocaleDateString()}</div>;
       default:
         return cellValue;
     }
@@ -390,8 +412,11 @@ export function StocksTable({ stocks }: StocksTable) {
           {(column) => (
             <TableColumn
               key={column.uid}
-              align={column.uid === "actions" ? "center" : "start"}
+              align={column.uid === "name" ? "start" : "center"}
               allowsSorting={column.sortable}
+              // width={column.uid === "name" ? 1000 : null}
+              // className="w-[300px]"
+              // width={1000}
             >
               {column.name}
             </TableColumn>
@@ -401,7 +426,11 @@ export function StocksTable({ stocks }: StocksTable) {
           {(item) => (
             <TableRow key={item.ticker}>
               {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+                <TableCell
+                  className={columnKey === "name" ? "text-left" : "text-center"}
+                >
+                  {renderCell(item, columnKey)}
+                </TableCell>
               )}
             </TableRow>
           )}

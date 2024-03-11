@@ -29,6 +29,8 @@ const dataFilterOverviews = [
   "fiftyTwoWeekHigh",
   "fiftyTwoWeekLow",
   "updatedAt",
+
+  "country",
 ];
 
 /// FETCH DATA WITH API
