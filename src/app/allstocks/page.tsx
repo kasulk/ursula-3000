@@ -10,7 +10,8 @@ const getCachedStocks = nextCache(
   async () => getStocksFromDB(),
   ["allstocks"],
   {
-    revalidate: 3600,
+    // revalidate: 3600,
+    revalidate: 1,
   },
 );
 
