@@ -230,8 +230,8 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  TABLE NAV  ###
   const topContent = useMemo(() => {
     return (
-      <div className="fixed left-0 top-0 z-20 flex h-72 w-full flex-col justify-end gap-4 bg-background px-[20%]">
-        <div className="flex items-end justify-between gap-3 bg-slate-700">
+      <div className="fixed left-0 top-0 z-20 flex h-72 w-full flex-col justify-end gap-4 bg-background px-[20%] pb-4">
+        <div className="flex items-end justify-between gap-3">
           <Input
             size="sm"
             isClearable
@@ -295,7 +295,7 @@ export function StocksTable({ stocks }: StocksTable) {
             </Dropdown>
           </div>
         </div>
-        <div className="flex items-center justify-between bg-slate-600">
+        <div className="flex items-center justify-between">
           <span className="text-small text-default-400">
             Total {stocks.length} stocks
           </span>
@@ -367,15 +367,14 @@ export function StocksTable({ stocks }: StocksTable) {
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         classNames={{
-          base: "w-2/3 border-blue-500 border-3",
+          base: "relative w-2/3",
           table:
-            "mt-24 flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap border-3 border-green-900",
+            "mt-24 flex flex-col w-4/6 items-start justify-center overflow-x-auto whitespace-nowrap",
         }}
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}
         topContent={topContent}
-        // topContentPlacement="outside"
         onSelectionChange={setSelectedKeys}
         onSortChange={setSortDescriptor}
       >

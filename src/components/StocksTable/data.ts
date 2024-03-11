@@ -2,15 +2,28 @@ const columns = [
   //:: uid = columnKey
   //:: order here determines order in table
   //
-  // { name: "TICKER", uid: "ticker", sortable: true },
+  { name: "LOGO", uid: "" },
   { name: "NAME", uid: "name", sortable: true },
+  { name: "TICKER", uid: "ticker", sortable: true },
   { name: "COUNTRY", uid: "country", sortable: true },
   { name: "TARGET PRICE", uid: "analystTargetPrice", sortable: true },
   { name: "DIV %", uid: "dividendYield", sortable: true },
   { name: "EPS", uid: "eps", sortable: true },
   { name: "EPS15x", uid: "eps15x", sortable: true },
   { name: "ACTIONS", uid: "actions" },
-  // { name: "LOGO", uid: "logoURL" },
+
+  { name: "SECTOR", uid: "SECTOR", sortable: true },
+  { name: "INDUSTRY", uid: "INDUSTRY", sortable: true },
+  {
+    name: "MARKET CAPITALISATION",
+    uid: "marketCapitalisation",
+    sortable: true,
+  },
+  { name: "BOOK VALUE", uid: "bookValue", sortable: true },
+  { name: "P/B", uid: "priceToBookRatio", sortable: true },
+  { name: "52 WEEK HIGH", uid: "fiftyTwoWeekHigh", sortable: true },
+  { name: "52 WEEK LOW", uid: "fiftyTwoWeekLow", sortable: true },
+  { name: "LAST UPDATED", uid: "updatedAt", sortable: true },
 ];
 
 const statusOptions = [
