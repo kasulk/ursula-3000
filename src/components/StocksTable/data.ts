@@ -2,10 +2,10 @@ const columns = [
   //:: uid = columnKey
   //:: order here determines order in table
   //
-  // { name: "LOGO", uid: "" },
+  { name: "LOGO", uid: "logoURL" },
+  { name: "TICKER", uid: "ticker", sortable: true },
   { name: "NAME", uid: "name", sortable: true },
   { name: "", uid: "actions" },
-  { name: "TICKER", uid: "ticker", sortable: true },
   // { name: "PRICE", uid: "quotes", sortable: true },
   { name: "TARGET PRICE", uid: "analystTargetPrice", sortable: true },
   { name: "DIV %", uid: "dividendYield", sortable: true },

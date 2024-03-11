@@ -126,33 +126,20 @@ export function StocksTable({ stocks }: StocksTable) {
     let color: StatusColor = "default";
 
     switch (columnKey) {
-      case "name":
+      case "logoURL":
         return (
-          <User
+          <Avatar
+            isBordered
             name={stock.ticker}
-            description={cellValue}
-            avatarProps={{
-              radius: "full",
-              src: stock.logoURL,
-            }}
+            color="default"
+            src={cellValue}
+            showFallback
           />
-          // <Avatar
-          //   isBordered
-          //   color="success"
-          //   // src="https://i.pravatar.cc/150?u=a04258114e29026302d"
-          //   src="https://api.twelvedata.com/logo/apple.com"
-          // />
         );
       case "ticker":
         return <div>{cellValue}</div>;
-      case "eps":
-        return (
-          cellValue && (
-            <Chip color="default" size="sm" variant="flat">
-              {cellValue}
-            </Chip>
-          )
-        );
+      case "name":
+        return <div className="text-sm">{cellValue}</div>;
       case "dividendYield":
         const divYield = Number(cellValue) * 100;
 
@@ -168,6 +155,14 @@ export function StocksTable({ stocks }: StocksTable) {
           >
             {divYield.toFixed(1)} %
           </Chip>
+        );
+      case "eps":
+        return (
+          cellValue && (
+            <Chip color="default" size="sm" variant="flat">
+              {cellValue}
+            </Chip>
+          )
         );
       case "priceToBookRatio":
         const pb = Number(cellValue);
@@ -224,7 +219,7 @@ export function StocksTable({ stocks }: StocksTable) {
               <DropdownItem
                 key="details"
                 textValue="Show details on Finviz.com"
-                // description="Show more on Finviz.com" // if set one has to click the exact text
+                // description="Show more on Finviz.com" // if set, one has to click the exact text for the link to work...
               >
                 <Link
                   isExternal
