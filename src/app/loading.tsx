@@ -7,7 +7,7 @@ export default function Loading() {
       color="danger"
       label="Loading..."
       classNames={{
-        base: "flex h-screen items-center justify-center",
+        base: "-mb-24 -mt-48 flex h-screen items-center justify-center",
       }}
     />
   );
