@@ -5,3 +5,12 @@
 * {
   /* outline: 1px dotted rgba(220, 20, 60, 0.5); */
 }
+
+/*
+workaround/bugfix: 
+set width for row-selection checkbox column
+to be able to set fixed widths for all columns */
+.setFirstColumnWidthManually th:first-child,
+.setFirstColumnWidthManually td:first-child {
+  width: 50px;
+}

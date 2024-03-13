@@ -409,7 +409,7 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  END TABLE FOOTER  ###
 
   return (
-    <div className="flex w-11/12 items-center justify-center">
+    <div className="w-11/12">
       <Table
         aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
         // isHeaderSticky
@@ -418,10 +418,14 @@ export function StocksTable({ stocks }: StocksTable) {
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         classNames={{
-          wrapper: "mt-24",
-          table: "overflow-x-auto whitespace-nowrap",
+          wrapper: "mt-24 overflow-x-auto whitespace-nowrap",
+          /// since layout-prop (= column-widths) is set to 'fixed',
+          /// the table width and column widths have to be set manually
+          table: "w-[3000px] setFirstColumnWidthManually", /// workaround, see global.css
+          ///     ^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
         }}
         color="primary"
+        layout="fixed"
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}
@@ -433,12 +437,10 @@ export function StocksTable({ stocks }: StocksTable) {
           {(column) => (
             <TableColumn
               key={column.uid}
-              align={column.uid === "name" ? "start" : "center"}
+              align={column.align}
               allowsSorting={column.sortable}
-              hideHeader={column.uid === "actions"}
-              // width={column.uid === "name" ? 1000 : null}
-              // className="w-[300px]"
-              // width={1000}
+              hideHeader={column.hideHeader}
+              width={column.width}
             >
               {column.name}
             </TableColumn>
@@ -448,11 +450,7 @@ export function StocksTable({ stocks }: StocksTable) {
           {(item) => (
             <TableRow key={item.ticker}>
               {(columnKey) => (
-                <TableCell
-                  className={columnKey === "name" ? "text-left" : "text-center"}
-                >
-                  {renderCell(item, columnKey)}
-                </TableCell>
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
               )}
             </TableRow>
           )}
