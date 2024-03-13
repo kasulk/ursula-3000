@@ -5,7 +5,7 @@ const columns = [
   { name: "LOGO", uid: "logoURL" },
   { name: "TICKER", uid: "ticker", sortable: true },
   { name: "NAME", uid: "name", sortable: true },
-  { name: "", uid: "actions" },
+  { name: "ACTIONS", uid: "actions", sortable: false },
   // { name: "PRICE", uid: "quotes", sortable: true },
   { name: "TARGET PRICE", uid: "analystTargetPrice", sortable: true },
   { name: "DIV %", uid: "dividendYield", sortable: true },

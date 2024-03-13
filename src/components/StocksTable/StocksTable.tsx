@@ -168,7 +168,7 @@ export function StocksTable({ stocks }: StocksTable) {
         const pb = Number(cellValue);
 
         if (pb <= 1) color = "success";
-        if (pb > 1 && pb < 1.5) color = "warning";
+        if (pb > 1 && pb < 1.3) color = "warning";
         if (pb >= 5) color = "danger";
 
         return (
@@ -183,22 +183,11 @@ export function StocksTable({ stocks }: StocksTable) {
             </Chip>
           )
         );
-      // case "industry":
-      //   return (
-      //     <div title={cellValue}>
-      //       {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
-      //     </div>
-      //   );
       case "industry":
         return (
-          <a
-            href={`https://finviz.com/quote.ashx?t=${stock.ticker}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Show details on Finviz.com"
-          >
-            test
-          </a>
+          <div title={cellValue}>
+            {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
+          </div>
         );
       case "marketCapitalization":
         const marketCapInBillions = Number(cellValue) / 1000000000;
@@ -446,6 +435,7 @@ export function StocksTable({ stocks }: StocksTable) {
               key={column.uid}
               align={column.uid === "name" ? "start" : "center"}
               allowsSorting={column.sortable}
+              hideHeader={column.uid === "actions"}
               // width={column.uid === "name" ? 1000 : null}
               // className="w-[300px]"
               // width={1000}
