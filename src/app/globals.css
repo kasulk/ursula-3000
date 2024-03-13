@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  /* outline: 1px dotted rgba(220, 20, 60, 0.5); */
+  outline: 1px dotted rgba(220, 20, 60, 0.5);
 }
 
 /*

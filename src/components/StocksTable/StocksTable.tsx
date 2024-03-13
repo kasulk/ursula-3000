@@ -137,9 +137,11 @@ export function StocksTable({ stocks }: StocksTable) {
           />
         );
       case "ticker":
-        return <div>{cellValue}</div>;
+        return <div className="text-center">{cellValue}</div>;
       case "name":
-        return <div className="text-sm">{cellValue}</div>;
+        return <div>{cellValue}</div>;
+      case "analystTargetPrice":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
       case "dividendYield":
         const divYield = Number(cellValue) * 100;
 
@@ -147,23 +149,27 @@ export function StocksTable({ stocks }: StocksTable) {
         if (divYield > 4) color = "success";
 
         return (
-          <Chip
-            className={`${divYield > 3 && `animate-pulse`}`}
-            color={color}
-            size="sm"
-            variant="flat"
-          >
-            {divYield.toFixed(1)} %
-          </Chip>
+          <div className="text-center">
+            <Chip
+              className={`${divYield > 3 ? "animate-pulse" : ""}`}
+              color={color}
+              size="sm"
+              variant="flat"
+            >
+              {divYield?.toFixed(1)} %
+            </Chip>
+          </div>
         );
       case "eps":
-        return (
-          cellValue && (
-            <Chip color="default" size="sm" variant="flat">
-              {cellValue}
-            </Chip>
-          )
-        );
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "eps15x":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "bookValue":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "fiftyTwoWeekHigh":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "fiftyTwoWeekLow":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
       case "priceToBookRatio":
         const pb = Number(cellValue);
 
@@ -172,26 +178,30 @@ export function StocksTable({ stocks }: StocksTable) {
         if (pb >= 5) color = "danger";
 
         return (
-          cellValue && (
-            <Chip
-              className={`${pb <= 1 && `animate-pulse`}`}
-              color={color}
-              size="sm"
-              variant="flat"
-            >
-              {pb.toFixed(2)}
-            </Chip>
-          )
-        );
-      case "industry":
-        return (
-          <div title={cellValue}>
-            {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
+          <div className="text-center">
+            {cellValue && (
+              <Chip
+                className={`${pb <= 1 ? "animate-pulse" : ""}`}
+                color={color}
+                size="sm"
+                variant="flat"
+              >
+                {pb?.toFixed(2)}
+              </Chip>
+            )}
           </div>
         );
+      case "sector":
+        return <div>{cellValue}</div>;
+      case "industry":
+        return <div>{cellValue}</div>;
       case "marketCapitalization":
         const marketCapInBillions = Number(cellValue) / 1000000000;
-        return <div>{marketCapInBillions.toFixed(1) + " B"}</div>;
+        return (
+          <div className="text-right">
+            {marketCapInBillions.toFixed(1) + " B"}
+          </div>
+        );
       case "actions":
         return (
           <Dropdown backdrop="opaque">
@@ -232,9 +242,13 @@ export function StocksTable({ stocks }: StocksTable) {
           </Dropdown>
         );
       case "updatedAt":
-        return <div>{new Date(cellValue).toLocaleDateString()}</div>;
+        return (
+          <div className="text-right">
+            {new Date(cellValue).toLocaleDateString()}
+          </div>
+        );
       default:
-        return cellValue;
+        return <div className="text-center">{cellValue}</div>;
     }
   }, []);
 
@@ -419,13 +433,12 @@ export function StocksTable({ stocks }: StocksTable) {
         bottomContentPlacement="outside"
         classNames={{
           wrapper: "mt-24 overflow-x-auto whitespace-nowrap",
-          /// since layout-prop (= column-widths) is set to 'fixed',
-          /// the table width and column widths have to be set manually
-          table: "w-[3000px] setFirstColumnWidthManually", /// workaround, see global.css
+          /// necessary to be able to set column widths manually,
+          /// because width of row-selection-checkboxes isn't customizable
+          table: "w-[2560px] setFirstColumnWidthManually", /// workaround, see global.css
           ///     ^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
         }}
         color="primary"
-        layout="fixed"
         selectedKeys={selectedKeys}
         selectionMode="multiple"
         sortDescriptor={sortDescriptor}
@@ -437,10 +450,10 @@ export function StocksTable({ stocks }: StocksTable) {
           {(column) => (
             <TableColumn
               key={column.uid}
-              align={column.align}
               allowsSorting={column.sortable}
               hideHeader={column.hideHeader}
               width={column.width}
+              // align={column.align} //? not working; nextui bug?
             >
               {column.name}
             </TableColumn>
@@ -450,7 +463,11 @@ export function StocksTable({ stocks }: StocksTable) {
           {(item) => (
             <TableRow key={item.ticker}>
               {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+                <TableCell
+                // className={`${columnKey === "name" ? "text-right" : null}`}
+                >
+                  {renderCell(item, columnKey)}
+                </TableCell>
               )}
             </TableRow>
           )}
