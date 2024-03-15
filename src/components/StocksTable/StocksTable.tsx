@@ -137,9 +137,11 @@ export function StocksTable({ stocks }: StocksTable) {
           />
         );
       case "ticker":
-        return <div>{cellValue}</div>;
+        return <div className="text-center">{cellValue}</div>;
       case "name":
-        return <div className="text-sm">{cellValue}</div>;
+        return <div>{cellValue}</div>;
+      case "analystTargetPrice":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
       case "dividendYield":
         const divYield = Number(cellValue) * 100;
 
@@ -147,62 +149,59 @@ export function StocksTable({ stocks }: StocksTable) {
         if (divYield > 4) color = "success";
 
         return (
-          <Chip
-            className={`${divYield > 3 && `animate-pulse`}`}
-            color={color}
-            size="sm"
-            variant="flat"
-          >
-            {divYield.toFixed(1)} %
-          </Chip>
-        );
-      case "eps":
-        return (
-          cellValue && (
-            <Chip color="default" size="sm" variant="flat">
-              {cellValue}
-            </Chip>
-          )
-        );
-      case "priceToBookRatio":
-        const pb = Number(cellValue);
-
-        if (pb <= 1) color = "success";
-        if (pb > 1 && pb < 1.5) color = "warning";
-        if (pb >= 5) color = "danger";
-
-        return (
-          cellValue && (
+          <div className="text-center">
             <Chip
-              className={`${pb <= 1 && `animate-pulse`}`}
+              className={`${divYield > 3 ? "animate-pulse" : ""}`}
               color={color}
               size="sm"
               variant="flat"
             >
-              {pb.toFixed(2)}
+              {divYield?.toFixed(1)} %
             </Chip>
-          )
+          </div>
         );
-      // case "industry":
-      //   return (
-      //     <div title={cellValue}>
-      //       {cellValue.length > 16 ? cellValue.slice(0, 15) + "..." : cellValue}
-      //     </div>
-      //   );
-      case "industry":
+      case "eps":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "eps15x":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "bookValue":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "fiftyTwoWeekHigh":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "fiftyTwoWeekLow":
+        return <div className="text-right">{cellValue?.toFixed(2)}</div>;
+      case "priceToBookRatio":
+        const pb = Number(cellValue);
+
+        if (pb <= 1) color = "success";
+        if (pb > 1 && pb < 1.3) color = "warning";
+        if (pb >= 5) color = "danger";
+
         return (
-          <a
-            href={`https://finviz.com/quote.ashx?t=${stock.ticker}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Show details on Finviz.com"
-          >
-            test
-          </a>
+          <div className="text-center">
+            {cellValue && (
+              <Chip
+                className={`${pb <= 1 ? "animate-pulse" : ""}`}
+                color={color}
+                size="sm"
+                variant="flat"
+              >
+                {pb?.toFixed(2)}
+              </Chip>
+            )}
+          </div>
         );
+      case "sector":
+        return <div>{cellValue}</div>;
+      case "industry":
+        return <div>{cellValue}</div>;
       case "marketCapitalization":
         const marketCapInBillions = Number(cellValue) / 1000000000;
-        return <div>{marketCapInBillions.toFixed(1) + " B"}</div>;
+        return (
+          <div className="text-right">
+            {marketCapInBillions.toFixed(1) + " B"}
+          </div>
+        );
       case "actions":
         return (
           <Dropdown backdrop="opaque">
@@ -243,9 +242,13 @@ export function StocksTable({ stocks }: StocksTable) {
           </Dropdown>
         );
       case "updatedAt":
-        return <div>{new Date(cellValue).toLocaleDateString()}</div>;
+        return (
+          <div className="text-right">
+            {new Date(cellValue).toLocaleDateString()}
+          </div>
+        );
       default:
-        return cellValue;
+        return <div className="text-center">{cellValue}</div>;
     }
   }, []);
 
@@ -420,7 +423,7 @@ export function StocksTable({ stocks }: StocksTable) {
   ///###  END TABLE FOOTER  ###
 
   return (
-    <div className="flex w-11/12 items-center justify-center">
+    <div className="w-11/12">
       <Table
         aria-label="Stocks table with data, pagination and sorting of 3000 stocks"
         // isHeaderSticky
@@ -429,8 +432,11 @@ export function StocksTable({ stocks }: StocksTable) {
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         classNames={{
-          wrapper: "mt-24",
-          table: "overflow-x-auto whitespace-nowrap",
+          wrapper: "mt-24 overflow-x-auto whitespace-nowrap",
+          /// necessary to be able to set column widths manually,
+          /// because width of row-selection-checkboxes isn't customizable
+          table: "w-[2560px] setFirstColumnWidthManually", /// workaround, see global.css
+          ///     ^^^^^^^^^^ ^^^^^^^^^^^^^^^^^^^^^^^^^^^
         }}
         color="primary"
         selectedKeys={selectedKeys}
@@ -444,11 +450,10 @@ export function StocksTable({ stocks }: StocksTable) {
           {(column) => (
             <TableColumn
               key={column.uid}
-              align={column.uid === "name" ? "start" : "center"}
               allowsSorting={column.sortable}
-              // width={column.uid === "name" ? 1000 : null}
-              // className="w-[300px]"
-              // width={1000}
+              hideHeader={column.hideHeader}
+              width={column.width}
+              // align={column.align} //? not working; nextui bug?
             >
               {column.name}
             </TableColumn>
@@ -459,7 +464,7 @@ export function StocksTable({ stocks }: StocksTable) {
             <TableRow key={item.ticker}>
               {(columnKey) => (
                 <TableCell
-                  className={columnKey === "name" ? "text-left" : "text-center"}
+                // className={`${columnKey === "name" ? "text-right" : null}`}
                 >
                   {renderCell(item, columnKey)}
                 </TableCell>

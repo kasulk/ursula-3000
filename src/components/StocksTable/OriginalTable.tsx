@@ -29,7 +29,7 @@ import {
   Search as SearchIcon,
   VerticalDots as VerticalDotsIcon,
 } from "@/components/Icons";
-import { columns, users, statusOptions } from "./data";
+import { columns, users, statusOptions } from "./originalData";
 import { capitalize } from "./utils";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
