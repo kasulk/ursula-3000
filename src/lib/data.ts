@@ -138,6 +138,10 @@ export function createUsernameFromEmail(email?: string | null): string {
   return email;
 }
 
+export function getLikedStocks() {
+  dbConnect();
+}
+
 function getLogTime() {
   console.log(
     "::::::::::::::::::::\n",
