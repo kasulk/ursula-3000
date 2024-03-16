@@ -1,51 +1,27 @@
 "use client";
 
+import { Checkbox } from "@nextui-org/checkbox";
 import { useState } from "react";
+import { HeartIcon } from "../Icons";
 
 interface LikeButtonProps {
   ticker: string;
-  initialLiked: boolean;
+  isLiked: boolean;
 }
 
-function LikeButton({ ticker, initialLiked }: LikeButtonProps) {
-  const [liked, setLiked] = useState(initialLiked);
+export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
+  const [liked, setLiked] = useState(isLiked);
 
-  const toggleLike = async () => {
-    // Ändere den Like-Status in der DB
-    // Annahme: Du hast eine API-Route zum Aktualisieren des Like-Status
-    const response = await fetch(`/api/stocks/${ticker}/like`, {
-      method: liked ? "DELETE" : "POST",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    if (response.ok) {
-      // Aktualisiere den Status in der UI
-      setLiked(!liked);
-    } else {
-      console.error("Failed to update like status");
-    }
-  };
+  async function toggleLike() {}
 
   return (
-    <label>
-      <input
-        type="checkbox"
-        checked={liked}
-        onChange={toggleLike}
-        style={{
-          // Hier kannst du dein eigenes Like-Symbol-Design einfügen
-          appearance: "none",
-          width: "24px",
-          height: "24px",
-          backgroundImage: `url(${liked ? "liked-icon.svg" : "unliked-icon.svg"})`,
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          cursor: "pointer",
-        }}
-      />
-    </label>
+    <Checkbox
+      icon={<HeartIcon />}
+      color="danger"
+      size="lg"
+      radius="full"
+      // isSelected={isLiked}
+      // onValueChange={setLiked()}
+    />
   );
 }
-
-export default LikeButton;

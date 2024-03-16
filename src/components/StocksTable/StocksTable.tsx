@@ -23,7 +23,6 @@ import {
   ChipProps,
   SortDescriptor,
   Avatar,
-  User,
   Link,
 } from "@nextui-org/react";
 import {
@@ -31,6 +30,7 @@ import {
   ChevronDown as ChevronDownIcon,
   Search as SearchIcon,
 } from "@/components/Icons";
+import { LikeButton } from "@/components";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { SelectRowsPerPage } from "..";
@@ -140,6 +140,12 @@ export function StocksTable({ stocks }: StocksTable) {
         return <div className="text-center">{cellValue}</div>;
       case "name":
         return <div>{cellValue}</div>;
+      case "liked":
+        return (
+          <div className="text-center">
+            <LikeButton ticker={stock.ticker} isLiked={false} />
+          </div>
+        );
       case "analystTargetPrice":
         return <div className="text-right">{cellValue?.toFixed(2)}</div>;
       case "dividendYield":
