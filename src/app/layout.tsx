@@ -6,6 +6,8 @@ import { getServerSession } from "next-auth";
 import { NavBar } from "@/components";
 import { getDBUserByEmailWithoutPassword } from "@/lib/data";
 
+if (process.env.NODE_ENV === "development") require("./styles/devOnly.css");
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
