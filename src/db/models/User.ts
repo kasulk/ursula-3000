@@ -25,6 +25,9 @@ const userSchema = new Schema(
       unique: true,
       max: 60,
     },
+    emailVerified: {
+      type: Date || null,
+    },
     avatar: {
       type: String,
     },
@@ -32,9 +35,9 @@ const userSchema = new Schema(
       type: String,
       enum: ["admin", "user", "googleUser", "githubUser"],
     },
-    favoriteStocks: {
-      type: [String],
-    },
+    // favoriteStocks: {
+    //   type: [String],
+    // },
   },
   { timestamps: true },
 );

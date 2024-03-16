@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema } = mongoose;
-
-const logourlSchema = new Schema(
+const logourlSchema = new mongoose.Schema(
   {
     ticker: { type: String, required: true, unique: true },
     symbol: { type: String, required: true, unique: true },
@@ -17,7 +15,7 @@ const logourlSchema = new Schema(
   { timestamps: true },
 );
 
-// check whether the model with this name has already been
-// compiled and if yes, take the already compiled model
+/// check whether the model with this name has already been
+/// compiled and if yes, take the already compiled model
 export const Logourl =
   mongoose.models.Logourl || mongoose.model("Logourl", logourlSchema);

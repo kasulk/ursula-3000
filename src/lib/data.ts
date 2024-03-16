@@ -147,11 +147,3 @@ export async function getLikedStocksByUser(userId: any): Promise<Ticker[]> {
 
   return likedTickers;
 }
-
-export function getLogTime() {
-  console.log(
-    "::::::::::::::::::::\n",
-    new Date().toLocaleString("de-DE"),
-    "\n::::::::::::::::::::",
-  );
-}
