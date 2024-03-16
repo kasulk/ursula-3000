@@ -57,8 +57,7 @@ const overviewSchema = new mongoose.Schema(
     sharesOutstanding: NumberOrNull,
     trailingPE: NumberOrNull,
   },
-  // create timestamps for createdAt and updatedAt
-  // https://mongoosejs.com/docs/timestamps.html
+  /// create timestamps for createdAt and updatedAt
   {
     timestamps: true,
     // If you want populate virtuals to show up when using
@@ -89,7 +88,7 @@ const overviewSchema = new mongoose.Schema(
 // justOne: true,
 // });
 
-// check whether the model with this name has already been
-// compiled and if yes, take the already compiled model
+/// check whether the model with this name has already been
+/// compiled and if yes, take the already compiled model
 export const Overview =
   mongoose.models.Overview || mongoose.model("Overview", overviewSchema);
