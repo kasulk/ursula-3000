@@ -45,6 +45,7 @@ export const authOptions: NextAuthOptions = {
           placeholder: "your awesome password",
         },
       },
+      /// only for CredentialsProvider
       async authorize(credentials) {
         // TODO: Hash password
         const dbUser = await User.findOne({

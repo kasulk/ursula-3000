@@ -87,9 +87,10 @@ interface IUser {
   id: string;
   name: string;
   email: string;
+  emailVerified: Date | null;
   avatar?: string;
   role: string;
-  favoriteStocks: string[];
+  // favoriteStocks: string[];
   createdAt: Date;
   updatedAt: Date;
 }

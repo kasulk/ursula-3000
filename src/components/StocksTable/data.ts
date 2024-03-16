@@ -22,6 +22,12 @@ const columns = [
     width: "300px" as ColumnSize,
   },
   {
+    name: "LIKED",
+    uid: "liked",
+    sortable: true,
+    width: "50px" as ColumnSize,
+  },
+  {
     name: "ACTIONS",
     uid: "actions",
     hideHeader: true,

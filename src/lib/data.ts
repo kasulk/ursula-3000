@@ -1,6 +1,6 @@
 import { cache } from "react";
 import dbConnect from "@/db/connect";
-import { Overview, Quote, Logourl, User } from "@/db/models";
+import { Overview, Quote, Logourl, User, Like } from "@/db/models";
 import {
   IOverviewData,
   IUser,
@@ -46,7 +46,7 @@ export async function getStockOverviewsFromAPI(): Promise<IStock[]> {
 // export const revalidate = 3600; /// set revalidation time for cached stocks
 export const revalidate = 1; /// set revalidation time for cached stocks
 
-export async function getStocksFromDB() {
+export async function getStocksFromDB(): Promise<IStock[]> {
   dbConnect();
   const stocksData = [
     await Overview.find().select(dataFilterOverviews).sort({ ticker: 1 }),
@@ -138,7 +138,17 @@ export function createUsernameFromEmail(email?: string | null): string {
   return email;
 }
 
-function getLogTime() {
+type Ticker = string;
+
+export async function getLikedStocksByUser(userId: any): Promise<Ticker[]> {
+  dbConnect();
+  const userLikes = await Like.find({ userId }).lean();
+  const likedTickers = userLikes.map((like) => like.ticker); // ['AMD', 'MCD' ...]
+
+  return likedTickers;
+}
+
+export function getLogTime() {
   console.log(
     "::::::::::::::::::::\n",
     new Date().toLocaleString("de-DE"),
