@@ -27,8 +27,6 @@ const GitHubID = NODE_ENV === "production" ? GITHUB_ID : GITHUB_ID_DEV;
 const GitHubSecret =
   NODE_ENV === "production" ? GITHUB_SECRET : GITHUB_SECRET_DEV;
 
-console.log("NODE_ENV:", NODE_ENV);
-
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -69,6 +67,7 @@ export const authOptions: NextAuthOptions = {
       clientSecret: GitHubSecret as string,
     }),
   ],
+
   callbacks: {
     async signIn({ user, account, profile }) {
       /// GOOGLE
@@ -129,4 +128,6 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
   },
+
+  debug: NODE_ENV === "development",
 };
