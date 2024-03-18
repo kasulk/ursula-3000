@@ -7,11 +7,9 @@ import dbConnect from "@/db/connect";
 import { User } from "@/db/models";
 import {
   createNewDBUser,
-  createUsername,
   mongoDocToPlainObj,
   removePasswordFromUser,
 } from "@/utils/data";
-import { getLogTime } from "@/utils/debug";
 import {
   getDBUserByEmailWithoutPassword,
   getDBUserIdByEmail,
@@ -78,12 +76,6 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ user, account, profile }) {
-      // console.log("signIn Callback:", {
-      //   user,
-      //   account,
-      //   profile,
-      // });
-
       const email = user.email || profile?.email;
       const avatar = user.image;
 
@@ -91,15 +83,10 @@ export const authOptions: NextAuthOptions = {
         await dbConnect();
         const dbUser = await getDBUserByEmailWithoutPassword(email);
 
-        if (!dbUser) {
-          await createNewDBUser(
-            email as string,
-            avatar,
-            account?.provider || "",
-          );
+        if (dbUser) {
+          await User.findOneAndUpdate({ email }, { $set: { avatar } }); /// update user data
         } else {
-          /// update user data
-          await User.findOneAndUpdate({ email }, { $set: { avatar } });
+          await createNewDBUser(email!, avatar, account?.provider!);
         }
       } catch (err) {
         console.log(err);
