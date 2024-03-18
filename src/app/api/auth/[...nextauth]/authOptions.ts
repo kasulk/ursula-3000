@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/db/connect";
 import { User } from "@/db/models";
 import {
+  createNewDBUser,
   createUsername,
   mongoDocToPlainObj,
   removePasswordFromUser,
@@ -77,65 +78,32 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log("signIn Callback:", {
-        user,
-        account,
-        profile,
-      });
+      // console.log("signIn Callback:", {
+      //   user,
+      //   account,
+      //   profile,
+      // });
 
-      /// GOOGLE
-      if (account?.provider === "google") {
-        dbConnect();
-        try {
-          const dbUser = await User.findOne({
-            email: user.email,
-          });
+      const email = user.email || profile?.email;
+      const avatar = user.image;
 
-          if (!dbUser) {
-            const newUser = new User({
-              name: createUsername(),
-              email: user.email,
-              avatar: user.image,
-              role: "googleUser",
-            });
-            await newUser.save();
-            return newUser;
-          } else {
-            /// update user data
-            dbUser.avatar = user.image;
-            await dbUser.save();
-            return dbUser;
-          }
-        } catch (err) {
-          console.log(err);
-          return false;
+      try {
+        await dbConnect();
+        const dbUser = await getDBUserByEmailWithoutPassword(email);
+
+        if (!dbUser) {
+          await createNewDBUser(
+            email as string,
+            avatar,
+            account?.provider || "",
+          );
+        } else {
+          /// update user data
+          await User.findOneAndUpdate({ email }, { $set: { avatar } });
         }
-      }
-      /// GITHUB
-      if (account?.provider === "github" && profile) {
-        dbConnect();
-        try {
-          const dbUser = await User.findOne({
-            email: user.email || profile.email,
-          });
-
-          if (!dbUser) {
-            const newUser = new User({
-              name: createUsername(),
-              email: user.email || profile.email,
-              avatar: user.image,
-              role: "githubUser",
-            });
-            await newUser.save();
-          } else {
-            /// update user data
-            dbUser.avatar = user.image;
-            await dbUser.save();
-          }
-        } catch (err) {
-          console.log(err);
-          return false;
-        }
+      } catch (err) {
+        console.log(err);
+        return false;
       }
 
       return true;
