@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 
-const { Schema } = mongoose;
-
-const userSchema = new Schema(
+const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -31,9 +29,13 @@ const userSchema = new Schema(
     avatar: {
       type: String,
     },
+    account: {
+      type: String,
+      enum: ["credentials", "github", "google"],
+    },
     role: {
       type: String,
-      enum: ["admin", "user", "googleUser", "githubUser"],
+      enum: ["user", "admin"],
     },
     // favoriteStocks: {
     //   type: [String],
