@@ -2,8 +2,6 @@ import Link from "next/link";
 import { GlowText } from "@/components";
 import { Button } from "@nextui-org/react";
 
-console.log("render Home");
-
 export default function Home() {
   return (
     <section id="welcome">
