@@ -1,7 +1,7 @@
 import dbConnect from "../connect";
 import { User } from "../models";
 import type { IUser, IUserWithPassword } from "@/../types/types";
-import { mongoDocToPlainObj, removePasswordFromUser } from "@/lib/data";
+import { mongoDocToPlainObj, removePasswordFromUser } from "@/utils/data";
 
 export async function getDBUserById(id: string): Promise<IUserWithPassword> {
   try {

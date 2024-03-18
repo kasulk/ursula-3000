@@ -6,7 +6,7 @@ import type {
 } from "@/../types/types";
 import dbConnect from "../connect";
 import { Logourl, Overview, Quote } from "../models";
-import { mongoDocsToPlainObjs } from "@/lib/data";
+import { mongoDocsToPlainObjs } from "@/utils/data";
 
 const dataFilterOverviews = [
   "id",
