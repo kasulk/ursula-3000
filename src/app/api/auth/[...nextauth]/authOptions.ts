@@ -11,6 +11,10 @@ import {
   removePasswordFromUser,
 } from "@/utils/data";
 import { getLogTime } from "@/utils/debug";
+import {
+  getDBUserByEmailWithoutPassword,
+  getDBUserIdByEmail,
+} from "@/db/Queries/users";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
@@ -73,6 +77,12 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ user, account, profile }) {
+      console.log("signIn Callback:", {
+        user,
+        account,
+        profile,
+      });
+
       /// GOOGLE
       if (account?.provider === "google") {
         dbConnect();
@@ -130,31 +140,18 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-    async jwt({ token, user, session }) {
-      // async jwt({ token, user }) {
-      getLogTime();
-
-      console.log("jwt callback:", { token, user, session });
-
-      /// pass in userId to token
-      if (user) {
-        return {
-          ...token,
-          id: user.id,
-        };
-      }
+    async jwt({ token }) {
       return token;
     },
-    async session({ session, token, user }) {
-      // async session({ session, token }) {
-      console.log("session callback:", { session, token, user });
+    async session({ session, token }) {
+      const dbUserId = await getDBUserIdByEmail(token.email);
 
       /// pass in userId to session
       return {
         ...session,
         user: {
           ...session.user,
-          id: token.id,
+          id: dbUserId,
         },
       };
     },

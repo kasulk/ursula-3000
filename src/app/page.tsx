@@ -1,13 +1,8 @@
 import Link from "next/link";
 import { GlowText } from "@/components";
 import { Button } from "@nextui-org/react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/authOptions";
 
-// export default function Home() {
-export default async function Home() {
-  console.log(await getServerSession(authOptions));
-
+export default function Home() {
   return (
     <section id="welcome">
       <div className="flex flex-col items-center justify-center gap-12">
