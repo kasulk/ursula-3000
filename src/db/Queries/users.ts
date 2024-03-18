@@ -27,3 +27,16 @@ export async function getDBUserByEmailWithoutPassword(
     throw new Error("Uh-oh... Failed to fetch user!", err);
   }
 }
+
+export async function getDBUserIdByEmail(
+  email?: string | null,
+): Promise<string> {
+  try {
+    dbConnect();
+    const dbUser = await User.findOne({ email });
+    return dbUser.toObject()._id.toString();
+  } catch (err: any) {
+    console.log("error:", err);
+    throw new Error("Uh-oh... Failed to fetch user!", err);
+  }
+}
