@@ -9,7 +9,8 @@ import {
   createUsername,
   mongoDocToPlainObj,
   removePasswordFromUser,
-} from "@/lib/data";
+} from "@/utils/data";
+import { getLogTime } from "@/utils/debug";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
@@ -21,6 +22,7 @@ const {
   GITHUB_SECRET_DEV,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
+  NEXTAUTH_SECRET,
 } = process.env;
 
 const GitHubID = NODE_ENV === "production" ? GITHUB_ID : GITHUB_ID_DEV;
@@ -45,6 +47,7 @@ export const authOptions: NextAuthOptions = {
       },
       /// only for CredentialsProvider
       async authorize(credentials) {
+        dbConnect();
         // TODO: Hash password
         const dbUser = await User.findOne({
           name: credentials?.username,
@@ -127,7 +130,38 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-  },
+    async jwt({ token, user, session }) {
+      // async jwt({ token, user }) {
+      getLogTime();
 
+      console.log("jwt callback:", { token, user, session });
+
+      /// pass in userId to token
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      // async session({ session, token }) {
+      console.log("session callback:", { session, token, user });
+
+      /// pass in userId to session
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+        },
+      };
+    },
+  },
+  secret: NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   debug: NODE_ENV === "development",
 };

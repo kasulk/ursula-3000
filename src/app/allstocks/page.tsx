@@ -1,12 +1,8 @@
 import { StocksTable } from "@/components";
 import { OriginalTable } from "@/components";
-import { getLikedStocksByUser, getStockOverviewsFromAPI } from "@/lib/data"; /// FETCH DATA WITH API
-import { getStocksFromDB } from "@/lib/data"; /// FETCH DATA WITHOUT API
-import { getServerSession } from "next-auth";
+import { getStockOverviewsFromAPI } from "@/db/Queries/stocks"; /// FETCH DATA WITH API
+import { getStocksFromDB } from "@/db/Queries/stocks"; /// FETCH DATA WITHOUT API
 import { unstable_cache as nextCache } from "next/cache";
-import { authOptions } from "../api/auth/[...nextauth]/authOptions";
-
-console.log("render AllStocks");
 
 const getCachedStocks = nextCache(
   async () => getStocksFromDB(),
