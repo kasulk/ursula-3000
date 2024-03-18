@@ -13,7 +13,7 @@ import {
 import {
   getDBUserByEmailWithoutPassword,
   getDBUserIdByEmail,
-} from "@/db/Queries/users";
+} from "@/db/queries/users";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
       },
       /// only for CredentialsProvider
       async authorize(credentials) {
-        dbConnect();
+        await dbConnect();
         // TODO: Hash password
         const dbUser = await User.findOne({
           name: credentials?.username,

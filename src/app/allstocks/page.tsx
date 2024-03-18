@@ -1,7 +1,7 @@
 import { StocksTable } from "@/components";
 import { OriginalTable } from "@/components";
-import { getStockOverviewsFromAPI } from "@/db/Queries/stocks"; /// FETCH DATA WITH API
-import { getStocksFromDB } from "@/db/Queries/stocks"; /// FETCH DATA WITHOUT API
+import { getStockOverviewsFromAPI } from "@/db/queries/stocks"; /// FETCH DATA WITH API
+import { getStocksFromDB } from "@/db/queries/stocks"; /// FETCH DATA WITHOUT API
 import { unstable_cache as nextCache } from "next/cache";
 
 const getCachedStocks = nextCache(
