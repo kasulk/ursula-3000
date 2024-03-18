@@ -93,31 +93,6 @@ export function mongoDocsToPlainObjs(documents: any[]): Object[] {
   return plainObjects;
 }
 
-export async function getDBUserByID(id: string): Promise<IUserWithPassword> {
-  try {
-    dbConnect();
-    const dbUser = await User.findOne({ _id: id });
-    return mongoDocToPlainObj(dbUser) as IUserWithPassword;
-  } catch (err: any) {
-    console.log("error:", err);
-    throw new Error("Uh-oh... Failed to fetch user!", err);
-  }
-}
-
-export async function getDBUserByEmailWithoutPassword(
-  email: string,
-): Promise<IUser> {
-  try {
-    dbConnect();
-    const dbUser = await User.findOne({ email });
-    const user = mongoDocToPlainObj(dbUser) as IUserWithPassword;
-    return removePasswordFromUser(user);
-  } catch (err: any) {
-    console.log("error:", err);
-    throw new Error("Uh-oh... Failed to fetch user!", err);
-  }
-}
-
 export function removePasswordFromUser(user: IUserWithPassword): IUser {
   const { password, ...userWithoutPassword } = user;
   return userWithoutPassword;
