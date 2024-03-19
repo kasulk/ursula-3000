@@ -1,3 +1,4 @@
+import { Document } from "mongoose";
 import { NumberSchemaDefinition } from "mongoose";
 
 interface IOverviewData {
@@ -88,8 +89,10 @@ interface IUser {
   name: string;
   email: string;
   emailVerified: Date | null;
-  avatar?: string;
-  role: string;
+
+  avatar?: string | null;
+  account: "credentials" | "github" | "google";
+  role: "user" | "admin";
   // favoriteStocks: string[];
   createdAt: Date;
   updatedAt: Date;

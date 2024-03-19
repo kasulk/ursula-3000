@@ -1,4 +1,5 @@
 import type { IUser, IUserWithPassword } from "@/../types/types";
+import { User } from "@/db/models";
 
 /// Only plain objects can be passed from Server Components
 /// to Client Components
@@ -16,6 +17,21 @@ export function mongoDocsToPlainObjs(documents: any[]): Object[] {
 export function removePasswordFromUser(user: IUserWithPassword): IUser {
   const { password, ...userWithoutPassword } = user;
   return userWithoutPassword;
+}
+
+export async function createNewDBUser(
+  email: string,
+  avatar: string | null | undefined,
+  account: string,
+): Promise<void> {
+  const newUser = new User({
+    name: createUsername(),
+    email,
+    avatar,
+    account,
+    role: "user",
+  });
+  await newUser.save();
 }
 
 export function createUsername(): string {

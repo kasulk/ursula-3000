@@ -1,3 +1,4 @@
+import { AdapterUser } from "next-auth/adapters";
 import dbConnect from "../connect";
 import { User } from "../models";
 import type { IUser, IUserWithPassword } from "@/../types/types";
@@ -5,7 +6,7 @@ import { mongoDocToPlainObj, removePasswordFromUser } from "@/utils/data";
 
 export async function getDBUserById(id: string): Promise<IUserWithPassword> {
   try {
-    dbConnect();
+    await dbConnect();
     const dbUser = await User.findOne({ _id: id });
     return mongoDocToPlainObj(dbUser) as IUserWithPassword;
   } catch (err: any) {
@@ -15,11 +16,11 @@ export async function getDBUserById(id: string): Promise<IUserWithPassword> {
 }
 
 export async function getDBUserByEmailWithoutPassword(
-  email: string,
-): Promise<IUser> {
+  email: string | null | undefined,
+): Promise<IUser | null> {
   try {
-    dbConnect();
     const dbUser = await User.findOne({ email });
+    if (!dbUser) return null;
     const user = mongoDocToPlainObj(dbUser) as IUserWithPassword;
     return removePasswordFromUser(user);
   } catch (err: any) {
@@ -32,7 +33,7 @@ export async function getDBUserIdByEmail(
   email?: string | null,
 ): Promise<string> {
   try {
-    dbConnect();
+    await dbConnect();
     const dbUser = await User.findOne({ email });
     return dbUser.toObject()._id.toString();
   } catch (err: any) {

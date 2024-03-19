@@ -6,15 +6,14 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/db/connect";
 import { User } from "@/db/models";
 import {
-  createUsername,
+  createNewDBUser,
   mongoDocToPlainObj,
   removePasswordFromUser,
 } from "@/utils/data";
-import { getLogTime } from "@/utils/debug";
 import {
   getDBUserByEmailWithoutPassword,
   getDBUserIdByEmail,
-} from "@/db/Queries/users";
+} from "@/db/queries/users";
 
 /// Set environment variables based on current environment;
 /// so authentication works in production AND development
@@ -51,7 +50,7 @@ export const authOptions: NextAuthOptions = {
       },
       /// only for CredentialsProvider
       async authorize(credentials) {
-        dbConnect();
+        await dbConnect();
         // TODO: Hash password
         const dbUser = await User.findOne({
           name: credentials?.username,
@@ -77,65 +76,21 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ user, account, profile }) {
-      console.log("signIn Callback:", {
-        user,
-        account,
-        profile,
-      });
+      const email = user.email || profile?.email;
+      const avatar = user.image;
 
-      /// GOOGLE
-      if (account?.provider === "google") {
-        dbConnect();
-        try {
-          const dbUser = await User.findOne({
-            email: user.email,
-          });
+      try {
+        await dbConnect();
+        const dbUser = await getDBUserByEmailWithoutPassword(email);
 
-          if (!dbUser) {
-            const newUser = new User({
-              name: createUsername(),
-              email: user.email,
-              avatar: user.image,
-              role: "googleUser",
-            });
-            await newUser.save();
-            return newUser;
-          } else {
-            /// update user data
-            dbUser.avatar = user.image;
-            await dbUser.save();
-            return dbUser;
-          }
-        } catch (err) {
-          console.log(err);
-          return false;
+        if (dbUser) {
+          await User.findOneAndUpdate({ email }, { $set: { avatar } }); /// update user data
+        } else {
+          await createNewDBUser(email!, avatar, account?.provider!);
         }
-      }
-      /// GITHUB
-      if (account?.provider === "github" && profile) {
-        dbConnect();
-        try {
-          const dbUser = await User.findOne({
-            email: user.email || profile.email,
-          });
-
-          if (!dbUser) {
-            const newUser = new User({
-              name: createUsername(),
-              email: user.email || profile.email,
-              avatar: user.image,
-              role: "githubUser",
-            });
-            await newUser.save();
-          } else {
-            /// update user data
-            dbUser.avatar = user.image;
-            await dbUser.save();
-          }
-        } catch (err) {
-          console.log(err);
-          return false;
-        }
+      } catch (err) {
+        console.log(err);
+        return false;
       }
 
       return true;
