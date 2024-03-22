@@ -3,8 +3,8 @@
 import { Checkbox } from "@nextui-org/checkbox";
 import { useState } from "react";
 import { HeartIcon } from "../Icons";
-import { createLike, deleteLike } from "@/db/queries/likes";
 import { useSession } from "next-auth/react";
+import * as actions from "@/actions";
 
 interface LikeButtonProps {
   ticker: string;
@@ -19,8 +19,8 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
   async function toggleLike() {
     setLiked(!liked);
     if (session && session.user) {
-      if (liked) deleteLike(userId, ticker);
-      else createLike(userId, ticker);
+      if (liked) actions.deleteLike(userId, ticker);
+      else actions.createLike(userId, ticker);
     }
     console.log(ticker + " Checkbox clicked");
   }
