@@ -10,12 +10,10 @@ declare module "next-auth" {
     login?: string;
     avatar_url?: string;
   }
-  /// usually not needed, this is a nextauth bug fix:
-  /// user obj does not get the id property asigned to it
-  /// see seesion callback in authOptions.ts
-  // interface Session {
-  //   user: {
-  //     id: string;
-  //   } & DefaultSession["user"];
-  // }
+  /// add id to session user obj
+  interface Session {
+    user: {
+      id: string;
+    } & DefaultSession["user"];
+  }
 }
