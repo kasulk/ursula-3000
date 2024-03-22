@@ -3,17 +3,18 @@
 import mongoose from "mongoose";
 import dbConnect from "@/db/connect";
 import { Like } from "@/db/models";
-import { getLogTime } from "@/utils/debug";
 
 export async function createLike(userIdString: string, ticker: string) {
-  await dbConnect();
-  const like = new Like({
-    userId: new mongoose.Types.ObjectId(userIdString),
-    ticker,
-  });
+  try {
+    await dbConnect();
+    const like = new Like({
+      userId: new mongoose.Types.ObjectId(userIdString),
+      ticker,
+    });
+    await like.save();
 
-  await like.save();
-
-  getLogTime();
-  console.log(ticker + " like saved!");
+    console.log(ticker + " like saved!");
+  } catch (error) {
+    console.error(`An error occurred while saving like for ${ticker}:`, error);
+  }
 }
