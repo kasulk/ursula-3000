@@ -1,7 +1,10 @@
+"use server";
+
 import type { Ticker } from "@/../types/types";
 import mongoose from "mongoose";
 import dbConnect from "../connect";
 import { Like } from "../models";
+import { getLogTime } from "@/utils/debug";
 
 export async function getLikedStocksByUser(userId: string): Promise<Ticker[]> {
   await dbConnect();
@@ -18,11 +21,9 @@ export async function createLike(userIdString: string, ticker: string) {
   });
 
   await like.save();
+  getLogTime();
+  console.log(ticker + " like saved!");
 }
-
-// const userIdString = "507f1f77bcf86cd799439011";
-// const ticker = "AAPL";
-// createLike(userIdString, ticker).then(() => console.log("Like saved"));
 
 export async function deleteLike(userId: string, ticker: string) {
   await dbConnect();
@@ -30,4 +31,6 @@ export async function deleteLike(userId: string, ticker: string) {
     userId,
     ticker,
   });
+  getLogTime();
+  console.log(ticker + " like deleted!");
 }
