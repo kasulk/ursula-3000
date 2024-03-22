@@ -1,8 +1,7 @@
+import type { Ticker } from "@/../types/types";
 import mongoose from "mongoose";
 import dbConnect from "../connect";
 import { Like } from "../models";
-
-type Ticker = string;
 
 export async function getLikedStocksByUser(userId: string): Promise<Ticker[]> {
   await dbConnect();

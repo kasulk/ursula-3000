@@ -101,3 +101,5 @@ interface IUser {
 interface IUserWithPassword extends IUser {
   password: string;
 }
+
+type Ticker = string;

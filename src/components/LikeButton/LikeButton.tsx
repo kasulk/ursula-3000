@@ -20,7 +20,7 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
       color="danger"
       size="lg"
       radius="full"
-      // isSelected={isLiked}
+      isSelected={isLiked}
       // onValueChange={setLiked()}
     />
   );

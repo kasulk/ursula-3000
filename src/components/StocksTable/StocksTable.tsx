@@ -2,7 +2,7 @@
 
 console.log("render StocksTable");
 
-import type { IStock } from "@/../types/types";
+import type { IStock, Ticker } from "@/../types/types";
 import { useMemo, useState, useCallback } from "react";
 import {
   Table,
@@ -47,6 +47,7 @@ const statusColorMap: Record<string, ChipProps["color"]> = {
 // type Stock = (typeof stocks)[0];
 interface StocksTable {
   stocks: IStock[];
+  likedTickers: Ticker[];
 }
 
 type StatusColor =
@@ -57,7 +58,7 @@ type StatusColor =
   | "warning"
   | "danger";
 
-export function StocksTable({ stocks }: StocksTable) {
+export function StocksTable({ stocks, likedTickers }: StocksTable) {
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -141,9 +142,10 @@ export function StocksTable({ stocks }: StocksTable) {
       case "name":
         return <div>{cellValue}</div>;
       case "liked":
+        const isLiked = likedTickers.includes(stock.ticker);
         return (
           <div className="text-center">
-            <LikeButton ticker={stock.ticker} isLiked={false} />
+            <LikeButton ticker={stock.ticker} isLiked={isLiked} />
           </div>
         );
       case "analystTargetPrice":
