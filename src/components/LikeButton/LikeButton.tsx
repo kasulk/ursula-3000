@@ -22,7 +22,6 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
       if (liked) actions.deleteLike(userId, ticker);
       else actions.createLike(userId, ticker);
     }
-    console.log(ticker + " Checkbox clicked");
   }
 
   return (
