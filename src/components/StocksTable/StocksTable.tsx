@@ -448,7 +448,7 @@ export function StocksTable({ stocks, likedTickers }: StocksTable) {
         }}
         color="primary"
         selectedKeys={selectedKeys}
-        selectionMode="multiple"
+        // selectionMode="multiple" /// deacitvated due to nextui bug (selection activates every checkbox)
         sortDescriptor={sortDescriptor}
         topContent={topContent}
         onSelectionChange={setSelectedKeys}
