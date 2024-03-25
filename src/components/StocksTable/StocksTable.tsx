@@ -1,7 +1,5 @@
 "use client";
 
-console.log("render StocksTable");
-
 import type { IStock, Ticker } from "@/../types/types";
 import { useMemo, useState, useCallback } from "react";
 import {
@@ -34,6 +32,7 @@ import { LikeButton } from "@/components";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { SelectRowsPerPage } from "..";
+import LikesCounter from "./LikesCounter";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -462,8 +461,12 @@ export function StocksTable({ stocks, likedTickers }: StocksTable) {
               hideHeader={column.hideHeader}
               width={column.width}
               // align={column.align} //? not working; nextui bug?
+              className="relative"
             >
               {column.name}
+              {column.name === "LIKED" && (
+                <LikesCounter numLikes={likedTickers.length} />
+              )}
             </TableColumn>
           )}
         </TableHeader>
