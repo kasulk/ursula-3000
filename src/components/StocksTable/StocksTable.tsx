@@ -33,7 +33,7 @@ import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { SelectRowsPerPage } from "..";
 import LikesCounter from "./LikesCounter";
-import { useLikedStocksStore } from "@/store/likesCounter";
+import { useLikedStocksStore } from "@/store/likedStocks";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",

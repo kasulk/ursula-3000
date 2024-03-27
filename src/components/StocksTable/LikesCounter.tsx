@@ -1,4 +1,4 @@
-import { useLikedStocksStore } from "@/store/likesCounter";
+import { useLikedStocksStore } from "@/store/likedStocks";
 
 export default function LikesCounter() {
   const likedTickers = useLikedStocksStore((state) => state.likedTickers);

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { HeartIcon } from "../Icons";
 import { useSession } from "next-auth/react";
 import * as actions from "@/actions";
-import { useLikedStocksStore } from "@/store/likesCounter";
+import { useLikedStocksStore } from "@/store/likedStocks";
 
 interface LikeButtonProps {
   ticker: string;
