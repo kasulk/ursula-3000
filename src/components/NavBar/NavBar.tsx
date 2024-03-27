@@ -50,6 +50,7 @@ export function NavBar({ user }: NavBarProps) {
   return (
     <Navbar
       isBordered
+      isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
       classNames={{
         item: [
