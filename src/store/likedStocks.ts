@@ -2,21 +2,23 @@ import { create } from "zustand";
 import { Ticker } from "@/../types/types";
 
 type LikedStocksStore = {
-  likedTickers: Ticker[];
+  tickers: Ticker[];
+  setLikedStocks: (tickers: Ticker[]) => void;
   addLikedStock: (ticker: Ticker) => void;
   removeLikedStock: (ticker: Ticker) => void;
-  setLikedStocks: (tickers: Ticker[]) => void;
 };
 
-export const useLikedStocksStore = create<LikedStocksStore>((set) => ({
-  likedTickers: [],
-  setLikedStocks: (tickers) => set({ likedTickers: tickers }),
-  addLikedStock: (newTicker) =>
-    set((state) => ({ likedTickers: [...state.likedTickers, newTicker] })),
+export const useLikedStocksStore = create<LikedStocksStore>()((set) => ({
+  tickers: [],
+  setLikedStocks: (tickers) => set({ tickers }),
+  addLikedStock: (ticker) =>
+    set((state) => {
+      const tickers = [...state.tickers, ticker];
+      return { tickers };
+    }),
   removeLikedStock: (ticker) =>
-    set((state) => ({
-      likedTickers: [
-        ...state.likedTickers.filter((_ticker) => _ticker !== ticker),
-      ],
-    })),
+    set((state) => {
+      const tickers = state.tickers.filter((t) => t !== ticker);
+      return { tickers };
+    }),
 }));
