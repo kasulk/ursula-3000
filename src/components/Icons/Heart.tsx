@@ -7,6 +7,9 @@ export const HeartIcon = ({
   height,
   width,
   label,
+  isSelected, /// for nextui, fixes nasty warning
+  isIndeterminate, /// for nextui, fixes nasty warning
+  disableAnimation, /// for nextui, fixes nasty warning
   ...props
 }: IconSvgProps) => {
   return (
