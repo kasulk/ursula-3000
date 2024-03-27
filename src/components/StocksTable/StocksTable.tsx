@@ -1,7 +1,7 @@
 "use client";
 
 import type { IStock, Ticker } from "@/../types/types";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -33,6 +33,7 @@ import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { SelectRowsPerPage } from "..";
 import LikesCounter from "./LikesCounter";
+import { useLikedStocksStore } from "@/store/likesCounter";
 
 const statusColorMap: Record<string, ChipProps["color"]> = {
   active: "success",
@@ -58,6 +59,11 @@ type StatusColor =
   | "danger";
 
 export function StocksTable({ stocks, likedTickers }: StocksTable) {
+  const setLikedStocks = useLikedStocksStore((state) => state.setLikedStocks);
+  useEffect(() => {
+    setLikedStocks(likedTickers);
+  }, []);
+
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState<Selection>(
@@ -464,9 +470,7 @@ export function StocksTable({ stocks, likedTickers }: StocksTable) {
               className="relative"
             >
               {column.name}
-              {column.name === "LIKED" && (
-                <LikesCounter numLikes={likedTickers.length} />
-              )}
+              {column.name === "LIKED" && <LikesCounter />}
             </TableColumn>
           )}
         </TableHeader>
