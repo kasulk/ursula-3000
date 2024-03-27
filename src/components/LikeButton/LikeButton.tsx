@@ -33,6 +33,11 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
         addLikedStock(ticker);
       }
     }
+    /// Demo-functionality for not logged in users
+    else {
+      if (liked) removeLikedStock(ticker);
+      else addLikedStock(ticker);
+    }
   }
 
   return (
@@ -42,7 +47,7 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
       size="lg"
       radius="full"
       isSelected={liked}
-      onValueChange={() => toggleLike()}
+      onValueChange={toggleLike}
     />
   );
 }
