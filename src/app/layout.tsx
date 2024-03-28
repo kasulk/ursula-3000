@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { getServerSession } from "next-auth";
 import { NavBar } from "@/components";
 import { getDBUserByEmailWithoutPassword } from "@/db/queries/users";
 
-if (process.env.NODE_ENV === "development") require("./styles/devOnly.css");
+if (process.env.NODE_ENV === "development") require("@/styles/devOnly.css");
 
 const inter = Inter({ subsets: ["latin"] });
 
