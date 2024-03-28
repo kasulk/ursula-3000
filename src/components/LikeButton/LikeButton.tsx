@@ -6,10 +6,32 @@ import { HeartIcon } from "../Icons";
 import { useSession } from "next-auth/react";
 import * as actions from "@/actions";
 import { useLikedStocksStore } from "@/store/likedStocks";
+import { useToast } from "../ui/use-toast";
 
 interface LikeButtonProps {
   ticker: string;
   isLiked: boolean;
+}
+
+function toastDescriptionLike(ticker: string) {
+  return (
+    <div className="flex items-center">
+      <span>
+        You&apos;ve just liked <strong>{ticker}</strong>!&nbsp;
+      </span>
+      <HeartIcon filled fill="crimson" />
+    </div>
+  );
+}
+function toastDescriptionUnlike(ticker: string) {
+  return (
+    <div className="flex items-center">
+      <span>
+        You&apos;ve just unliked <strong>{ticker}</strong>...&nbsp;
+      </span>
+      <HeartIcon filled fill="gray" className="opacity-50" />
+    </div>
+  );
 }
 
 export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
@@ -22,21 +44,22 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
     (state) => state.removeLikedStock,
   );
 
+  const { toast } = useToast();
+
   async function toggleLike() {
     setLiked(!liked);
-    if (session && session.user) {
-      if (liked) {
+    if (liked) {
+      if (session && session.user) {
         actions.deleteLike(userId, ticker);
-        removeLikedStock(ticker);
-      } else {
-        actions.createLike(userId, ticker);
-        addLikedStock(ticker);
       }
-    }
-    /// Demo-functionality for not logged in users
-    else {
-      if (liked) removeLikedStock(ticker);
-      else addLikedStock(ticker);
+      removeLikedStock(ticker);
+      toast({ title: "Oh no...", description: toastDescriptionUnlike(ticker) });
+    } else {
+      if (session && session.user) {
+        actions.createLike(userId, ticker);
+      }
+      addLikedStock(ticker);
+      toast({ title: "Sweet!", description: toastDescriptionLike(ticker) });
     }
   }
 
