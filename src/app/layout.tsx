@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { getServerSession } from "next-auth";
 import { NavBar } from "@/components";
+import { Toaster } from "@/components/ui/toaster";
 import { getDBUserByEmailWithoutPassword } from "@/db/queries/users";
 
-if (process.env.NODE_ENV === "development") require("./styles/devOnly.css");
+if (process.env.NODE_ENV === "development") require("@/styles/devOnly.css");
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,12 +33,13 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers session={session}>
-          <header className="fixed left-0 top-0 z-40 w-full bg-background py-6 shadow">
+          <header className="fixed left-0 top-0 z-40 w-full py-6 shadow">
             <NavBar user={user} />
           </header>
-          <main className="mt-24 flex flex-col items-center justify-between bg-background p-24 text-foreground">
+          <main className="mt-24 flex flex-col items-center justify-between p-24">
             {children}
           </main>
+          <Toaster />
           <footer></footer>
         </Providers>
       </body>
