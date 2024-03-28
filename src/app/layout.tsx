@@ -32,10 +32,10 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers session={session}>
-          <header className="fixed left-0 top-0 z-40 w-full bg-background py-6 shadow">
+          <header className="fixed left-0 top-0 z-40 w-full py-6 shadow">
             <NavBar user={user} />
           </header>
-          <main className="mt-24 flex flex-col items-center justify-between bg-background p-24 text-foreground">
+          <main className="mt-24 flex flex-col items-center justify-between p-24">
             {children}
           </main>
           <footer></footer>
