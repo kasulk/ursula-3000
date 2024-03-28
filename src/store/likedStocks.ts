@@ -8,17 +8,15 @@ type LikedStocksStore = {
   removeLikedStock: (ticker: Ticker) => void;
 };
 
-export const useLikedStocksStore = create<LikedStocksStore>()((set) => ({
+export const useLikedStocksStore = create<LikedStocksStore>()((set, get) => ({
   tickers: [],
   setLikedStocks: (tickers) => set({ tickers }),
-  addLikedStock: (ticker) =>
-    set((state) => {
-      const tickers = [...state.tickers, ticker];
-      return { tickers };
-    }),
-  removeLikedStock: (ticker) =>
-    set((state) => {
-      const tickers = state.tickers.filter((t) => t !== ticker);
-      return { tickers };
-    }),
+  addLikedStock: (ticker) => {
+    const updatedTickers = [...get().tickers, ticker];
+    set({ tickers: updatedTickers });
+  },
+  removeLikedStock: (ticker) => {
+    const updatedTickers = get().tickers.filter((t) => t !== ticker);
+    set({ tickers: updatedTickers });
+  },
 }));
