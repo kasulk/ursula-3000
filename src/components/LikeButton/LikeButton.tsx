@@ -1,37 +1,17 @@
 "use client";
 
-import { Checkbox } from "@nextui-org/checkbox";
 import { useState } from "react";
-import { HeartIcon } from "../Icons";
 import { useSession } from "next-auth/react";
 import * as actions from "@/actions";
 import { useLikedStocksStore } from "@/store/likedStocks";
+import { Checkbox } from "@nextui-org/checkbox";
+import { HeartIcon } from "../Icons";
 import { useToast } from "../ui/use-toast";
+import ToastDescription from "./ToastDescription";
 
 interface LikeButtonProps {
   ticker: string;
   isLiked: boolean;
-}
-
-function toastDescriptionLike(ticker: string) {
-  return (
-    <div className="flex items-center">
-      <span>
-        You&apos;ve just liked <strong>{ticker}</strong>!&nbsp;
-      </span>
-      <HeartIcon filled fill="crimson" />
-    </div>
-  );
-}
-function toastDescriptionUnlike(ticker: string) {
-  return (
-    <div className="flex items-center">
-      <span>
-        You&apos;ve just unliked <strong>{ticker}</strong>...&nbsp;
-      </span>
-      <HeartIcon filled fill="gray" className="opacity-50" />
-    </div>
-  );
 }
 
 export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
@@ -53,13 +33,19 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
         actions.deleteLike(userId, ticker);
       }
       removeLikedStock(ticker);
-      toast({ title: "Oh no...", description: toastDescriptionUnlike(ticker) });
+      toast({
+        title: "Oh no...",
+        description: <ToastDescription ticker={ticker} isLiked={!liked} />,
+      });
     } else {
       if (session && session.user) {
         actions.createLike(userId, ticker);
       }
       addLikedStock(ticker);
-      toast({ title: "Sweet!", description: toastDescriptionLike(ticker) });
+      toast({
+        title: "Sweet!",
+        description: <ToastDescription ticker={ticker} isLiked={!liked} />,
+      });
     }
   }
 
