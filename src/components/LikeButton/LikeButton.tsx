@@ -14,8 +14,8 @@ interface LikeButtonProps {
   isLiked: boolean;
 }
 
-export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
-  const [liked, setLiked] = useState(isLiked);
+export function LikeButton({ ticker, isLiked: isLikedProp }: LikeButtonProps) {
+  const [isLiked, setIsLiked] = useState(isLikedProp);
   const { data: session } = useSession();
   const userId = session?.user.id;
 
@@ -26,16 +26,16 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
 
   const { toast } = useToast();
 
-  async function toggleLike() {
-    setLiked(!liked);
-    if (liked) {
+  function toggleLike() {
+    setIsLiked(!isLiked);
+    if (isLiked) {
       if (session && session.user) {
         actions.deleteLike(userId, ticker);
       }
       removeLikedStock(ticker);
       toast({
         title: "Oh no...",
-        description: <ToastDescription ticker={ticker} isLiked={!liked} />,
+        description: <ToastDescription ticker={ticker} isLiked={!isLiked} />,
       });
     } else {
       if (session && session.user) {
@@ -44,7 +44,7 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
       addLikedStock(ticker);
       toast({
         title: "Sweet!",
-        description: <ToastDescription ticker={ticker} isLiked={!liked} />,
+        description: <ToastDescription ticker={ticker} isLiked={!isLiked} />,
       });
     }
   }
@@ -55,7 +55,7 @@ export function LikeButton({ ticker, isLiked }: LikeButtonProps) {
       color="danger"
       size="lg"
       radius="full"
-      isSelected={liked}
+      isSelected={isLiked}
       onValueChange={toggleLike}
     />
   );
