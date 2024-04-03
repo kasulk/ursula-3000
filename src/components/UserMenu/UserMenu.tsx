@@ -9,13 +9,16 @@ import {
   DropdownSection,
   useDisclosure,
 } from "@nextui-org/react";
-import AlertDialog from "../AlertDialog/AlertDialog";
+import DeleteAccountModal from "./DeleteAccountModal";
 import { toast } from "../ui/use-toast";
 import * as actions from "@/actions";
 
 export function UserMenu({ user }: UserMenuProps) {
   const { data: session } = useSession();
   const userId = session?.user.id;
+
+  /// use disclosure workaround for showing the modal
+  /// https://github.com/nextui-org/nextui/discussions/2008#discussioncomment-8023732
   const deleteAccountModal = useDisclosure();
 
   async function onDeleteAccount() {
@@ -77,7 +80,6 @@ export function UserMenu({ user }: UserMenuProps) {
           </DropdownSection>
 
           {/* <DropdownItem key="settings">My Settings</DropdownItem> */}
-          {/* <DropdownItem key="team_settings">Team Settings</DropdownItem> */}
           {/* <DropdownItem key="analytics">Analytics</DropdownItem> */}
           {/* <DropdownItem key="system">System</DropdownItem> */}
           {/* <DropdownItem key="configurations">Configurations</DropdownItem> */}
@@ -85,7 +87,7 @@ export function UserMenu({ user }: UserMenuProps) {
         </DropdownMenu>
       </Dropdown>
 
-      <AlertDialog
+      <DeleteAccountModal
         disclosure={deleteAccountModal}
         handleDeleteAccount={onDeleteAccount}
       />
