@@ -11,16 +11,15 @@ export default function ToastDescription({
   isLiked,
 }: ToastDescriptionProps) {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center gap-2">
       <span>
         You&apos;ve just {isLiked ? "liked" : "unliked"}{" "}
         <strong>{ticker}</strong>
-        {isLiked ? "!" : "..."}&nbsp;
+        {isLiked ? "!" : "..."}
       </span>
       <HeartIcon
-        filled
-        fill={isLiked ? "crimson" : "gray"}
-        className={isLiked ? "" : "opacity-50"}
+        filled={isLiked}
+        className={`text-danger ${isLiked ? "" : "opacity-75"}`}
       />
     </div>
   );
