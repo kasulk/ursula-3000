@@ -1,4 +1,5 @@
 import type { UserMenuProps } from "../propTypes";
+import { redirect } from "next/navigation";
 import { signOut } from "next-auth/react";
 import {
   Dropdown,
@@ -10,9 +11,23 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import AlertDialog from "../AlertDialog/AlertDialog";
+import { toast } from "../ui/use-toast";
 
 export function UserMenu({ user }: UserMenuProps) {
   const deleteAccountModal = useDisclosure();
+
+  function onDeleteAccount() {
+    toast({
+      description: "Deleting account...",
+      variant: "destructive",
+    });
+    signOut();
+    //todo: delete db data
+    // toast({
+    //   description: "Account deleted! ✅",
+    // });
+    redirect("/");
+  }
 
   return (
     <>
@@ -71,7 +86,10 @@ export function UserMenu({ user }: UserMenuProps) {
         </DropdownMenu>
       </Dropdown>
 
-      <AlertDialog disclosure={deleteAccountModal} />
+      <AlertDialog
+        disclosure={deleteAccountModal}
+        handleDeleteAccount={onDeleteAccount}
+      />
     </>
   );
 }
