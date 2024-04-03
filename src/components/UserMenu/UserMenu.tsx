@@ -1,6 +1,5 @@
 import type { UserMenuProps } from "../propTypes";
-import { redirect } from "next/navigation";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import {
   Dropdown,
   DropdownTrigger,
@@ -12,21 +11,21 @@ import {
 } from "@nextui-org/react";
 import AlertDialog from "../AlertDialog/AlertDialog";
 import { toast } from "../ui/use-toast";
+import * as actions from "@/actions";
 
 export function UserMenu({ user }: UserMenuProps) {
+  const { data: session } = useSession();
+  const userId = session?.user.id;
   const deleteAccountModal = useDisclosure();
 
-  function onDeleteAccount() {
+  async function onDeleteAccount() {
     toast({
       description: "Deleting account...",
       variant: "destructive",
     });
+    await actions.deleteAccount(userId);
     signOut();
-    //todo: delete db data
-    // toast({
-    //   description: "Account deleted! ✅",
-    // });
-    redirect("/");
+    toast({ description: "Account deleted! ✅" });
   }
 
   return (
