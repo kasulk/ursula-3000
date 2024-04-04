@@ -1,15 +1,15 @@
 import React from "react";
 import { HeartIcon } from "../Icons";
 
-interface ToastDescriptionProps {
+interface LikeToastDescriptionProps {
   ticker: string;
   isLiked: boolean;
 }
 
-export default function ToastDescription({
+export default function LikeToastDescription({
   ticker,
   isLiked,
-}: ToastDescriptionProps) {
+}: LikeToastDescriptionProps) {
   return (
     <div className="flex items-center gap-2">
       <span>

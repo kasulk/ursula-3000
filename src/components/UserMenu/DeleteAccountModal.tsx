@@ -36,7 +36,7 @@ export default function DeleteAccountModal({
         {(onClose) => (
           <>
             <ModalHeader className="flex items-center gap-1">
-              Account Deletion
+              ☠️ Account Deletion ☠️
             </ModalHeader>
             <ModalBody>
               This action cannot be undone. This will permanently delete your
