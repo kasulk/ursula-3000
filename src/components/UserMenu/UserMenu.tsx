@@ -23,12 +23,15 @@ export function UserMenu({ user }: UserMenuProps) {
 
   async function onDeleteAccount() {
     toast({
+      className: "bg-opacity-50 bg-danger border-danger border-1",
       description: "Deleting account...",
-      variant: "destructive",
     });
     await actions.deleteAccount(userId);
     signOut();
-    toast({ description: "Account deleted! ✅" });
+    toast({
+      className: "bg-opacity-50 bg-success border-success border-1",
+      description: "Account deleted! ✅",
+    });
   }
 
   return (
