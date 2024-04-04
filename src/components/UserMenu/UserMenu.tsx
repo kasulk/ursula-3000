@@ -23,13 +23,15 @@ export function UserMenu({ user }: UserMenuProps) {
 
   async function onDeleteAccount() {
     toast({
-      className: "bg-opacity-50 bg-danger border-danger border-1",
+      variant: "danger",
+      className: "bg-opacity-75 bg-danger",
       description: "Deleting account...",
     });
     await actions.deleteAccount(userId);
     signOut();
     toast({
-      className: "bg-opacity-50 bg-success border-success border-1",
+      variant: "success",
+      className: "bg-opacity-75 bg-success",
       description: "Account deleted! ✅",
     });
   }
@@ -64,21 +66,26 @@ export function UserMenu({ user }: UserMenuProps) {
 
           <DropdownItem
             key="logout"
-            className="text-danger"
-            color="danger"
+            className="text-primary"
+            color="primary"
             onClick={() => signOut()}
+            showDivider
           >
             Log Out
           </DropdownItem>
 
-          <DropdownSection title="Danger zone">
+          <DropdownSection
+            title="Danger Zone"
+            classNames={{
+              heading: "text-danger",
+            }}
+          >
             <DropdownItem
               key="deleteAccount"
-              className="text-warning"
               color="danger"
               description="Permanently delete your account & data"
             >
-              Delete account
+              Delete Account
             </DropdownItem>
           </DropdownSection>
 

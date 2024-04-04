@@ -8,6 +8,8 @@ import {
   Button,
 } from "@nextui-org/react";
 import type { UseDisclosureReturn } from "@nextui-org/use-disclosure";
+import { toast } from "../ui/Toast/use-toast";
+import delayedToast from "../ui/Toast/delayedToast";
 
 interface DeleteAccountModalProps {
   disclosure: UseDisclosureReturn;
@@ -20,6 +22,24 @@ export default function DeleteAccountModal({
 }: DeleteAccountModalProps) {
   const { isOpen, onOpenChange } = disclosure;
 
+  function handleCancelation(onClose: () => void) {
+    toast({
+      variant: "warning",
+      description: (
+        <>
+          Phew... <span className="text-2xl">🫣</span>
+        </>
+      ),
+    });
+    delayedToast(2000, {
+      variant: "success",
+      title: "Good Choice! 👍",
+      description: "For a moment I thought it was over...",
+    });
+
+    onClose();
+  }
+
   return (
     <Modal
       backdrop="opaque"
@@ -27,9 +47,9 @@ export default function DeleteAccountModal({
       onOpenChange={onOpenChange}
       radius="lg"
       classNames={{
-        base: "p-10 py-6 border-8 border-danger/50 bg-background/90 text-foreground",
-        backdrop: "bg-danger/10 backdrop-opacity-40",
-        header: "text-danger",
+        base: "p-6 border-8 border-danger/50 bg-background/90 text-foreground",
+        backdrop: "bg-danger/10",
+        header: "text-danger text-2xl",
       }}
     >
       <ModalContent>
@@ -43,7 +63,11 @@ export default function DeleteAccountModal({
               account and remove all your data from our servers.
             </ModalBody>
             <ModalFooter>
-              <Button color="default" variant="light" onPress={onClose}>
+              <Button
+                color="default"
+                variant="light"
+                onPress={() => handleCancelation(onClose)}
+              >
                 Cancel
               </Button>
               <Button
