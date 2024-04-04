@@ -33,6 +33,7 @@ export function LikeButton({ ticker, isLiked: isLikedProp }: LikeButtonProps) {
       }
       removeLikedStock(ticker);
       toast({
+        className: "bg-opacity-50 border-danger border-1",
         title: "Oh no...",
         description: (
           <LikeToastDescription ticker={ticker} isLiked={!isLiked} />
@@ -44,15 +45,20 @@ export function LikeButton({ ticker, isLiked: isLikedProp }: LikeButtonProps) {
       }
       addLikedStock(ticker);
       toast({
+        className: "bg-opacity-50 border-success border-1",
         title: "Sweet!",
         description: (
           <LikeToastDescription ticker={ticker} isLiked={!isLiked} />
         ),
       });
-      delayedToast(2000, {
-        title: "Remember 🤓",
-        description: "Likes only persist if you're logged in!",
-      });
+
+      if (!session || !session.user) {
+        delayedToast(2000, {
+          className: "bg-opacity-50 border-warning border-1",
+          title: "Remember 🤓",
+          description: "Likes only persist if you're logged in!",
+        });
+      }
     }
   }
 
