@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import DeleteAccountModal from "./DeleteAccountModal";
-import { toast } from "../ui/use-toast";
+import { toast } from "../ui/Toast/use-toast";
 import * as actions from "@/actions";
 
 export function UserMenu({ user }: UserMenuProps) {

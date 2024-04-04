@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { getServerSession } from "next-auth";
 import { NavBar } from "@/components";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/Toast/toaster";
 import { getDBUserByEmailWithoutPassword } from "@/db/queries/users";
 
 if (process.env.NODE_ENV === "development") require("@/styles/devOnly.css");
