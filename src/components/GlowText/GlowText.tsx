@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 type Variant =
   | "orange red"
   | "orange pink"
@@ -6,7 +8,7 @@ type Variant =
 
 interface GlowTextProps {
   variant: Variant;
-  children: string;
+  children: ReactNode;
 }
 
 export function GlowText({ variant, children }: GlowTextProps) {

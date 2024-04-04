@@ -1,3 +1,14 @@
+import { GlowText } from "@/components";
+import BackButton from "@/components/ui/BackButton";
+
 export default function DashboardPage() {
-  return <h2 className="text-xl">This is the Dashboard-Page</h2>;
+  return (
+    <div className="flex flex-col items-center px-4 sm:px-12">
+      <h2 className="mb-12 text-xl">This is the Dashboard-Page</h2>
+      <p className="text-lg">
+        <GlowText variant="orange pink">Coming soon!</GlowText>
+      </p>
+      <BackButton className="mt-12 text-xl">Go Back</BackButton>
+    </div>
+  );
 }

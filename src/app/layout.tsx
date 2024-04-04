@@ -36,7 +36,7 @@ export default async function RootLayout({
           <header className="fixed left-0 top-0 z-40 w-full py-6 shadow">
             <NavBar user={user} />
           </header>
-          <main className="mt-24 flex flex-col items-center justify-between p-24">
+          <main className="mt-24 flex flex-col items-center justify-between px-4 py-24 sm:px-12 lg:p-24">
             {children}
           </main>
           <Toaster />
