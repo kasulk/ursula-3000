@@ -3,10 +3,15 @@
 // Inspired by react-hot-toast library
 import * as React from "react";
 
-import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
+import type { ToastActionElement, ToastProps } from "./toast";
 
 const TOAST_LIMIT = 3;
-const TOAST_REMOVE_DELAY = 1000000;
+//-- const TOAST_REMOVE_DELAY = 1000000;
+/// seems like the default value (from the root toaster
+/// from react-hot-toast) of 5s doesn't get overridden
+/// see: https://stackoverflow.com/questions/76812372/shadcn-toasts-inspired-by-react-hot-toast-library-duration-issues
+/// Workaround:
+export const TOAST_REMOVE_DELAY = 8000; /// import in toaster.tsx
 
 type ToasterToast = ToastProps & {
   id: string;

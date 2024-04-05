@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import DeleteAccountModal from "./DeleteAccountModal";
-import { toast } from "../ui/use-toast";
+import { toast } from "../ui/Toast/use-toast";
 import * as actions from "@/actions";
 
 export function UserMenu({ user }: UserMenuProps) {
@@ -23,12 +23,17 @@ export function UserMenu({ user }: UserMenuProps) {
 
   async function onDeleteAccount() {
     toast({
+      variant: "danger",
+      className: "bg-opacity-75 bg-danger",
       description: "Deleting account...",
-      variant: "destructive",
     });
     await actions.deleteAccount(userId);
     signOut();
-    toast({ description: "Account deleted! ✅" });
+    toast({
+      variant: "success",
+      className: "bg-opacity-75 bg-success",
+      description: "Account deleted! ✅",
+    });
   }
 
   return (
@@ -61,21 +66,26 @@ export function UserMenu({ user }: UserMenuProps) {
 
           <DropdownItem
             key="logout"
-            className="text-danger"
-            color="danger"
+            className="text-primary"
+            color="primary"
             onClick={() => signOut()}
+            showDivider
           >
             Log Out
           </DropdownItem>
 
-          <DropdownSection title="Danger zone">
+          <DropdownSection
+            title="Danger Zone"
+            classNames={{
+              heading: "text-danger",
+            }}
+          >
             <DropdownItem
               key="deleteAccount"
-              className="text-warning"
               color="danger"
               description="Permanently delete your account & data"
             >
-              Delete account
+              Delete Account
             </DropdownItem>
           </DropdownSection>
 

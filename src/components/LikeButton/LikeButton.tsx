@@ -6,8 +6,9 @@ import * as actions from "@/actions";
 import { useLikedStocksStore } from "@/store/likedStocks";
 import { Checkbox } from "@nextui-org/checkbox";
 import { HeartIcon } from "../Icons";
-import { useToast } from "../ui/use-toast";
-import ToastDescription from "./ToastDescription";
+import { toast } from "../ui/Toast/use-toast";
+import delayedToast from "../ui/Toast/delayedToast";
+import LikeToastDescription from "./LikeToastDescription";
 
 interface LikeButtonProps {
   ticker: string;
@@ -24,8 +25,6 @@ export function LikeButton({ ticker, isLiked: isLikedProp }: LikeButtonProps) {
     (state) => state.removeLikedStock,
   );
 
-  const { toast } = useToast();
-
   function toggleLike() {
     setIsLiked(!isLiked);
     if (isLiked) {
@@ -34,8 +33,11 @@ export function LikeButton({ ticker, isLiked: isLikedProp }: LikeButtonProps) {
       }
       removeLikedStock(ticker);
       toast({
+        variant: "danger",
         title: "Oh no...",
-        description: <ToastDescription ticker={ticker} isLiked={!isLiked} />,
+        description: (
+          <LikeToastDescription ticker={ticker} isLiked={!isLiked} />
+        ),
       });
     } else {
       if (session && session.user) {
@@ -43,9 +45,20 @@ export function LikeButton({ ticker, isLiked: isLikedProp }: LikeButtonProps) {
       }
       addLikedStock(ticker);
       toast({
+        variant: "success",
         title: "Sweet!",
-        description: <ToastDescription ticker={ticker} isLiked={!isLiked} />,
+        description: (
+          <LikeToastDescription ticker={ticker} isLiked={!isLiked} />
+        ),
       });
+
+      if (!session || !session.user) {
+        delayedToast(2000, {
+          variant: "warning",
+          title: "Remember 🤓",
+          description: "Likes only persist if you're logged in!",
+        });
+      }
     }
   }
 

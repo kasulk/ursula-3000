@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/react";
 
 export default function Home() {
   return (
-    <section id="welcome">
+    <section id="welcome" className="px-4 sm:px-12">
       <div className="flex flex-col items-center justify-center gap-12">
         <p className="text-5xl font-bold">
           Meet <GlowText variant="orange pink">Ursula</GlowText>!
