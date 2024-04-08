@@ -52,7 +52,9 @@ export function Nav({ user }: NavProps) {
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
+      maxWidth="xl"
       classNames={{
+        wrapper: "justify-between",
         item: [
           "flex",
           "relative",
