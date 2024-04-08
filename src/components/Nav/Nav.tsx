@@ -1,6 +1,6 @@
 "use client";
 
-import type { NavBarProps } from "../propTypes";
+import type { NavProps } from "../propTypes";
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import {
@@ -18,7 +18,7 @@ import { usePathname } from "next/navigation";
 
 import { Logo, UserMenu, ThemeSwitch } from "@/components";
 
-export function NavBar({ user }: NavBarProps) {
+export function Nav({ user }: NavProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();

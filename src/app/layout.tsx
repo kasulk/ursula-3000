@@ -3,7 +3,7 @@ import "@/styles/globals.css";
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import { getServerSession } from "next-auth";
-import { NavBar } from "@/components";
+import { Nav } from "@/components";
 import { Toaster } from "@/components/ui/Toast/toaster";
 import { getDBUserByEmailWithoutPassword } from "@/db/queries/users";
 
@@ -34,7 +34,7 @@ export default async function RootLayout({
       <body className={inter.className}>
         <Providers session={session}>
           <header className="fixed left-0 top-0 z-40 w-full py-6 shadow">
-            <NavBar user={user} />
+            <Nav user={user} />
           </header>
           <main className="mt-24 flex flex-col items-center justify-between px-4 py-24 sm:px-12 lg:p-24">
             {children}

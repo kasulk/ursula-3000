@@ -1,5 +1,4 @@
-// export * from "./Navigation/Navigation";
-export * from "./NavBar/NavBar";
+export * from "./Nav/Nav";
 export * from "./Logo/Logo";
 export * from "./UserMenu/UserMenu";
 export * from "./ThemeSwitch/ThemeSwitch";
