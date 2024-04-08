@@ -16,7 +16,7 @@ import {
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 
-import { Logo, UserMenu, ThemeSwitch } from "@/components";
+import { Logo, UserMenu, ThemeSwitch } from "@/components/Nav";
 
 export function Nav({ user }: NavProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

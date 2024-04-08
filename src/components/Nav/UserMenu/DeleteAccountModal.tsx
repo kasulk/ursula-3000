@@ -8,8 +8,8 @@ import {
   Button,
 } from "@nextui-org/react";
 import type { UseDisclosureReturn } from "@nextui-org/use-disclosure";
-import { toast } from "../ui/Toast/use-toast";
-import delayedToast from "../ui/Toast/delayedToast";
+import { toast } from "../../ui/Toast/use-toast";
+import delayedToast from "../../ui/Toast/delayedToast";
 
 interface DeleteAccountModalProps {
   disclosure: UseDisclosureReturn;
