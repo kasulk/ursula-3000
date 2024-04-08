@@ -1,5 +1,4 @@
-import { GlowText } from "@/components";
-import BackButton from "@/components/ui/BackButton";
+import { GlowText, BackButton } from "@/components/ui";
 
 export default function DashboardPage() {
   return (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GlowText } from "@/components";
+import { GlowText } from "@/components/ui";
 import { Button } from "@nextui-org/react";
 
 export default function Home() {

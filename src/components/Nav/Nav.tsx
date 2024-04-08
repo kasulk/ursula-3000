@@ -1,6 +1,6 @@
 "use client";
 
-import type { NavBarProps } from "../propTypes";
+import type { NavProps } from "../propTypes";
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import {
@@ -16,9 +16,9 @@ import {
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 
-import { Logo, UserMenu, ThemeSwitch } from "@/components";
+import { Logo, UserMenu, ThemeSwitch } from "@/components/Nav";
 
-export function NavBar({ user }: NavBarProps) {
+export function Nav({ user }: NavProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -52,7 +52,9 @@ export function NavBar({ user }: NavBarProps) {
       isBordered
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
+      maxWidth="xl"
       classNames={{
+        wrapper: "justify-between",
         item: [
           "flex",
           "relative",

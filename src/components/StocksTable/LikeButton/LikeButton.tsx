@@ -5,9 +5,9 @@ import { useSession } from "next-auth/react";
 import * as actions from "@/actions";
 import { useLikedStocksStore } from "@/store/likedStocks";
 import { Checkbox } from "@nextui-org/checkbox";
-import { HeartIcon } from "../Icons";
-import { toast } from "../ui/Toast/use-toast";
-import delayedToast from "../ui/Toast/delayedToast";
+import { HeartIcon } from "@/components/Icons";
+import { toast } from "@/components/ui";
+import delayedToast from "@/components/ui/Toast/delayedToast";
 import LikeToastDescription from "./LikeToastDescription";
 
 interface LikeButtonProps {

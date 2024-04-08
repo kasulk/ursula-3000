@@ -1,5 +1,5 @@
 import React from "react";
-import { HeartIcon } from "../Icons";
+import { HeartIcon } from "@/components/Icons";
 
 interface LikeToastDescriptionProps {
   ticker: string;

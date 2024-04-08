@@ -1,4 +1,4 @@
-export interface NavBarProps {
+export interface NavProps {
   user: IUser;
 }
 

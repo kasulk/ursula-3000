@@ -1,4 +1,4 @@
-import type { UserMenuProps } from "../propTypes";
+import type { UserMenuProps } from "../../propTypes";
 import { signOut, useSession } from "next-auth/react";
 import {
   Dropdown,
@@ -10,7 +10,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import DeleteAccountModal from "./DeleteAccountModal";
-import { toast } from "../ui/Toast/use-toast";
+import { toast } from "../../ui/Toast/use-toast";
 import * as actions from "@/actions";
 
 export function UserMenu({ user }: UserMenuProps) {
