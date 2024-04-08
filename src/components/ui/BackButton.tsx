@@ -7,7 +7,7 @@ interface BackButtonProps {
   children: ReactNode;
   className?: string;
 }
-export default function BackButton({ children, className }: BackButtonProps) {
+export function BackButton({ children, className }: BackButtonProps) {
   const router = useRouter();
 
   return (

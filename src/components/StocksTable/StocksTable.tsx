@@ -28,7 +28,7 @@ import {
   ChevronDown as ChevronDownIcon,
   Search as SearchIcon,
 } from "@/components/Icons";
-import { LikeButton } from "@/components";
+import { LikeButton } from "./";
 import { columns, statusOptions } from "./data";
 import { capitalize } from "./utils";
 import { SelectRowsPerPage } from "..";
