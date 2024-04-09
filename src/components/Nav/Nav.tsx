@@ -50,9 +50,10 @@ export function Nav({ user }: NavProps) {
   return (
     <Navbar
       isBordered
+      maxWidth="xl"
       isMenuOpen={isMenuOpen}
       onMenuOpenChange={setIsMenuOpen}
-      maxWidth="xl"
+      onClick={() => setIsMenuOpen(false)}
       classNames={{
         wrapper: "justify-between",
         item: [
@@ -143,10 +144,11 @@ export function Nav({ user }: NavProps) {
         {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
+              size="lg"
+              href={item.url}
               color={item.url === pathname ? "danger" : "foreground"}
               className="w-full"
-              href={item.url}
-              size="lg"
+              onPress={() => setIsMenuOpen(false)}
             >
               {item.title}
             </Link>
